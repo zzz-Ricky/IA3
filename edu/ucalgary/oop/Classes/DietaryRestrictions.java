@@ -1,4 +1,4 @@
-package edu.ucalgary.oop.Classes;
+package edu.ucalgary.oop;
 
 public class DietaryRestrictions {
     public enum DietaryRestriction {

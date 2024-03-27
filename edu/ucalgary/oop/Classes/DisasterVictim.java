@@ -41,7 +41,7 @@ public class DisasterVictim extends Person implements IDateManageMent {
         if (month < 1 || month > 12 || day < 1 || day > 31 ||
                 (day > 30 && (month == 4 || month == 6 || month == 9 || month == 11)) ||
                 (month == 2 && (day > 29 || (day > 28 && !(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)))))) {
-            throw new IllegalArgumentException("Invalid date");
+            throw new IllegalArgumentException("An Invalid date was given, must be a valid year, month, and day");
         }
 
         return true;

@@ -1,6 +1,6 @@
 package edu.ucalgary.oop;
 
-public class Supply {
+public class Supply implements InfoManagement {
     private String type;
     private int quantity;
 
@@ -9,11 +9,11 @@ public class Supply {
         this.quantity = quantity;
     }
 
-    public String getType() {
+    public String getDescription() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setDescription(String type) {
         this.type = type;
     }
 
@@ -26,16 +26,3 @@ public class Supply {
     }
 
 }
-
-
-
-
-
-/*Supply
-- type: String
-- quantity: int
-+ Supply(type: String, quantity: int)
-+ getType(): String
-+ setType(type: string): void
-+ getQuantity(): int
-+ setQuantity(quantity: int): void */

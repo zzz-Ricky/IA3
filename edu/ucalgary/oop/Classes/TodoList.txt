@@ -3,12 +3,12 @@ DietaryRestrictions
 DisasterVictim
 FamilyRelation
 FamilyRelationManager
-Inquirer
+----Inquirer
 Inquiry
 Location
-MedicalRecord
+----MedicalRecord
 ReliefService
-Supply
+----Supply
 SupplyManager
 UserInterface,java
 
