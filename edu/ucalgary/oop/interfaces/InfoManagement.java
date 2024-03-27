@@ -1,6 +1,6 @@
 package edu.ucalgary.oop;
 
-interface IInfoManagement {
+interface InfoManagement {
 
     public void setDescription(String newDate);
 
