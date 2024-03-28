@@ -23,7 +23,7 @@ public class FamilyRelation {
         try {
             this.personOne.removeFamilyConnection(this);
         } catch (Exception e) {
-            System.out.println("Something went wrong.");
+            System.out.println("Something went wrong with de-linking person 1.");
         } finally {
             this.personOne = personOne;
             personOne.addFamilyConnection(this, manager);
@@ -47,7 +47,7 @@ public class FamilyRelation {
         try {
             this.personTwo.removeFamilyConnection(this);
         } catch (Exception e) {
-            System.out.println("Something went wrong.");
+            System.out.println("Something went wrong with de-linking person 2.");
         } finally {
             this.personTwo = personTwo;
             personTwo.addFamilyConnection(this, manager);

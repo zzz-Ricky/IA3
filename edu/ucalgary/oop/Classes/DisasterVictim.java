@@ -1,10 +1,5 @@
 package edu.ucalgary.oop;
 
-import java.util.List;
-
-import edu.ucalgary.oop.Location;
-
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.ArrayList;
 
@@ -24,6 +19,7 @@ public class DisasterVictim extends Person implements IDateManageMent {
         this.ENTRY_DATE = ENTRY_DATE;
         this.medicalRecords = new ArrayList<>();
         this.personalBelongings = new HashSet<>();
+        this.dietaryPreference = new ArrayList<>();
         this.ASSIGNED_SOCIAL_ID = counter;
         counter++;
     }
@@ -72,7 +68,7 @@ public class DisasterVictim extends Person implements IDateManageMent {
     }
 
     public void setDateOfBirth(String DateOfBirth) {
-        validateDate(DateOfBirth)
+        validateDate(DateOfBirth);
         this.DateOfBirth_Age = DateOfBirth;
     }
 

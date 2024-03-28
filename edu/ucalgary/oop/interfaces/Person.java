@@ -12,7 +12,26 @@ abstract class Person {
     private String lastName;
     private HashSet<FamilyRelation> familyConnections;
     private String genderPronoun;
-    private ArrayList<String> genderOptions;
+    static ArrayList<String> genderOptions;
+
+    static {
+        genderOptions = new ArrayList<>();
+        loadGenderOptions();
+    }
+
+    public Person() {
+        this.firstName = "";
+        this.lastName = "";
+        this.familyConnections = new HashSet<>();
+        this.genderPronoun = "";
+    }
+
+    private void loadGenderOptions() {
+        if (genderOptions.isEmpty()) {
+            ExternalFileIO fileIO = new ExternalFileIO();
+            this.genderOptions = fileIO.readGenderOptionsFromFile("GenderOptions.txt");
+        }
+    }
 
     public String getFirstName() {
         return firstName;

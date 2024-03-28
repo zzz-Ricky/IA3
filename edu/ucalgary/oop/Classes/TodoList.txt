@@ -1,6 +1,6 @@
 AccessDatabaseLogs
 ----DietaryRestrictions
-DisasterVictim
+----DisasterVictim
 ----FamilyRelation
 ----FamilyRelationManager
 ----Inquirer
