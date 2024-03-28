@@ -1,15 +1,15 @@
 AccessDatabaseLogs
-DietaryRestrictions
+----DietaryRestrictions
 DisasterVictim
-FamilyRelation
-FamilyRelationManager
+----FamilyRelation
+----FamilyRelationManager
 ----Inquirer
-Inquiry
-Location
+----Inquiry
+----Location
 ----MedicalRecord
-ReliefService
+----ReliefService
 ----Supply
-SupplyManager
+----SupplyManager
 UserInterface,java
 
 DateManagement

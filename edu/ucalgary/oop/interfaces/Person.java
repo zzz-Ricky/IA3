@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import edu.ucalgary.oop.DisasterVictim;
 import edu.ucalgary.oop.FamilyRelation;
+import edu.ucalgary.oop.Classes.FamilyRelationManager;
 
 abstract class Person {
     private String firstName;
@@ -45,11 +46,16 @@ abstract class Person {
         this.familyConnections = familyConnections;
     }
 
-    public void addFamilyConnection(FamilyRelation familyConnection) {
-        // finish this later
+    public void addFamilyConnection(FamilyRelation familyConnection, FamilyRelationManager manager) {
+        boolean isValid = manager.CheckInRelationship(familyConnection, this);
+        if (isValid) {
+            this.familyConnections.add(familyConnection);
+        } else {
+            throw new IllegalArgumentException("Cannot add a personal relationship a person is not in");
+        }
     }
 
     public void removeFamilyConnection(FamilyRelation familyConnection) {
-        // finish this later
+        this.familyConnections.remove(familyConnection);
     }
 }

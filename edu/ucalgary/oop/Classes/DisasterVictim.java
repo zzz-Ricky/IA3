@@ -102,23 +102,27 @@ public class DisasterVictim extends Person implements IDateManageMent {
         this.personalBelongings = personalBelongings;
     }
 
-    public void addPersonalBelonging(Supply supply, Location location) {
-        // complete this later
+    public void addPersonalBelonging(Supply supply, Location location, SupplyManager manager) {
+        manager.giveSupply(this, supply, location);
     }
 
     public void removePersonalBelonging(Supply supply) {
-        // complete this later
+        this.personalBelongings.remove(supply);
     }
 
     public void addMedicalRecord(MedicalRecord medicalRecord) {
-        // complete this later
+        this.medicalRecords.add(medicalRecord);
+    }
+
+    public void removeMedicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecords.remove(medicalRecord);
     }
 
     public void addDietaryPreference(DietaryRestrictions preference) {
-        // complete this later
+        this.dietaryPreference.add(preference);
     }
 
     public void removeDietaryPreference(DietaryRestrictions preference) {
-        // complete this later
+        this.dietaryPreference.remove(preference);
     }
 }

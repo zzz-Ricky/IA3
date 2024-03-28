@@ -11,12 +11,12 @@ public class ReliefService {
         this.inquiries = inquiries;
     }
 
-    addInquiry(Inquiry inquiry){
-
+    public void addInquiry(Inquiry inquiry) {
+        inquiries.add(inquiry);
     }
 
-    removeInquiry(Inquiry inquiry){
-
+    public void removeInquiry(Inquiry inquiry) {
+        inquiries.remove(inquiry);
     }
 
     public void setInquiries(ArrayList<Inquiry> inquiries) {

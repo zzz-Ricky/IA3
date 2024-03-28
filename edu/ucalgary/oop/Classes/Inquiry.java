@@ -61,6 +61,7 @@ public class Inquiry implements IDateManageMent, InfoManagement {
     }
 
     public void setDate(String dateOfInquiry) {
+        validateDate(dateOfInquiry);
         this.dateOfInquiry = dateOfInquiry;
     }
 

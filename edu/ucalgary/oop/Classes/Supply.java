@@ -22,7 +22,13 @@ public class Supply implements InfoManagement {
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        if (quantity >= 0) {
+            this.quantity = quantity;
+        } else {
+            // Ideally, this should never be called due to SupplyManager class, but just in
+            // case.
+            throw new IllegalArgumentException("Cannot set a supply to a negative quantity.");
+        }
     }
 
 }
