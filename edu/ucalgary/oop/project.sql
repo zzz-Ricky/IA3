@@ -14,11 +14,6 @@
  */
 
 
-DROP DATABASE IF EXISTS ensf380project;
-CREATE DATABASE ensf380project;
-\c ensf380project
-
-
 CREATE TABLE INQUIRER (
     id SERIAL PRIMARY KEY,
     firstName VARCHAR(50) NOT NULL,

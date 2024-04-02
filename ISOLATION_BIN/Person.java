@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.ucalgary.oop.DisasterVictim;
+import edu.ucalgary.oop.ExternalFileIO;
 import edu.ucalgary.oop.FamilyRelation;
 
 abstract class Person implements ExternalFileIO {
