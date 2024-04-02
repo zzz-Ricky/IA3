@@ -1,4 +1,4 @@
-package edu.ucalgary.oop.Classes;
+package edu.ucalgary.oop;
 
 import edu.ucalgary.oop.DisasterVictim;
 

@@ -1,1 +1,18 @@
-finish familyconnection methods in abstract person
+AccessDatabaseLogs
+----DietaryRestrictions
+----DisasterVictim
+----FamilyRelation
+----FamilyRelationManager
+----Inquirer
+----Inquiry
+----Location
+----MedicalRecord
+----ReliefService
+----Supply
+----SupplyManager
+UserInterface,java
+
+DateManagement
+ExternalFileIO
+InfoManagement
+Person
