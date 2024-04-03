@@ -12,7 +12,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 
-public class UserInterface extends JFrame {
+public class InquirySQLPage extends JPanel {
     private DefaultTableModel inquiryTableModel;
     private JTable inquiryTable;
     private DefaultTableModel logTableModel;
@@ -22,13 +22,10 @@ public class UserInterface extends JFrame {
     private JButton discardEditsButton;
     private JButton removeButton;
 
-    public UserInterface() {
-        setTitle("Inquiry Logs");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 400);
-        setLocationRelativeTo(null);
-
+    public InquirySQLPage() {
         database = new AccessDatabaseLogs();
+
+        setLayout(new BorderLayout());
 
         // Create table model for INQUIRER
         inquiryTableModel = new DefaultTableModel();
@@ -65,22 +62,22 @@ public class UserInterface extends JFrame {
         JPanel panel = new JPanel(new GridLayout(1, 2));
         panel.add(createPanelWithHeading("Inquirers", inquiryScrollPane));
         panel.add(createPanelWithHeading("Inquiry Logs", logScrollPane));
-        getContentPane().add(panel, BorderLayout.CENTER);
+        add(panel, BorderLayout.CENTER);
 
         // Add button to add new inquirer
         JButton addInquirerButton = new JButton("Add Inquirer");
         addInquirerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String firstName = JOptionPane.showInputDialog(UserInterface.this, "Enter first name:");
-                String lastName = JOptionPane.showInputDialog(UserInterface.this, "Enter last name:");
-                String phoneNumber = JOptionPane.showInputDialog(UserInterface.this, "Enter phone number:");
+                String firstName = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the new Inquirer's first name:");
+                String lastName = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the new Inquirer's last name:");
+                String phoneNumber = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the new Inquirer's phone number:");
                 if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty() && phoneNumber != null && !phoneNumber.isEmpty()) {
                     // Add the new inquirer to the database and update the table
                     database.addInquirer(firstName, lastName, phoneNumber);
                     updateInquiryTable();
                 } else {
-                    JOptionPane.showMessageDialog(UserInterface.this, "Please fill in all fields.");
+                    JOptionPane.showMessageDialog(InquirySQLPage.this, "Please fill in all fields.");
                 }
             }
         });
@@ -90,10 +87,10 @@ public class UserInterface extends JFrame {
         addInquiryLogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String firstName = JOptionPane.showInputDialog(UserInterface.this, "Enter first name:");
-                String lastName = JOptionPane.showInputDialog(UserInterface.this, "Enter last name:");
-                String callDate = JOptionPane.showInputDialog(UserInterface.this, "Enter call date (YYYY-MM-DD):");
-                String details = JOptionPane.showInputDialog(UserInterface.this, "Enter details:");
+                String firstName = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the Inquirer's first name:");
+                String lastName = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the Inquirer's last name:");
+                String callDate = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the call date (YYYY-MM-DD):");
+                String details = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter details: (Name of Person to search for)");
 
                 if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty() &&
                         callDate != null && !callDate.isEmpty() && details != null && !details.isEmpty()) {
@@ -105,11 +102,11 @@ public class UserInterface extends JFrame {
                         database.addInquiryLog(firstName, lastName, callDate, details);
                         updateLogTable();
                     } else {
-                        JOptionPane.showMessageDialog(UserInterface.this, "No inquirer found with the provided first and last names.");
+                        JOptionPane.showMessageDialog(InquirySQLPage.this, "No inquirer found with the provided first and last names.");
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(UserInterface.this, "Please fill in all fields.");
+                    JOptionPane.showMessageDialog(InquirySQLPage.this, "Please fill in all fields.");
                 }
             }
         });
@@ -137,13 +134,13 @@ public class UserInterface extends JFrame {
                         database.removeInquiryLog(firstName, lastName, details);
                         updateLogTable();
                     } else {
-                        JOptionPane.showMessageDialog(UserInterface.this, "Please select an item to remove.");
+                        JOptionPane.showMessageDialog(InquirySQLPage.this, "Please select an item to remove.");
                     }
                 }
             }
         });
 
-     // Add text field for searching
+        // Add text field for searching
         JTextField searchField = new JTextField();
         searchField.setPreferredSize(new Dimension(150, 30));
         searchField.getDocument().addDocumentListener(new DocumentListener() {
@@ -170,15 +167,13 @@ public class UserInterface extends JFrame {
             }
         });
 
-
-        
         // Add panel for buttons and search bar
         JPanel buttonSearchPanel = new JPanel(new FlowLayout());
         buttonSearchPanel.add(addInquirerButton);
         buttonSearchPanel.add(addInquiryLogButton);
         buttonSearchPanel.add(removeButton);
         buttonSearchPanel.add(searchField);
-        getContentPane().add(buttonSearchPanel, BorderLayout.NORTH);
+        add(buttonSearchPanel, BorderLayout.NORTH);
 
         // Enable cell selection
         inquiryTable.setCellSelectionEnabled(true);
@@ -192,9 +187,7 @@ public class UserInterface extends JFrame {
         discardEditsButton.setVisible(false);
         saveDiscardPanel.add(saveEditsButton);
         saveDiscardPanel.add(discardEditsButton);
-        getContentPane().add(saveDiscardPanel, BorderLayout.SOUTH);
-
-        setVisible(true); // Make the frame visible after adding components
+        add(saveDiscardPanel, BorderLayout.SOUTH);
     }
 
     // Method to create a panel with a heading title
@@ -248,7 +241,20 @@ public class UserInterface extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            UserInterface userInterface = new UserInterface();
+            JFrame frame = new JFrame("Inquiry Logs");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            // Create tab pane
+            JTabbedPane tabbedPane = new JTabbedPane();
+
+            // Add InquirySQLPage to tab pane
+            InquirySQLPage inquiryPage = new InquirySQLPage();
+            tabbedPane.addTab("Inquiry Logs", inquiryPage);
+
+            frame.add(tabbedPane);
+            frame.setSize(800, 400);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
     }
 }
