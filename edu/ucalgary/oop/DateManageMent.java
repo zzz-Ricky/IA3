@@ -1,6 +1,6 @@
 package edu.ucalgary.oop;
 
-interface IDateManageMent {
+interface DateManageMent {
 
     public void setDate(String newDate);
 

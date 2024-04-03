@@ -75,6 +75,45 @@ public class DisasterVictimPage extends JPanel {
             }
         });
 
+        // Button to create a new DisasterVictim object
+        JButton addButton = new JButton("Add New Rescued Person");
+        addButton.addActionListener(e -> {
+            // Open a new window prompting the user to create a new DisasterVictim object
+            JFrame addVictimFrame = new JFrame("Add New Rescued Person");
+            addVictimFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            addVictimFrame.setSize(300, 200);
+            addVictimFrame.setLayout(new FlowLayout());
+
+            // Input fields for the new DisasterVictim object
+            JTextField firstNameField = new JTextField(20);
+            JTextField entryDateField = new JTextField(20);
+            JButton saveButton = new JButton("Save");
+
+            // Action listener for the save button
+            saveButton.addActionListener(actionEvent -> {
+                // Create a new DisasterVictim object and add it to the table
+                String firstName = firstNameField.getText();
+                String entryDate = entryDateField.getText();
+                System.out.println("DEBUG");
+                DisasterVictim newVictim = new DisasterVictim(firstName, entryDate);
+                Object[] rowData = {newVictim.getFirstName(), "", newVictim.getDateOfBirth_Age(), ""};
+                tableModel.addRow(rowData);
+                addVictimFrame.dispose(); // Close the window after adding the victim
+            });
+
+            // Add components to the frame
+            addVictimFrame.add(new JLabel("First Name:"));
+            addVictimFrame.add(firstNameField);
+            addVictimFrame.add(new JLabel("Entry Date:"));
+            addVictimFrame.add(entryDateField);
+            addVictimFrame.add(saveButton);
+
+            // Set the frame visible
+            addVictimFrame.setVisible(true);
+        });
+
+        // Add components to the panel
+        add(addButton, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
 

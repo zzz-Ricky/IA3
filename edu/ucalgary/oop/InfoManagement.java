@@ -2,8 +2,8 @@ package edu.ucalgary.oop;
 
 interface InfoManagement {
 
-    public void setDescription(String newDate);
+    public void setDescription(String newDescription);
 
-    public void getDescription();
+    public String getDescription();
 
 }

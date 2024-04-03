@@ -3,7 +3,7 @@ package edu.ucalgary.oop;
 import java.util.HashSet;
 import java.util.ArrayList;
 
-public class DisasterVictim extends Person implements IDateManageMent {
+public class DisasterVictim extends Person implements DateManageMent, InfoManagement {
     private String DateOfBirth_Age;
     private String description;
     private int ASSIGNED_SOCIAL_ID;
@@ -13,8 +13,9 @@ public class DisasterVictim extends Person implements IDateManageMent {
     private ArrayList<DietaryRestrictions> dietaryPreference;
     static int counter;
 
+ // In DisasterVictim class
     public DisasterVictim(String firstName, String ENTRY_DATE) {
-        super(firstName);
+        super(firstName, null, null); // Pass null for lastName and genderPronoun
         validateDate(ENTRY_DATE);
         this.ENTRY_DATE = ENTRY_DATE;
         this.medicalRecords = new ArrayList<>();
@@ -23,7 +24,8 @@ public class DisasterVictim extends Person implements IDateManageMent {
         this.ASSIGNED_SOCIAL_ID = counter;
         counter++;
     }
-
+    
+    @Override
     public boolean validateDate(String date) {
         // Check if the date has the date in the correct format such as "2024-01-18"
         if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
@@ -121,4 +123,44 @@ public class DisasterVictim extends Person implements IDateManageMent {
     public void removeDietaryPreference(DietaryRestrictions preference) {
         this.dietaryPreference.remove(preference);
     }
+	
+    @Override
+    public String getDescription() {
+        return description;
+    }
+    
+    @Override
+    public void setDescription(String newDescription) {
+        this.description = newDescription;
+    }
+
+	@Override
+	public void writeFile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mountFile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dismountFile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDate(String newDate) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getDate() {
+		// TODO Auto-generated method stub
+		
+	}
 }

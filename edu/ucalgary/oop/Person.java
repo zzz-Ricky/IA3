@@ -2,12 +2,11 @@ package edu.ucalgary.oop;
 
 import java.util.HashSet;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import edu.ucalgary.oop.DisasterVictim;
-import edu.ucalgary.oop.ExternalFileIO;
 import edu.ucalgary.oop.FamilyRelation;
 
 abstract class Person implements ExternalFileIO {
@@ -17,40 +16,41 @@ abstract class Person implements ExternalFileIO {
     private String genderPronoun;
     static ArrayList<String> genderOptions;
 
-    static {
-        genderOptions = new ArrayList<>();
-        loadGenderOptions();
-    }
-
-    public Person() {
-        this.firstName = "";
-        this.lastName = "";
+    public Person(String firstName, String lastName, String genderPronoun) {
+        this.firstName = firstName;
+        this.lastName = lastName != null ? lastName : ""; // Assign an empty string if lastName is null
+        this.genderPronoun = genderPronoun != null ? genderPronoun : ""; // Assign an empty string if genderPronoun is null
         this.familyConnections = new HashSet<>();
-        this.genderPronoun = "";
+        this.loadGenderOptions(); // Load gender options from file
     }
 
+
+    // Method to load gender options from file
     private void loadGenderOptions() {
-        if (genderOptions.isEmpty()) {
-            ExternalFileIO fileIO = new ExternalFileIO();
-            this.genderOptions = fileIO.readGenderOptionsFromFile("GenderOptions.txt");
+        if (genderOptions == null || genderOptions.isEmpty()) {
+            genderOptions = readFile();
         }
     }
 
-    public ArrayList<String> readGenderOptionsFromFile(String filename) {
+ // Method to read gender options from file
+    @Override
+    public ArrayList<String> readFile() {
         ArrayList<String> genderOptions = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+        String filePath = "GenderOptions.txt"; // Assuming the file is in the same directory as the class
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // Assuming each line contains a single gender option
                 genderOptions.add(line.trim());
             }
         } catch (IOException e) {
             System.err.println("Error reading gender options from file: " + e.getMessage());
+            e.printStackTrace();
             // Handle the error appropriately, e.g., by using default gender options
         }
         return genderOptions;
     }
 
+    // Getters and setters for fields
     public String getFirstName() {
         return firstName;
     }
