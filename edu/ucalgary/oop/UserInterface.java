@@ -1,11 +1,16 @@
 package edu.ucalgary.oop;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
 
 public class UserInterface extends JFrame {
     private DefaultTableModel inquiryTableModel;
@@ -39,6 +44,14 @@ public class UserInterface extends JFrame {
         logTableModel.addColumn("Call Date");
         logTableModel.addColumn("Details");
         logTable = new JTable(logTableModel);
+        
+        // Initialize row sorter for inquiry table
+        TableRowSorter<DefaultTableModel> inquirySorter = new TableRowSorter<>(inquiryTableModel);
+        inquiryTable.setRowSorter(inquirySorter);
+
+        // Initialize row sorter for log table
+        TableRowSorter<DefaultTableModel> logSorter = new TableRowSorter<>(logTableModel);
+        logTable.setRowSorter(logSorter);
 
         // Fetch inquiries and logs from database and add to tables
         updateInquiryTable();
@@ -81,17 +94,27 @@ public class UserInterface extends JFrame {
                 String lastName = JOptionPane.showInputDialog(UserInterface.this, "Enter last name:");
                 String callDate = JOptionPane.showInputDialog(UserInterface.this, "Enter call date (YYYY-MM-DD):");
                 String details = JOptionPane.showInputDialog(UserInterface.this, "Enter details:");
-                if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty() && callDate != null && !callDate.isEmpty() && details != null && !details.isEmpty()) {
-                    // Add the new inquiry log to the database and update the table
-                    database.addInquiryLog(firstName, lastName, callDate, details);
-                    updateLogTable();
+
+                if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty() &&
+                        callDate != null && !callDate.isEmpty() && details != null && !details.isEmpty()) {
+
+                    // Check if the provided first and last names relate to any existing inquirer
+                    int inquirerId = database.findInquirerId(firstName, lastName, true);
+                    if (inquirerId != -1) {
+                        // Add the new inquiry log to the database and update the table
+                        database.addInquiryLog(firstName, lastName, callDate, details);
+                        updateLogTable();
+                    } else {
+                        JOptionPane.showMessageDialog(UserInterface.this, "No inquirer found with the provided first and last names.");
+                    }
+
                 } else {
                     JOptionPane.showMessageDialog(UserInterface.this, "Please fill in all fields.");
                 }
             }
         });
 
-     // Add button to remove selected row
+        // Add button to remove selected row
         removeButton = new JButton("Remove Selected");
         removeButton.addActionListener(new ActionListener() {
             @Override
@@ -120,15 +143,42 @@ public class UserInterface extends JFrame {
             }
         });
 
+     // Add text field for searching
+        JTextField searchField = new JTextField();
+        searchField.setPreferredSize(new Dimension(150, 30));
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                search();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                search();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                search();
+            }
+
+            private void search() {
+                String searchText = searchField.getText().trim();
+                // Perform search operation here
+                searchInquiryTable(searchText);
+                searchLogTable(searchText);
+            }
+        });
 
 
-
-        // Create panel for buttons
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 5));
-        buttonPanel.add(addInquirerButton);
-        buttonPanel.add(addInquiryLogButton);
-        buttonPanel.add(removeButton);
-        getContentPane().add(buttonPanel, BorderLayout.NORTH);
+        
+        // Add panel for buttons and search bar
+        JPanel buttonSearchPanel = new JPanel(new FlowLayout());
+        buttonSearchPanel.add(addInquirerButton);
+        buttonSearchPanel.add(addInquiryLogButton);
+        buttonSearchPanel.add(removeButton);
+        buttonSearchPanel.add(searchField);
+        getContentPane().add(buttonSearchPanel, BorderLayout.NORTH);
 
         // Enable cell selection
         inquiryTable.setCellSelectionEnabled(true);
@@ -144,53 +194,7 @@ public class UserInterface extends JFrame {
         saveDiscardPanel.add(discardEditsButton);
         getContentPane().add(saveDiscardPanel, BorderLayout.SOUTH);
 
-        // Add action listeners to save and discard edits buttons
-        saveEditsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    // Iterate over rows in the inquiry table
-                    for (int i = 0; i < inquiryTableModel.getRowCount(); i++) {
-                        int inquirerId = Integer.parseInt(inquiryTableModel.getValueAt(i, 0).toString());
-                        String firstName = inquiryTableModel.getValueAt(i, 1).toString();
-                        String lastName = inquiryTableModel.getValueAt(i, 2).toString();
-                        String phoneNumber = inquiryTableModel.getValueAt(i, 3).toString();
-
-                        // Update the inquirer record in the database
-                        database.updateInquirer(inquirerId, firstName, lastName, phoneNumber);
-                    }
-
-                    // Iterate over rows in the log table
-                    for (int i = 0; i < logTableModel.getRowCount(); i++) {
-                        // Assuming the callDate and details are not editable in the table
-                        int inquirerId = Integer.parseInt(logTableModel.getValueAt(i, 0).toString());
-                        String callDate = logTableModel.getValueAt(i, 2).toString();
-                        String details = logTableModel.getValueAt(i, 3).toString();
-
-                        // Update the inquiry log record in the database
-                        database.updateInquiryLog(inquirerId, callDate, details);
-                    }
-
-                    // Hide save/discard buttons
-                    saveEditsButton.setVisible(false);
-                    discardEditsButton.setVisible(false);
-                } catch (NumberFormatException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(UserInterface.this, "Invalid input. Please enter valid numbers.");
-                }
-            }
-        });
-
-        discardEditsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Discard edits and revert changes
-                updateInquiryTable();
-                updateLogTable();
-                saveEditsButton.setVisible(false);
-                discardEditsButton.setVisible(false);
-            }
-        });
+        setVisible(true); // Make the frame visible after adding components
     }
 
     // Method to create a panel with a heading title
@@ -221,10 +225,30 @@ public class UserInterface extends JFrame {
         }
     }
 
+    // Method to search the inquiry table
+    private void searchInquiryTable(String searchText) {
+        DefaultRowSorter<TableModel, Integer> sorter = (DefaultRowSorter<TableModel, Integer>) inquiryTable.getRowSorter();
+        if (searchText.isEmpty()) {
+            sorter.setRowFilter(null); // Clear the filter
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
+        }
+    }
+
+    // Method to search the log table
+    private void searchLogTable(String searchText) {
+        DefaultRowSorter<TableModel, Integer> sorter = (DefaultRowSorter<TableModel, Integer>) logTable.getRowSorter();
+        if (searchText.isEmpty()) {
+            sorter.setRowFilter(null); // Clear the filter
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
+        }
+    }
+
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             UserInterface userInterface = new UserInterface();
-            userInterface.setVisible(true);
         });
     }
 }

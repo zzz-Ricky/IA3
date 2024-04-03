@@ -230,7 +230,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             mountFile(); // Establish database connection
 
             // Find the inquirer ID based on the provided first and last names
-            int inquirerId = findInquirerId(firstName, lastName);
+            int inquirerId = findInquirerId(firstName, lastName, false);
 
             if (inquirerId != -1) { // If inquirer ID is found
                 // Prepare a statement
@@ -257,10 +257,13 @@ public class AccessDatabaseLogs implements ExternalFileIO {
         }
     }
 
-    // Method to find the inquirer ID based on first and last names
-    private int findInquirerId(String firstName, String lastName) {
+ // Method to find the inquirer ID based on first and last names
+    public int findInquirerId(String firstName, String lastName, boolean mountConnection) {
         int inquirerId = -1;
         try {
+            if (mountConnection) {
+                mountFile(); // Establish database connection
+            }
             // Prepare a statement
             String sql = "SELECT id FROM INQUIRER WHERE firstName=? AND lastName=?";
             PreparedStatement pstmt = dbConnect.prepareStatement(sql);
@@ -278,9 +281,14 @@ public class AccessDatabaseLogs implements ExternalFileIO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (mountConnection) {
+                dismountFile(); // Close database connection
+            }
         }
         return inquirerId;
     }
+
 
     public void updateInquirer(int inquirerId, String firstName, String lastName, String phoneNumber) {
         PreparedStatement pstmt = null;
