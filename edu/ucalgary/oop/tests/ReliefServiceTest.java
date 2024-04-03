@@ -1,4 +1,4 @@
-package edu.ucalgary.oop;
+package edu.ucalgary.oop.tests;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -75,3 +75,4 @@ public class ReliefServiceTest {
     
         assertEquals("removeInquiry should remove the inquiry from the array list", initialSize - 1, finalSize);
     }
+}

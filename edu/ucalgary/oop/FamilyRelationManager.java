@@ -19,7 +19,7 @@ public class FamilyRelationManager {
                     (personOne.equals(relationship.getPersonTwo()) && personTwo.equals(relationship.getPersonOne()))) {
                 throw new IllegalArgumentException(
                         "Relationship already exists between " + personOne.getFirstName() + " and "
-                                + personTwo.getFirstName();
+                                + personTwo.getFirstName());
             }
         }
         return true;
@@ -44,7 +44,7 @@ public class FamilyRelationManager {
     }
 
     public HashSet<FamilyRelation> getRelationships(DisasterVictim person){
-        HashSet<FamilyRelation> personalRelations = new HashSet<FamilyRelation>;
+        HashSet<FamilyRelation> personalRelations = new HashSet<FamilyRelation>();
         for (FamilyRelation relation : relationshipRecord) {
             DisasterVictim personOne = relation.getPersonOne();
             DisasterVictim personTwo = relation.getPersonTwo();
@@ -54,7 +54,7 @@ public class FamilyRelationManager {
             if (personTwo.equals(person)){
                 personalRelations.add(relation);
             }
-        return personalRelations;
-    }
+        }
+		return personalRelations;
     }
 }

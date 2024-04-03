@@ -62,7 +62,8 @@ public class Location {
     }
 
     public void removeSupply(Supply supply) {
-        // used for removing a supply without transferring it to a victim
+        // used for removing a supply without transferring it to a victim, such as
+    	// when de-listing it.
         this.supplies.remove(supply);
     }
 }

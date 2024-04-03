@@ -1,9 +1,8 @@
-package edu.ucalgary.oop;
+package edu.ucalgary.oop.tests;
 
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import javax.tools.JavaFileManager.Location;
 
 public class InquiryTest {
     private Inquiry inquiry;
@@ -55,7 +54,7 @@ public class InquiryTest {
         DisasterVictim newExpectedPerson = new DisasterVictim("Tom", "2024-02-09");
         inquiry.setMissingPerson(newExpectedPerson);
         assertEquals("setMissingPerson should update the missingPerson",
-                newExpectedPerson.getName(), inquiry.getMissingPerson().getName());
+                newExpectedPerson.getFirstName(), inquiry.getMissingPerson().getFirstName());
     }
 
     @Test // Testing setting the lastKnownLocation of the inquiry

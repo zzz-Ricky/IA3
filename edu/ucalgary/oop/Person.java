@@ -2,41 +2,32 @@ package edu.ucalgary.oop;
 
 import java.util.HashSet;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import edu.ucalgary.oop.FamilyRelation;
 
 abstract class Person implements ExternalFileIO {
     private String firstName;
     private String lastName;
     private HashSet<FamilyRelation> familyConnections;
     private String genderPronoun;
-    static ArrayList<String> genderOptions;
+    private static ArrayList<String> genderOptions;
 
     public Person(String firstName, String lastName, String genderPronoun) {
         this.firstName = firstName;
-        this.lastName = lastName != null ? lastName : ""; // Assign an empty string if lastName is null
-        this.genderPronoun = genderPronoun != null ? genderPronoun : ""; // Assign an empty string if genderPronoun is null
+        this.lastName = lastName != null ? lastName : "";
         this.familyConnections = new HashSet<>();
-        this.loadGenderOptions(); // Load gender options from file
-    }
-
-
-    // Method to load gender options from file
-    private void loadGenderOptions() {
         if (genderOptions == null || genderOptions.isEmpty()) {
             genderOptions = readFile();
         }
+        setGender(genderPronoun); // Validate and set gender pronoun
     }
 
- // Method to read gender options from file
+    // Method to read gender options from file
     @Override
     public ArrayList<String> readFile() {
         ArrayList<String> genderOptions = new ArrayList<>();
-        String filePath = "GenderOptions.txt"; // Assuming the file is in the same directory as the class
+        String filePath = "GenderOptions.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -48,6 +39,20 @@ abstract class Person implements ExternalFileIO {
             // Handle the error appropriately, e.g., by using default gender options
         }
         return genderOptions;
+    }
+
+    // Validate and set gender pronoun
+    public void setGender(String genderPronoun) {
+        if (genderOptions.contains(genderPronoun)) {
+        	//Sets a person's gender to a selected option if it appears on the list.
+            this.genderPronoun = genderPronoun;
+        } else if(genderPronoun == null) {
+        	//Loads a default "Unknown" gender so that the constructor can have an appropriate placeholder
+        	this.genderPronoun = "Unknown";
+        } else {
+        	//Otherwise, if it is invalid, throw an exception.
+            throw new IllegalArgumentException("Invalid gender pronoun. Please choose from the available options.");
+        }
     }
 
     // Getters and setters for fields
@@ -69,10 +74,6 @@ abstract class Person implements ExternalFileIO {
 
     public String getGender() {
         return genderPronoun;
-    }
-
-    public void setGender(String genderPronoun) {
-        this.genderPronoun = genderPronoun;
     }
 
     public HashSet<FamilyRelation> getFamilyConnections() {

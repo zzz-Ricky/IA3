@@ -4,7 +4,7 @@ Licensed under GPL v3
 See LICENSE.txt for more information.
 */
 
-package edu.ucalgary.oop;
+package edu.ucalgary.oop.tests;
 
 import org.junit.Before;
 import org.junit.Test;

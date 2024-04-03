@@ -3,9 +3,12 @@ Copyright Ann Barcomb and Khawla Shnaikat, 2024
 Licensed under GPL v3
 See LICENSE.txt for more information.
 */
-package edu.ucalgary.oop;
+package edu.ucalgary.oop.tests;
 
 import org.junit.Test;
+
+import edu.ucalgary.oop.Supply;
+
 import static org.junit.Assert.*;
 
 public class SupplyTest {
@@ -25,7 +28,7 @@ public class SupplyTest {
 
     @Test // Testing setting the type of the supply
     public void testSetType() {
-        supply.setType("Food");
+        supply.setDescription("Food");
         assertEquals("setType should update the type", "Food", supply.getDescription());
     }
 

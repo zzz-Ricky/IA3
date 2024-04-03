@@ -4,7 +4,7 @@ interface DateManageMent {
 
     public void setDate(String newDate);
 
-    public void getDate();
+    public String getDate();
 
     public boolean validateDate(String Date);
 

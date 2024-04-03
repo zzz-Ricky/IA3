@@ -1,8 +1,6 @@
 package edu.ucalgary.oop;
 
-import edu.ucalgary.oop.DisasterVictim;
-
-public class Inquiry implements IDateManageMent, InfoManagement {
+public class Inquiry implements DateManageMent, InfoManagement {
     private DisasterVictim missingPerson;
     private String dateOfInquiry;
     private String description;
@@ -16,7 +14,8 @@ public class Inquiry implements IDateManageMent, InfoManagement {
         this.description = description;
         this.lastKnownLocation = lastKnownLocation;
     }
-
+    
+    @Override
     public boolean validateDate(String date) {
         // Check if the date has the date in the correct format such as "2024-01-18"
         if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
@@ -51,20 +50,24 @@ public class Inquiry implements IDateManageMent, InfoManagement {
     public void setLastKnownLocation(Location lastKnownLocation) {
         this.lastKnownLocation = lastKnownLocation;
     }
-
+    
+    @Override
     public String getDescription() {
         return description;
     }
-
+    
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
+    @Override
     public void setDate(String dateOfInquiry) {
         validateDate(dateOfInquiry);
         this.dateOfInquiry = dateOfInquiry;
     }
-
+    
+    @Override
     public String getDate() {
         return dateOfInquiry;
     }

@@ -159,8 +159,10 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
 	}
 
 	@Override
-	public void getDate() {
+	public String getDate() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
+
+
 }

@@ -85,7 +85,7 @@ public class LocationTest {
 
     @Test // Testing setting and getting shelter supplies
     public void testSetAndGetSupplies() {
-        ArrayList<Supply> newSupplies = new ArrayList<>();
+        HashSet<Supply> newSupplies = new HashSet<>();
         newSupplies.add(supply);
         location.setSupplies(newSupplies);
         assertTrue("setSupplies should replace the supplies list with the new list",

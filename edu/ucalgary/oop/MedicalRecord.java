@@ -1,6 +1,6 @@
 package edu.ucalgary.oop;
 
-public class MedicalRecord implements IDateManageMent, InfoManagement {
+public class MedicalRecord implements DateManageMent, InfoManagement {
     private Location location;
     private String treatmentDetails;
     private String dateOfTreatment;
@@ -11,7 +11,8 @@ public class MedicalRecord implements IDateManageMent, InfoManagement {
         validateDate(dateOfTreatment);
         this.dateOfTreatment = dateOfTreatment;
     }
-
+    
+    @Override
     public boolean validateDate(String date) {
         // Check if the date has the date in the correct format such as "2024-01-18"
         if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
@@ -46,13 +47,14 @@ public class MedicalRecord implements IDateManageMent, InfoManagement {
     public void setDescription(String treatmentDetails) {
         this.treatmentDetails = treatmentDetails;
     }
-
+    
+    @Override
     public String getDate() {
         return dateOfTreatment;
     }
 
     public void setDate(String dateOfTreatment) {
-        validateDate(dateOfTreatment)
+        validateDate(dateOfTreatment);
         this.dateOfTreatment = dateOfTreatment;
     }
 }

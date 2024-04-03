@@ -2,28 +2,44 @@ package edu.ucalgary.oop; /* package declaration */
 
 public class Inquirer extends Person implements InfoManagement {
     private String INFO;
-    private String SERVICES_PHONE;
+    private String servicesPhone;
 
-    public Inquirer(String FIRST_NAME, String LAST_NAME, String SERVICES_PHONE) {
-        super.FIRST_NAME = FIRST_NAME;
-        super.LAST_NAME = LAST_NAME;
-        this.INFO = INFO;
-        this.SERVICES_PHONE = SERVICES_PHONE;
+    public Inquirer(String firstName, String lastName, String servicesPhone) {
+    	super(firstName,lastName, null); // Pass null for lastName and genderPronoun
+        this.servicesPhone = servicesPhone;
     }
 
-    public void setDescription(String iNFO) {
-        INFO = iNFO;
+    public void setDescription(String INFO) {
+        INFO = INFO;
     }
 
     public String getDescription() {
         return INFO;
     }
 
-    public String getServicesPhoneNum() {
-        return SERVICES_PHONE;
+    public String getServicesPhone() {
+        return servicesPhone;
     }
 
-    public void setSERVICES_PHONE(String sERVICES_PHONE) {
-        SERVICES_PHONE = sERVICES_PHONE;
+    public void setServicesPhone(String servicesPhone) {
+    	this.servicesPhone = servicesPhone;
     }
+
+	@Override
+	public void writeFile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mountFile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dismountFile() {
+		// TODO Auto-generated method stub
+		
+	}
 }

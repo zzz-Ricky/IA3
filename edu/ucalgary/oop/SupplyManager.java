@@ -50,6 +50,9 @@ public class SupplyManager {
             for (Supply localSupply : localSupplies) {
                 if (localSupply.getDescription().equals(supply.getDescription())) {
                     localSupply.setQuantity(localSupply.getQuantity() - supply.getQuantity());
+                    if (localSupply.getQuantity() == 0) {
+                    	location.removeSupply(localSupply);
+                    }
                     break;
                 }
             }
