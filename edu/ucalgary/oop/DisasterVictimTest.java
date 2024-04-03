@@ -147,7 +147,8 @@ public class DisasterVictimTest {
         // Create victims and a family relation for testing
         DisasterVictim victim1 = new DisasterVictim("Jane", "2024-01-20");
         DisasterVictim victim2 = new DisasterVictim("John", "2024-01-22");
-        FamilyRelation relation = new FamilyRelation(victim2, "parent", victim1);
+        FamilyRelationManager familyManager = new FamilyRelationManager();
+        FamilyRelation relation = new FamilyRelation(victim2, "parent", victim1, familyManager);
         HashSet<FamilyRelation> expectedRelations = new HashSet<>();
         expectedRelations.add(relation);
         victim2.setFamilyConnections(expectedRelations);
@@ -162,8 +163,11 @@ public class DisasterVictimTest {
 
     @Test // Testing adding a personal belonging
     public void testAddPersonalBelonging() {
+    	Location testLocation = new Location("Shelter Z", "1234 Shelter Ave");
+    	SupplyManager manager = new SupplyManager();
         Supply newSupply = new Supply("Emergency Kit", 1);
-        victim.addPersonalBelonging(newSupply);
+        testLocation.addSupply(newSupply);
+        victim.addPersonalBelonging(newSupply, testLocation, manager);
         HashSet<Supply> testSupplies = victim.getPersonalBelongings();
         boolean correct = false;
         // Verify that the personal belonging is correctly added
@@ -290,33 +294,34 @@ public class DisasterVictimTest {
 
     @Test // Testing getting dietary preferences
     public void testGetDietaryPreferences() {
-        victim.addDietaryPreference(DietaryRestrictions.DBML);
-        victim.addDietaryPreference(DietaryRestrictions.GFML);
-        ArrayList<DietaryRestrictions> preferences = victim.getDietaryPreferences();
-        assertNotNull("getDietaryPreferences should not return null", preferences);
+        victim.addDietaryPreference(DietaryRestrictions.DietaryRestriction.DBML);
+        victim.addDietaryPreference(DietaryRestrictions.DietaryRestriction.GFML);
+        ArrayList<DietaryRestrictions> preferences = victim.getDietaryPreference();
+        assertNotNull("getDietaryPreference should not return null", preferences);
 
         // Verify that the returned ArrayList contains the added dietary preferences
-        assertTrue("getDietaryPreferences should return the added dietary preferences",
-                preferences.contains(DietaryRestrictions.DBML));
-        assertTrue("getDietaryPreferences should return the added dietary preferences",
-                preferences.contains(DietaryRestrictions.GFML));
+        assertTrue("getDietaryPreference should return the added dietary preferences",
+                preferences.stream().anyMatch(d -> d.getRestriction() == DietaryRestrictions.DietaryRestriction.DBML));
+        assertTrue("getDietaryPreference should return the added dietary preferences",
+                preferences.stream().anyMatch(d -> d.getRestriction() == DietaryRestrictions.DietaryRestriction.GFML));
     }
 
     @Test // Testing adding a dietary preference
     public void testAddDietaryPreference() {
-        victim.addDietaryPreference(DietaryRestrictions.AVML);
+        victim.addDietaryPreference(DietaryRestrictions.DietaryRestriction.AVML);
         // Verify that the dietary preference is correctly added
         assertTrue("addDietaryPreference should add a dietary preference",
-                victim.getDietaryPreferences().contains(DietaryRestrictions.AVML));
+                victim.getDietaryPreference().stream().anyMatch(d -> d.getRestriction() == DietaryRestrictions.DietaryRestriction.AVML));
     }
 
     @Test // Testing removing a dietary preference
     public void testRemoveDietaryPreference() {
-        victim.addDietaryPreference(DietaryRestrictions.AVML);
-        victim.removeDietaryPreference(DietaryRestrictions.AVML);
+        victim.addDietaryPreference(DietaryRestrictions.DietaryRestriction.AVML);
+        victim.removeDietaryPreference(DietaryRestrictions.DietaryRestriction.AVML);
         // Verify that the dietary preference is correctly removed
         assertFalse("removeDietaryPreference should remove a dietary preference",
-                victim.getDietaryPreferences().contains(DietaryRestrictions.AVML));
+                victim.getDietaryPreference().stream().anyMatch(d -> d.getRestriction() == DietaryRestrictions.DietaryRestriction.AVML));
     }
+
 
 }

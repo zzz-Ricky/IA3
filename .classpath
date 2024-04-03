@@ -5,6 +5,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="lib" path="C:/Users/SC/OneDrive - University of Calgary/ENSF 380/IA3/lib/postgresql-42.7.2.jar"/>
 	<classpathentry kind="output" path=""/>

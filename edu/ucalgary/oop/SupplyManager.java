@@ -27,7 +27,7 @@ public class SupplyManager {
             HashSet<Supply> supplies, Location location) {
 
         HashSet<Supply> localSupplies = location.getSupplies();
-        HashSet<Supply> victimSupplies = DisasterVictim.getPersonalBelongings();
+        HashSet<Supply> victimSupplies = person.getPersonalBelongings();
         for (Supply item : supplies) {
             if (checkSupplyAvailability(localSupplies, item)) {
                 for (Supply localSupply : localSupplies) {
@@ -40,7 +40,7 @@ public class SupplyManager {
         }
         location.setSupplies(localSupplies);
         victimSupplies.addAll(supplies);
-        DisasterVictim.PersonalBelongings(victimSupplies);
+        person.setPersonalBelongings(victimSupplies);
     }
 
     public void giveSupply(DisasterVictim person,

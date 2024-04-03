@@ -12,4 +12,15 @@ public class DietaryRestrictions {
         VGML,
         VJML;
     }
+
+    private DietaryRestriction restriction;
+
+    public DietaryRestrictions(DietaryRestriction restriction) {
+        this.restriction = restriction;
+    }
+
+    public DietaryRestriction getRestriction() {
+        return restriction;
+    }
 }
+

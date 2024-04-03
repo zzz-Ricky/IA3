@@ -44,7 +44,7 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
 
         return true;
     }
-
+    
     public String getDateOfBirth_Age() {
         return DateOfBirth_Age;
     }
@@ -53,18 +53,18 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
         return medicalRecords;
     }
 
-    public String getENTRY_DATE() {
+    public String getEntryDate() {
         return ENTRY_DATE;
     }
 
-    public int getASSIGNED_SOCIAL_ID() {
+    public int getAssignedSocialID() {
         return ASSIGNED_SOCIAL_ID;
     }
 
     public HashSet<Supply> getPersonalBelongings() {
         return personalBelongings;
     }
-
+    
     public ArrayList<DietaryRestrictions> getDietaryPreference() {
         return dietaryPreference;
     }
@@ -116,12 +116,12 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
         this.medicalRecords.remove(medicalRecord);
     }
 
-    public void addDietaryPreference(DietaryRestrictions preference) {
-        this.dietaryPreference.add(preference);
+    public void addDietaryPreference(DietaryRestrictions.DietaryRestriction preference) {
+        this.dietaryPreference.add(new DietaryRestrictions(preference));
     }
 
-    public void removeDietaryPreference(DietaryRestrictions preference) {
-        this.dietaryPreference.remove(preference);
+    public void removeDietaryPreference(DietaryRestrictions.DietaryRestriction preference) {
+        this.dietaryPreference.removeIf(d -> d.getRestriction() == preference);
     }
 	
     @Override
