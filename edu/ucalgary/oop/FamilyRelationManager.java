@@ -25,7 +25,7 @@ public class FamilyRelationManager {
         return true;
     }
 
-    public boolean checkInRelationship(FamilyRelation relationship, DisasterVictim person) {
+    public boolean checkInRelationship(FamilyRelation relationship, Person person) {
         if ((person.equals(relationship.getPersonOne()) ||
                 (person.equals(relationship.getPersonTwo())))) {
             return true;

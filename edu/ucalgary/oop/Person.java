@@ -84,7 +84,7 @@ abstract class Person implements ExternalFileIO {
     }
 
     public void addFamilyConnection(FamilyRelation familyConnection, FamilyRelationManager manager) {
-        boolean isValid = manager.CheckInRelationship(familyConnection, this);
+        boolean isValid = manager.checkInRelationship(familyConnection, this);
         if (isValid) {
             this.familyConnections.add(familyConnection);
         } else {

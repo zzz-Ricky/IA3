@@ -26,8 +26,6 @@ public class DisasterVictimTest {
         suppliesToSet = new HashSet<>();
         suppliesToSet.add(new Supply("Water Bottle", 10));
         suppliesToSet.add(new Supply("Blanket", 5));
-        DisasterVictim victim1 = new DisasterVictim("Jane", "2024-01-20");
-        DisasterVictim victim2 = new DisasterVictim("John", "2024-01-22");
     }
 
     @Test // Testing constructor with a valid entry date
@@ -185,16 +183,17 @@ public class DisasterVictimTest {
         // Create victims and family relations for testing
         DisasterVictim victim1 = new DisasterVictim("Jane", "2024-01-20");
         DisasterVictim victim2 = new DisasterVictim("John", "2024-01-22");
-        FamilyRelation relation1 = new FamilyRelation(victim, "sibling", victim1);
-        FamilyRelation relation2 = new FamilyRelation(victim, "sibling", victim2);
+        FamilyRelationManager familyManager = new FamilyRelationManager();
+        FamilyRelation relation1 = new FamilyRelation(victim, "sibling", victim1, familyManager);
+        FamilyRelation relation2 = new FamilyRelation(victim, "sibling", victim2, familyManager);
         HashSet<FamilyRelation> expectedRelations = new HashSet<>();
         expectedRelations.add(relation2);
         HashSet<FamilyRelation> originalRelations = new HashSet<>();
         originalRelations.add(relation1);
         originalRelations.add(relation2);
         victim.setFamilyConnections(originalRelations);
-        victim.addFamilyConnection(relation1);
-        victim.addFamilyConnection(relation2);
+        victim.addFamilyConnection(relation1, familyManager);
+        victim.addFamilyConnection(relation2, familyManager);
         victim.removeFamilyConnection(relation1);
         HashSet<FamilyRelation> testFamily = victim.getFamilyConnections();
         boolean correct = true;
@@ -202,13 +201,16 @@ public class DisasterVictimTest {
         if (testFamily.contains(relation1)) {
             correct = false;
         }
-        assertTrue("removeFamilyConnection should remove the family member", true);
+        assertTrue("removeFamilyConnection should remove the family member", correct);
     }
 
     @Test // Testing removing a personal belonging
     public void testRemovePersonalBelonging() {
-        Supply supplyToRemove = suppliesToSet.iterator().next();
-        victim.addPersonalBelonging(supplyToRemove);
+    	Location testLocation = new Location("Shelter Z", "1234 Shelter Ave");
+    	SupplyManager manager = new SupplyManager();
+        Supply supplyToRemove = new Supply("Emergency Kit", 1);
+        testLocation.addSupply(supplyToRemove);
+        victim.addPersonalBelonging(supplyToRemove, testLocation, manager);
         victim.removePersonalBelonging(supplyToRemove);
         HashSet<Supply> testSupplies = victim.getPersonalBelongings();
         boolean correct = true;
@@ -224,9 +226,10 @@ public class DisasterVictimTest {
 
     @Test // Testing setting family connections
     public void testSetFamilyConnection() {
+    	FamilyRelationManager familyManager = new FamilyRelationManager();
         DisasterVictim victim1 = new DisasterVictim("Jane", "2024-01-20");
         DisasterVictim victim2 = new DisasterVictim("John", "2024-01-22");
-        FamilyRelation relation = new FamilyRelation(victim1, "sibling", victim2);
+        FamilyRelation relation = new FamilyRelation(victim1, "sibling", victim2, familyManager);
         HashSet<FamilyRelation> expectedRelations = new HashSet<>();
         expectedRelations.add(relation);
         victim1.setFamilyConnections(expectedRelations);
@@ -240,7 +243,7 @@ public class DisasterVictimTest {
             FamilyRelation[] actualArray = actualRecords.toArray(new FamilyRelation[0]);
             // Check each element for equality
             for (int i = 0; i < actualArray.length; i++) {
-                if (!expectedRelations.contains(actualArray[i])) {
+                if (!expectedRelations.contains(expectedArray[i])) {
                     correct = false;
                     break;
                 }
