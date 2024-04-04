@@ -117,6 +117,25 @@ public class DisasterVictimPage extends JPanel {
                         case 3: // Gender Pronoun column
                             victim.setGender((String) updatedValue);
                             break;
+                        case 4: // DOB/Age column
+                            try {
+                                // Attempt to set the Date of Birth
+                                victim.setDateOfBirth((String) updatedValue);
+                            } catch (IllegalArgumentException a) {
+                                JOptionPane.showMessageDialog(DisasterVictimPage.this, "Invalid Date of Birth format. The entry was logged as an approxmiate age", "Warning", JOptionPane.ERROR_MESSAGE);
+                                // Optionally, you can revert the cell value to its previous value
+                                victim.setApproxAge((String) updatedValue);
+                            }
+                            break;
+                            
+                        case 5: // Description column
+                            victim.setDescription((String) updatedValue);
+                            break;
+                            
+                        case 6: // Social ID
+                        	tableModel.setValueAt(victim.getAssignedSocialID(), row, column);
+                        	JOptionPane.showMessageDialog(DisasterVictimPage.this, "Social ID is an immutable value. It cannot be changed. ", "Error", JOptionPane.ERROR_MESSAGE);
+                            break;
                         
                     }
                 }
