@@ -1,7 +1,10 @@
 package edu.ucalgary.oop;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,21 +18,39 @@ public class DisasterVictimPage extends JPanel {
     public DisasterVictimPage() {
         setLayout(new BorderLayout());
 
-        // Sample data - replace this with your actual data
+        // Sample data
+        DisasterVictim samplevictim = new DisasterVictim("Freda", "2024-01-18");
+        samplevictim.setDateOfBirth("1987-05-21");
+        samplevictim.setLastName("Smith");
         ArrayList<DisasterVictim> victims = getDisasterVictims();
+        victims.add(samplevictim);
 
         // Create table model with column names
-        String[] columnNames = {"First Name", "Last Name", "Date of Birth / Age", "Description"};
+        String[] columnNames = {"First Name", "Last Name", "Family Connections", "Gender Pronoun", "Date of Birth / Age", "Description",
+                "Social ID", "Medical Records", "Entry Date", "Personal Belongings", "Dietary Preference"};
         tableModel = new DefaultTableModel(columnNames, 0);
 
         // Populate the table model with data
         for (DisasterVictim victim : victims) {
-            Object[] rowData = {victim.getFirstName(), victim.getLastName(), victim.getDateOfBirth_Age(), victim.getDescription()};
+            Object[] rowData = {victim.getFirstName(), victim.getLastName(), victim.getFamilyConnections(), victim.getGender(),
+                    victim.getDateOfBirth_Age(), victim.getDescription(), victim.getAssignedSocialID(),
+                    victim.getMedicalRecords(), victim.getEntryDate(), victim.getPersonalBelongings(),
+                    victim.getDietaryPreference()};
             tableModel.addRow(rowData);
         }
 
         // Create the table
-        victimTable = new JTable(tableModel);
+        victimTable = new JTable(tableModel) {
+            @Override
+            public TableCellEditor getCellEditor(int row, int column) {
+                int modelColumn = convertColumnIndexToModel(column);
+                if (modelColumn == 3) { // Gender Pronoun column
+                    JComboBox<String> comboBox = new JComboBox<>(victims.get(row).getGenderOptions().toArray(new String[0]));
+                    return new DefaultCellEditor(comboBox);
+                }
+                return super.getCellEditor(row, column);
+            }
+        };
         JScrollPane scrollPane = new JScrollPane(victimTable);
 
         // Add mouse listener to handle cell clicks
@@ -74,6 +95,33 @@ public class DisasterVictimPage extends JPanel {
                 }
             }
         });
+        
+        // Add table model listener to detect cell changes
+        tableModel.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int row = e.getFirstRow();
+                int column = e.getColumn();
+                if (row >= 0 && column >= 0) {
+                    // Get the updated value from the table model
+                    Object updatedValue = tableModel.getValueAt(row, column);
+                    // Update the corresponding DisasterVictim object
+                    DisasterVictim victim = victims.get(row);
+                    switch (column) {
+                        case 0: // First Name column
+                            victim.setFirstName((String) updatedValue);
+                            break;
+                        case 1: // Last Name column
+                            victim.setLastName((String) updatedValue);
+                            break;
+                        case 3: // Gender Pronoun column
+                            victim.setGender((String) updatedValue);
+                            break;
+                        
+                    }
+                }
+            }
+        });
 
         // Button to create a new DisasterVictim object
         JButton addButton = new JButton("Add New Rescued Person");
@@ -86,7 +134,14 @@ public class DisasterVictimPage extends JPanel {
 
             // Input fields for the new DisasterVictim object
             JTextField firstNameField = new JTextField(20);
+            JTextField lastNameField = new JTextField(20);
+            JTextField familyConnectionsField = new JTextField(20);
+            JTextField genderPronounField = new JTextField(20);
             JTextField entryDateField = new JTextField(20);
+            JTextField socialIdField = new JTextField(20);
+            JTextField medicalRecordsField = new JTextField(20);
+            JTextField personalBelongingsField = new JTextField(20);
+            JTextField dietaryPreferenceField = new JTextField(20);
             JButton saveButton = new JButton("Save");
 
             // Action listener for the save button
@@ -94,9 +149,11 @@ public class DisasterVictimPage extends JPanel {
                 // Create a new DisasterVictim object and add it to the table
                 String firstName = firstNameField.getText();
                 String entryDate = entryDateField.getText();
-                System.out.println("DEBUG");
                 DisasterVictim newVictim = new DisasterVictim(firstName, entryDate);
-                Object[] rowData = {newVictim.getFirstName(), "", newVictim.getDateOfBirth_Age(), ""};
+                Object[] rowData = {newVictim.getFirstName(), newVictim.getLastName(), newVictim.getFamilyConnections(),
+                        newVictim.getGender(), newVictim.getDateOfBirth_Age(), newVictim.getDescription(),
+                        newVictim.getAssignedSocialID(), newVictim.getMedicalRecords(), newVictim.getEntryDate(),
+                        newVictim.getPersonalBelongings(), newVictim.getDietaryPreference()};
                 tableModel.addRow(rowData);
                 addVictimFrame.dispose(); // Close the window after adding the victim
             });

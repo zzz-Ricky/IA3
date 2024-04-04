@@ -75,6 +75,10 @@ abstract class Person implements ExternalFileIO {
     public String getGender() {
         return genderPronoun;
     }
+    
+    public ArrayList<String> getGenderOptions(){
+    	return genderOptions;
+    }
 
     public HashSet<FamilyRelation> getFamilyConnections() {
         return familyConnections;
