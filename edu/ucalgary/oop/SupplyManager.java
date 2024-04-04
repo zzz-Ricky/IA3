@@ -2,9 +2,6 @@ package edu.ucalgary.oop;
 
 import java.util.HashSet;
 
-import edu.ucalgary.oop.DisasterVictim;
-import edu.ucalgary.oop.Location;
-
 public class SupplyManager {
     private boolean checkSupplyAvailability(HashSet<Supply> locationSupply, Supply supply) {
         String supplyName = supply.getDescription();

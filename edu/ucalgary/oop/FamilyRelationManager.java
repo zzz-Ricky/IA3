@@ -8,6 +8,10 @@ import edu.ucalgary.oop.DisasterVictim;
 public class FamilyRelationManager {
 
     private static HashSet<FamilyRelation> relationshipRecord;
+    
+    public FamilyRelationManager(){
+    	relationshipRecord = new HashSet<FamilyRelation>();
+    }
 
     public boolean validateRelationship(FamilyRelation relationship) {
         // Check if the relationship already exists in the record, to prevent duplicates

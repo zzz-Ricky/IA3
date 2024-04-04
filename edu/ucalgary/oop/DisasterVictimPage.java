@@ -18,12 +18,22 @@ public class DisasterVictimPage extends JPanel {
     public DisasterVictimPage() {
         setLayout(new BorderLayout());
 
-        // Sample data
-        DisasterVictim samplevictim = new DisasterVictim("Freda", "2024-01-18");
-        samplevictim.setDateOfBirth("1987-05-21");
-        samplevictim.setLastName("Smith");
+        // Create Sample data to populate the initial page
+        FamilyRelationManager familyManager = new FamilyRelationManager();
+        SupplyManager supplyManager = new SupplyManager();
+        
+        DisasterVictim samplevictim1 = new DisasterVictim("Freda", "2024-01-18");
+        samplevictim1.setDateOfBirth("1987-05-21");
+        samplevictim1.setLastName("Smith");
+        DisasterVictim samplevictim2 = new DisasterVictim("George", "2024-02-14");
+        samplevictim2.setDateOfBirth("1967-03-05");
+        samplevictim2.setLastName("Waller");
+        FamilyRelation relationship1 = new FamilyRelation(samplevictim1, "Neighbors" ,samplevictim2, familyManager);
+        samplevictim1.addFamilyConnection(relationship1, familyManager);
+        
         ArrayList<DisasterVictim> victims = getDisasterVictims();
-        victims.add(samplevictim);
+        victims.add(samplevictim1);
+        victims.add(samplevictim2);
 
         // Create table model with column names
         String[] columnNames = {"First Name", "Last Name", "Family Connections", "Gender Pronoun", "Date of Birth / Age", "Description",
