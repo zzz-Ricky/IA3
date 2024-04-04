@@ -73,11 +73,11 @@ public class DisasterVictimPage extends JPanel {
                 int row = victimTable.rowAtPoint(e.getPoint());
                 int col = victimTable.columnAtPoint(e.getPoint());
                 Object value = victimTable.getValueAt(row, col);
+                String columnName = victimTable.getColumnName(col);
 
-                // Check if clicked cell contains HashSet or ArrayList
-                if (value instanceof HashSet || value instanceof ArrayList) {
-                    // Open a new window with a separate table containing all contained objects
-                    JFrame frame = new JFrame("Contained Objects");
+                if (columnName.equals("Family Connections") || col == 2) {
+                	// Handle Family Connections
+                    JFrame frame = new JFrame("Family Connections");
                     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     frame.setSize(400, 300);
 
@@ -87,21 +87,97 @@ public class DisasterVictimPage extends JPanel {
                     JScrollPane containedScrollPane = new JScrollPane(containedTable);
 
                     // Add columns to the table model
-                    containedTableModel.addColumn("Contained Object");
+                    containedTableModel.addColumn("Person One");
+                    containedTableModel.addColumn("Relationship To");
+                    containedTableModel.addColumn("Person Two");
 
                     // Populate the table model with data
-                    if (value instanceof HashSet) {
-                        HashSet<?> set = (HashSet<?>) value;
-                        for (Object obj : set) {
-                            containedTableModel.addRow(new Object[]{obj.toString()});
-                        }
-                    } else if (value instanceof ArrayList) {
-                        ArrayList<?> list = (ArrayList<?>) value;
-                        for (Object obj : list) {
-                            containedTableModel.addRow(new Object[]{obj.toString()});
-                        }
+                    HashSet<FamilyRelation> connections = (HashSet<FamilyRelation>) value;
+                    for (FamilyRelation connection : connections) {
+                        containedTableModel.addRow(new Object[]{
+                                connection.getPersonOne().getFirstName(),
+                                connection.getRelationshipTo(),
+                                connection.getPersonTwo().getFirstName()
+                        });
                     }
+                    // Add the table to the frame
+                    frame.add(containedScrollPane);
+                    frame.setVisible(true);
+                } else if (columnName.equals("Medical Record") || col == 7) {
+                    // Handle Medical Record
+                	JFrame frame = new JFrame("Medical Records");
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.setSize(400, 300);
 
+                    // Create table model for contained objects
+                    DefaultTableModel containedTableModel = new DefaultTableModel();
+                    JTable containedTable = new JTable(containedTableModel);
+                    JScrollPane containedScrollPane = new JScrollPane(containedTable);
+
+                    // Add columns to the table model
+                    containedTableModel.addColumn("Location");
+                    containedTableModel.addColumn("Treatment Details");
+                    containedTableModel.addColumn("Date of Treatment");
+
+                    // Populate the table model with data
+                    ArrayList<MedicalRecord> records = (ArrayList<MedicalRecord>) value;
+                    for (MedicalRecord record : records) {
+                        containedTableModel.addRow(new Object[]{
+                        		record.getLocation().getName(),
+                        		record.getDescription(),
+                        		record.getDate()
+                        });
+                    }
+                    // Add the table to the frame
+                    frame.add(containedScrollPane);
+                    frame.setVisible(true);
+                } else if (columnName.equals("Personal Belongings") || col == 9) {
+                    // Handle Personal Belongings
+                	JFrame frame = new JFrame("Personal Belongings");
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.setSize(400, 300);
+
+                    // Create table model for contained objects
+                    DefaultTableModel containedTableModel = new DefaultTableModel();
+                    JTable containedTable = new JTable(containedTableModel);
+                    JScrollPane containedScrollPane = new JScrollPane(containedTable);
+
+                    // Add columns to the table model
+                    containedTableModel.addColumn("Type");
+                    containedTableModel.addColumn("Quantity");
+
+                    // Populate the table model with data
+                    HashSet<Supply> supplies = (HashSet<Supply>) value;
+                    for (Supply supply : supplies) {
+                        containedTableModel.addRow(new Object[]{
+                        		supply.getDescription(),
+                        		supply.getQuantity()
+                        });
+                    }
+                    // Add the table to the frame
+                    frame.add(containedScrollPane);
+                    frame.setVisible(true);
+                } else if (columnName.equals("Dietary Restrictions") || col == 10) {
+                    // Handle Dietary Restrictions
+                	JFrame frame = new JFrame("Dietary Restrictions");
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.setSize(400, 300);
+
+                    // Create table model for contained objects
+                    DefaultTableModel containedTableModel = new DefaultTableModel();
+                    JTable containedTable = new JTable(containedTableModel);
+                    JScrollPane containedScrollPane = new JScrollPane(containedTable);
+
+                    // Add columns to the table model
+                    containedTableModel.addColumn("Preferences");
+
+                    // Populate the table model with data
+                    ArrayList<DietaryRestrictions> restrictions = (ArrayList<DietaryRestrictions>) value;
+                    for (DietaryRestrictions restriction : restrictions) {
+                        containedTableModel.addRow(new Object[]{
+                        		restriction.getRestriction()
+                        });
+                    }
                     // Add the table to the frame
                     frame.add(containedScrollPane);
                     frame.setVisible(true);
@@ -166,14 +242,7 @@ public class DisasterVictimPage extends JPanel {
 
             // Input fields for the new DisasterVictim object
             JTextField firstNameField = new JTextField(20);
-            JTextField lastNameField = new JTextField(20);
-            JTextField familyConnectionsField = new JTextField(20);
-            JTextField genderPronounField = new JTextField(20);
             JTextField entryDateField = new JTextField(20);
-            JTextField socialIdField = new JTextField(20);
-            JTextField medicalRecordsField = new JTextField(20);
-            JTextField personalBelongingsField = new JTextField(20);
-            JTextField dietaryPreferenceField = new JTextField(20);
             JButton saveButton = new JButton("Save");
 
             // Action listener for the save button
@@ -182,6 +251,7 @@ public class DisasterVictimPage extends JPanel {
                 String firstName = firstNameField.getText();
                 String entryDate = entryDateField.getText();
                 DisasterVictim newVictim = new DisasterVictim(firstName, entryDate);
+                victims.add(newVictim);
                 Object[] rowData = {newVictim.getFirstName(), newVictim.getLastName(), newVictim.getFamilyConnections(),
                         newVictim.getGender(), newVictim.getDateOfBirth_Age(), newVictim.getDescription(),
                         newVictim.getAssignedSocialID(), newVictim.getMedicalRecords(), newVictim.getEntryDate(),

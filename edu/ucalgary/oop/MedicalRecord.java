@@ -39,11 +39,13 @@ public class MedicalRecord implements DateManageMent, InfoManagement {
     public void setLocation(Location location) {
         this.location = location;
     }
-
+    
+    @Override
     public String getDescription() {
         return treatmentDetails;
     }
-
+    
+    @Override
     public void setDescription(String treatmentDetails) {
         this.treatmentDetails = treatmentDetails;
     }
@@ -52,7 +54,8 @@ public class MedicalRecord implements DateManageMent, InfoManagement {
     public String getDate() {
         return dateOfTreatment;
     }
-
+    
+    @Override
     public void setDate(String dateOfTreatment) {
         validateDate(dateOfTreatment);
         this.dateOfTreatment = dateOfTreatment;

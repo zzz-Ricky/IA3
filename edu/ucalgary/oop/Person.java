@@ -98,6 +98,7 @@ abstract class Person implements ExternalFileIO {
         	else if (this == familyConnection.getPersonTwo() && !familyConnection.getPersonOne().getFamilyConnections().contains(familyConnection)){
         		familyConnection.getPersonOne().addFamilyConnection(familyConnection, manager);
         	}
+        	
         } else {
             throw new IllegalArgumentException("Cannot add a personal relationship a person is not in");
         }

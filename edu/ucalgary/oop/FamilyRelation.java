@@ -12,7 +12,7 @@ public class FamilyRelation {
         this.personOne = personOne;
         this.relationshipTo = relationshipTo;
         this.personTwo = personTwo;
-        manager.validateRelationship(this);
+        manager.addRelationship(this);
     }
 
     public DisasterVictim getPersonOne() {
