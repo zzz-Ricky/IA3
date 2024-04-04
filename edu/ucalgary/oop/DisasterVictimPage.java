@@ -48,6 +48,9 @@ public class DisasterVictimPage extends JPanel {
                     JComboBox<String> comboBox = new JComboBox<>(victims.get(row).getGenderOptions().toArray(new String[0]));
                     return new DefaultCellEditor(comboBox);
                 }
+                if (column == 2||column == 6||column>=8) {
+                    return null; // Return null to prevent editing of the cell
+                }
                 return super.getCellEditor(row, column);
             }
         };
