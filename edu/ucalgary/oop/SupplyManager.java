@@ -40,17 +40,27 @@ public class SupplyManager {
         person.setPersonalBelongings(victimSupplies);
     }
 
-    public void giveSupply(DisasterVictim person,
-            Supply supply, Location location) {
+    public void giveSupply(DisasterVictim person, Supply supply, Location location) {
         HashSet<Supply> localSupplies = location.getSupplies();
         if (checkSupplyAvailability(localSupplies, supply)) {
-            for (Supply localSupply : localSupplies) {
-                if (localSupply.getDescription().equals(supply.getDescription())) {
-                    localSupply.setQuantity(localSupply.getQuantity() - supply.getQuantity());
-                    if (localSupply.getQuantity() == 0) {
-                    	location.removeSupply(localSupply);
+            for (Supply supplyItem : localSupplies) {
+                if (supplyItem.getDescription().equals(supply.getDescription())) {
+                    supplyItem.setQuantity(supplyItem.getQuantity() - supply.getQuantity());
+                    if (supplyItem.getQuantity() == 0) {
+                        location.removeSupply(supplyItem);
                     }
-                    break;
+
+                    HashSet<Supply> personSupplies = person.getPersonalBelongings();
+                    for (Supply supplyItem2 : personSupplies) {
+                        if (supplyItem2.getDescription().equals(supply.getDescription())) {
+                            supplyItem2.setQuantity(supplyItem2.getQuantity() + supply.getQuantity());
+                            personSupplies.add(supplyItem2); // Corrected line
+                            return; // Optimization: Break out of the loop once supply is updated
+                        }
+                    }
+                    // If the supply is not found in person's belongings, add it
+                    personSupplies.add(new Supply(supply.getDescription(), supply.getQuantity()));
+                    return; // Optimization: Break out of the loop after adding supply
                 }
             }
         }

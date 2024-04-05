@@ -6,6 +6,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,6 +26,13 @@ public class DisasterVictimPage extends JPanel {
         
         Location location1 = new Location("Shelter A", "1234 Shelter Ave");
         Location location2 = new Location("Shelter B", "678 Park Street");
+        
+        Supply waterBottles = new Supply("Water Bottles", 99);
+        Supply bandages = new Supply("Bandages", 99);
+        Supply toiletPaper = new Supply("Toilet Paper", 4);
+        location1.addSupply(waterBottles);
+        location1.addSupply(toiletPaper);
+        location2.addSupply(bandages);
         
         DisasterVictim samplevictim1 = new DisasterVictim("Freda", "2024-01-18");
         samplevictim1.setDateOfBirth("1987-05-21");
@@ -291,112 +300,141 @@ public class DisasterVictimPage extends JPanel {
                         frame.add(addButton, BorderLayout.NORTH);
                         frame.setVisible(true);
                     
-                } else if (columnName.equals("Personal Belongings") || col == 9) {
-                    // Handle Personal Belongings
-                	JFrame frame = new JFrame("Personal Belongings");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setSize(400, 300);
+                    } else if (columnName.equals("Personal Belongings") || col == 9) {
+                        // Handle Personal Belongings
+                        JFrame frame = new JFrame("Personal Belongings");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.setSize(400, 300);
 
-                    // Create table model for contained objects
-                    DefaultTableModel containedTableModel = new DefaultTableModel();
-                    JTable containedTable = new JTable(containedTableModel);
-                    JScrollPane containedScrollPane = new JScrollPane(containedTable);
+                        // Create table model for contained objects
+                        DefaultTableModel containedTableModel = new DefaultTableModel();
+                        JTable containedTable = new JTable(containedTableModel);
+                        JScrollPane containedScrollPane = new JScrollPane(containedTable);
 
-                    // Add columns to the table model
-                    containedTableModel.addColumn("Type");
-                    containedTableModel.addColumn("Quantity");
+                        // Add columns to the table model
+                        containedTableModel.addColumn("Type");
+                        containedTableModel.addColumn("Quantity");
 
-                    // Populate the table model with data
-                    HashSet<Supply> supplies = (HashSet<Supply>) value;
-                    for (Supply supply : supplies) {
-                        containedTableModel.addRow(new Object[]{
-                        		supply.getDescription(),
-                        		supply.getQuantity()
-                        });
-                    }
-                    // Add the table to the frame
-                    frame.add(containedScrollPane);
-                    JButton addButton = new JButton("Add New Personal Belonging");
-                    addButton.addActionListener(f -> {
-                        // Open a new window prompting the user to create a new DisasterVictim object
-                        JFrame addSupplyFrame = new JFrame("Add New Supply item");
-                        addSupplyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        addSupplyFrame.setSize(300, 200);
-                        addSupplyFrame.setLayout(new FlowLayout());
+                        // Populate the table model with data
+                        HashSet<Supply> supplies = (HashSet<Supply>) value;
+                        for (Supply supply : supplies) {
+                            containedTableModel.addRow(new Object[]{
+                                supply.getDescription(),
+                                supply.getQuantity()
+                            });
+                        }
 
-                        // Input fields for the new DisasterVictim object
-                        JTextField firstIDField = new JTextField(20);
-                        JTextField relationField = new JTextField(20);
-                        JTextField secondIDField = new JTextField(20);
-                        JButton saveButton = new JButton("Save");
-                            int selectedRow = victimTable.getSelectedRow();
-                            if (selectedRow != -1) {
-                                // Retrieve the ID of the person from the corresponding row
-                                int personID = (int) tableModel.getValueAt(selectedRow, 6);
-                                firstIDField.setText(String.valueOf(personID));
-                                firstIDField.setEditable(false); // Set non-editable
-                                firstIDField.setBackground(Color.LIGHT_GRAY); // Grey out the field
-                            } else {
-                                JOptionPane.showMessageDialog(frame, "Please select a row to add a new family connection.", "Error", JOptionPane.ERROR_MESSAGE);
+                        // Add the table to the frame
+                        frame.add(containedScrollPane);
+
+                        JButton addButton = new JButton("Add New Personal Belonging");
+                        addButton.addActionListener(f -> {
+                            // Open a new window prompting the user to create a new DisasterVictim object
+                            JFrame addSupplyFrame = new JFrame("Add New Personal Belonging");
+                            addSupplyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            addSupplyFrame.setSize(400, 200);
+                            addSupplyFrame.setLayout(new FlowLayout());
+
+                            // Ensure locationComboBox is defined and initialized properly
+                            JComboBox<String> locationComboBox = new JComboBox<>();
+                            for (Location location : shelters) {
+                                locationComboBox.addItem(location.getName());
                             }
 
-                        // Action listener for the save button
-                        saveButton.addActionListener(actionEvent -> {
-                            
-                            // Create a new DisasterVictim object and add it to the table
-                            int id1 = Integer.parseInt(firstIDField.getText());
-                            String relation = relationField.getText();
-                            int id2 = Integer.parseInt(secondIDField.getText());
+                            // Get the selected location's name
+                            String selectedLocationName = (String) locationComboBox.getSelectedItem();
 
-                            DisasterVictim person1 = null;
-                            DisasterVictim person2 = null;
+                            // Create a text field to display the selected location's name
+                            JTextField locationTextField = new JTextField(selectedLocationName);
+                            locationTextField.setEditable(false); // Set non-editable
+                            locationTextField.setBackground(Color.LIGHT_GRAY); // Grey out the field
 
-                            // Find the DisasterVictim objects corresponding to the provided IDs
-                            for (DisasterVictim victim : victims) {
-                                if (victim.getAssignedSocialID() == (id1)) {
-                                    person1 = victim;
-                                }
-                                if (victim.getAssignedSocialID() == (id2)) {
-                                    person2 = victim;
-                                }
-                                // Break the loop if both persons are found
-                                if (person1 != null && person2 != null) {
+                            // Ensure suppliesComboBox is defined and initialized properly
+                            JComboBox<String> suppliesComboBox = new JComboBox<>();
+                            // Get the selected location object
+                            Location selectedLocation = null;
+                            for (Location location : shelters) {
+                                if (location.getName().equals(selectedLocationName)) {
+                                    selectedLocation = location;
                                     break;
                                 }
                             }
-
-                            // If either person is not found, handle the error appropriately
-                            if (person1 == null || person2 == null) {
-                                JOptionPane.showMessageDialog(addSupplyFrame, "One or both persons not found.", "Error", JOptionPane.ERROR_MESSAGE);
-                                return;
+                            // Populate suppliesComboBox with supplies from the selected location
+                            if (selectedLocation != null) {
+                                for (Supply supply : selectedLocation.getSupplies()) {
+                                    suppliesComboBox.addItem(supply.getDescription() + ": " + supply.getQuantity());
+                                }
                             }
 
-                            // Create a new FamilyRelation object and add it to the list
-                            FamilyRelation newRelation = new FamilyRelation(person1, relation, person2, familyManager);
-                            person1.addFamilyConnection(newRelation, familyManager);
-                            refreshFamilyRelationTable(person1.getFamilyConnections(),containedTableModel);
-                            refreshTable(victims);
-                            addSupplyFrame.dispose(); // Close the window after adding the new family relation
+                            JTextField quantityField = new JTextField(20);
+                            JButton saveButton = new JButton("Save");
+                            saveButton.addActionListener(actionEvent -> {
+                                // Get user input
+                                String locationName = (String) locationComboBox.getSelectedItem();
+                                String supplyDescription = (String) suppliesComboBox.getSelectedItem();
+                             // Split the string based on the ":" symbol
+                             String[] parts = supplyDescription.split(":");
+                             // Take the first part, which is the supply description
+                             String actualDescription = parts[0].trim();
+                                int quantity = Integer.parseInt(quantityField.getText());
+                                
+                                // Find the selected location
+                                Location location = null;
+                                for (Location loc : shelters) {
+                                    if (loc.getName().equals(locationName)) {
+                                        location = loc;
+                                        break;
+                                    }
+                                }
+                                
+                                // Create a new Supply object
+                                Supply newSupply = new Supply(actualDescription, quantity);
+                                
+                                // Check if the location is valid
+                                if (location != null) {
+                                    int selectedRow = victimTable.getSelectedRow();
+                                    if (selectedRow != -1) {
+                                        DisasterVictim victim = victims.get(selectedRow);
+                                        // Add the new supply to the victim's personal belongings
+                                        victim.addPersonalBelonging(newSupply, location, supplyManager);
+                                        // Refresh the personal belongings table
+                                        System.out.println(victim.getPersonalBelongings()); // Prints "Hello, world!" followed by a newline
+
+                                        refreshPersonalBelongingsTable(victim.getPersonalBelongings(), containedTableModel);
+                                        // Refresh the main victims table
+                                        refreshTable(victims);
+                                        // Close the window after adding the new personal belonging
+                                        addSupplyFrame.dispose();
+                                    } else {
+                                        JOptionPane.showMessageDialog(frame, "Please select a row to add a new Personal Belonging Item.", "Error", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(addSupplyFrame, "Selected location is not valid.", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            });
+
+
+                            // Add components to the frame
+                            GridLayout layout = new GridLayout(0, 2);
+                            addSupplyFrame.setLayout(layout);
+
+                            // Add components
+                            addSupplyFrame.add(new JLabel("Location Name:"));
+                            addSupplyFrame.add(locationTextField);
+                            addSupplyFrame.add(new JLabel("Supply Type:"));
+                            addSupplyFrame.add(suppliesComboBox);
+                            addSupplyFrame.add(new JLabel("Quantity:"));
+                            addSupplyFrame.add(quantityField);
+                            addSupplyFrame.add(saveButton);
+
+                            // Set the frame visible
+                            addSupplyFrame.setVisible(true);
                         });
-
-                        // Add components to the frame
-                        GridLayout layout = new GridLayout(0, 2);
-                        addSupplyFrame.setLayout(layout);
-                        
-                        addSupplyFrame.add(new JLabel("ID of Person A:"));
-                        addSupplyFrame.add(firstIDField);
-                        addSupplyFrame.add(new JLabel("Relationship Type:"));
-                        addSupplyFrame.add(relationField);
-                        addSupplyFrame.add(new JLabel("ID of Person B:"));
-                        addSupplyFrame.add(secondIDField);
-                        addSupplyFrame.add(saveButton);
-
-                        // Set the frame visible
-                        addSupplyFrame.setVisible(true);
-                    });
-                    frame.add(addButton, BorderLayout.NORTH);
-                    frame.setVisible(true);
+                        // Add the button to the frame
+                        frame.add(addButton, BorderLayout.NORTH);
+                        frame.setVisible(true);
                     
+
                 } else if (columnName.equals("Dietary Restrictions") || col == 10) {
                     // Handle Dietary Restrictions
                 	JFrame frame = new JFrame("Dietary Restrictions");
@@ -632,6 +670,21 @@ public class DisasterVictimPage extends JPanel {
                     record.getLocation().getName(),
                     record.getDescription(),
                     record.getDate()
+            });
+        }
+        // Notify the table of the changes
+        containedTable.fireTableDataChanged();
+    }
+    
+    private void refreshPersonalBelongingsTable(HashSet<Supply> supplies, DefaultTableModel containedTable) {
+        // Clear the existing rows
+    	containedTable.setRowCount(0);
+        
+        // Populate the table model with updated data
+        for (Supply supply : supplies) {
+        	containedTable.addRow(new Object[]{
+        			supply.getDescription(),
+        			supply.getQuantity()
             });
         }
         // Notify the table of the changes
