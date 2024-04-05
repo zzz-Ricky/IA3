@@ -22,18 +22,26 @@ public class DisasterVictimPage extends JPanel {
         FamilyRelationManager familyManager = new FamilyRelationManager();
         SupplyManager supplyManager = new SupplyManager();
         
+        Location location1 = new Location("Shelter A", "1234 Shelter Ave");
+        Location location2 = new Location("Shelter B", "678 Park Street");
+        
         DisasterVictim samplevictim1 = new DisasterVictim("Freda", "2024-01-18");
         samplevictim1.setDateOfBirth("1987-05-21");
         samplevictim1.setLastName("Smith");
         DisasterVictim samplevictim2 = new DisasterVictim("George", "2024-02-14");
         samplevictim2.setDateOfBirth("1967-03-05");
         samplevictim2.setLastName("Waller");
+        
         FamilyRelation relationship1 = new FamilyRelation(samplevictim1, "Neighbors" ,samplevictim2, familyManager);
         samplevictim1.addFamilyConnection(relationship1, familyManager);
         
-        ArrayList<DisasterVictim> victims = getDisasterVictims();
+        ArrayList<DisasterVictim> victims = new ArrayList<DisasterVictim>();
         victims.add(samplevictim1);
         victims.add(samplevictim2);
+        
+        ArrayList<Location> shelters = new ArrayList<Location>();
+        shelters.add(location1);
+        shelters.add(location2);
 
         // Create table model with column names
         String[] columnNames = {"First Name", "Last Name", "Family Connections", "Gender Pronoun", "Date of Birth / Age", "Description",
@@ -80,7 +88,7 @@ public class DisasterVictimPage extends JPanel {
                     JFrame frame = new JFrame("Family Connections");
                     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     frame.setSize(400, 300);
-
+ 
                     // Create table model for contained objects
                     DefaultTableModel containedTableModel = new DefaultTableModel();
                     JTable containedTable = new JTable(containedTableModel);
@@ -100,37 +108,189 @@ public class DisasterVictimPage extends JPanel {
                                 connection.getPersonTwo().getFirstName()
                         });
                     }
-                    // Add the table to the frame
-                    frame.add(containedScrollPane);
-                    frame.setVisible(true);
-                } else if (columnName.equals("Medical Record") || col == 7) {
-                    // Handle Medical Record
-                	JFrame frame = new JFrame("Medical Records");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setSize(400, 300);
+                    
+                    // Add the button to the frame
+                    JButton addButton = new JButton("Add New Family Connection");
+                    addButton.addActionListener(f -> {
+                        // Open a new window prompting the user to create a new DisasterVictim object
+                        JFrame addConnectionFrame = new JFrame("Add New Family Connection");
+                        addConnectionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        addConnectionFrame.setSize(300, 200);
+                        addConnectionFrame.setLayout(new FlowLayout());
 
-                    // Create table model for contained objects
-                    DefaultTableModel containedTableModel = new DefaultTableModel();
-                    JTable containedTable = new JTable(containedTableModel);
-                    JScrollPane containedScrollPane = new JScrollPane(containedTable);
+                        // Input fields for the new DisasterVictim object
+                        JTextField firstIDField = new JTextField(20);
+                        JTextField relationField = new JTextField(20);
+                        JTextField secondIDField = new JTextField(20);
+                        JButton saveButton = new JButton("Save");
+                            int selectedRow = victimTable.getSelectedRow();
+                            if (selectedRow != -1) {
+                                // Retrieve the ID of the person from the corresponding row
+                                int personID = (int) tableModel.getValueAt(selectedRow, 6);
+                                firstIDField.setText(String.valueOf(personID));
+                                firstIDField.setEditable(false); // Set non-editable
+                                firstIDField.setBackground(Color.LIGHT_GRAY); // Grey out the field
+                            } else {
+                                JOptionPane.showMessageDialog(frame, "Please select a row to add a new family connection.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
 
-                    // Add columns to the table model
-                    containedTableModel.addColumn("Location");
-                    containedTableModel.addColumn("Treatment Details");
-                    containedTableModel.addColumn("Date of Treatment");
+                        // Action listener for the save button
+                        saveButton.addActionListener(actionEvent -> {
+                            
+                            // Create a new DisasterVictim object and add it to the table
+                            int id1 = Integer.parseInt(firstIDField.getText());
+                            String relation = relationField.getText();
+                            int id2 = Integer.parseInt(secondIDField.getText());
 
-                    // Populate the table model with data
-                    ArrayList<MedicalRecord> records = (ArrayList<MedicalRecord>) value;
-                    for (MedicalRecord record : records) {
-                        containedTableModel.addRow(new Object[]{
-                        		record.getLocation().getName(),
-                        		record.getDescription(),
-                        		record.getDate()
+                            DisasterVictim person1 = null;
+                            DisasterVictim person2 = null;
+
+                            // Find the DisasterVictim objects corresponding to the provided IDs
+                            for (DisasterVictim victim : victims) {
+                                if (victim.getAssignedSocialID() == (id1)) {
+                                    person1 = victim;
+                                }
+                                if (victim.getAssignedSocialID() == (id2)) {
+                                    person2 = victim;
+                                }
+                                // Break the loop if both persons are found
+                                if (person1 != null && person2 != null) {
+                                    break;
+                                }
+                            }
+
+                            // If either person is not found, handle the error appropriately
+                            if (person1 == null || person2 == null) {
+                                JOptionPane.showMessageDialog(addConnectionFrame, "One or both persons not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            // Create a new FamilyRelation object and add it to the list
+                            FamilyRelation newRelation = new FamilyRelation(person1, relation, person2, familyManager);
+                            person1.addFamilyConnection(newRelation, familyManager);
+                            refreshFamilyRelationTable(person1.getFamilyConnections(),containedTableModel);
+                            refreshTable(victims);
+                            addConnectionFrame.dispose(); // Close the window after adding the new family relation
                         });
-                    }
-                    // Add the table to the frame
+
+                        // Add components to the frame
+                        
+                        GridLayout layout = new GridLayout(0, 2);
+                        addConnectionFrame.setLayout(layout);
+                        
+                        addConnectionFrame.add(new JLabel("ID of Person A:"));
+                        addConnectionFrame.add(firstIDField);
+                        addConnectionFrame.add(new JLabel("Relationship Type:"));
+                        addConnectionFrame.add(relationField);
+                        addConnectionFrame.add(new JLabel("ID of Person B:"));
+                        addConnectionFrame.add(secondIDField);
+                        addConnectionFrame.add(saveButton);
+
+                        // Set the frame visible
+                        addConnectionFrame.setVisible(true);
+                    });
+                    frame.add(addButton, BorderLayout.NORTH);
                     frame.add(containedScrollPane);
                     frame.setVisible(true);
+                	}
+                    else if (columnName.equals("Medical Record") || col == 7) {
+                        // Handle Medical Record
+                        JFrame frame = new JFrame("Medical Records");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.setSize(400, 300);
+
+                        // Create table model for contained objects
+                        DefaultTableModel containedTableModel = new DefaultTableModel();
+                        JTable containedTable = new JTable(containedTableModel);
+                        JScrollPane containedScrollPane = new JScrollPane(containedTable);
+
+                        // Add columns to the table model
+                        containedTableModel.addColumn("Location");
+                        containedTableModel.addColumn("Treatment Details");
+                        containedTableModel.addColumn("Date of Treatment");
+
+                        // Populate the table model with data
+                        ArrayList<MedicalRecord> records = (ArrayList<MedicalRecord>) value;
+                        for (MedicalRecord record : records) {
+                            containedTableModel.addRow(new Object[]{
+                                record.getLocation().getName(),
+                                record.getDescription(),
+                                record.getDate()
+                            });
+                        }
+
+                        // Add the table to the frame
+                        frame.add(containedScrollPane);
+
+                        JButton addButton = new JButton("Add New Medical Record");
+                        addButton.addActionListener(f -> {
+                            // Open a new window prompting the user to create a new DisasterVictim object
+                            JFrame addMedicalFrame = new JFrame("Add New Medical Record");
+                            addMedicalFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            addMedicalFrame.setSize(400, 200);
+                            addMedicalFrame.setLayout(new FlowLayout());
+
+                            // Input fields for the new DisasterVictim object
+                            JComboBox<String> locationComboBox = new JComboBox<>();
+                            for (Location location : shelters) {
+                                locationComboBox.addItem(location.getName());
+                            }
+                            JTextField treatmentField = new JTextField(20);
+                            JTextField dateField = new JTextField(20);
+                            JButton saveButton = new JButton("Save");
+
+                            // Action listener for the save button
+                            saveButton.addActionListener(actionEvent -> {
+                                // Create a new MedicalRecord object and add it to the corresponding victim
+                                String locationName = (String) locationComboBox.getSelectedItem();
+                                String treatment = treatmentField.getText();
+                                String date = dateField.getText();
+
+                                Location location = null;
+                                for (Location loc : shelters) {
+                                    if (loc.getName().equals(locationName)) {
+                                        location = loc;
+                                        break;
+                                    }
+                                }
+
+                                if (location != null) {
+                                    int selectedRow = victimTable.getSelectedRow();
+                                    if (selectedRow != -1) {
+                                        DisasterVictim victim = victims.get(selectedRow);
+                                        MedicalRecord newMedicalRecord = new MedicalRecord(location, treatment, date);
+                                        victim.addMedicalRecord(newMedicalRecord);
+                                        refreshMedicalRecordTable(victim.getMedicalRecords(),containedTableModel);
+                                        refreshTable(victims);
+                                        addMedicalFrame.dispose(); // Close the window after adding the new medical record
+                                    } else {
+                                        JOptionPane.showMessageDialog(frame, "Please select a row to add a new Medical Record Item.", "Error", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(addMedicalFrame, "Selected location is not valid.", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            });
+
+                            // Add components to the frame
+                            GridLayout layout = new GridLayout(0, 2);
+                            addMedicalFrame.setLayout(layout);
+
+                            // Add components
+                            addMedicalFrame.add(new JLabel("Location Name:"));
+                            addMedicalFrame.add(locationComboBox);
+                            addMedicalFrame.add(new JLabel("Treatment Details:"));
+                            addMedicalFrame.add(treatmentField);
+                            addMedicalFrame.add(new JLabel("Treatment Date:"));
+                            addMedicalFrame.add(dateField);
+                            addMedicalFrame.add(saveButton);
+
+                            // Set the frame visible
+                            addMedicalFrame.setVisible(true);
+                        });
+
+                        frame.add(addButton, BorderLayout.NORTH);
+                        frame.setVisible(true);
+                    
                 } else if (columnName.equals("Personal Belongings") || col == 9) {
                     // Handle Personal Belongings
                 	JFrame frame = new JFrame("Personal Belongings");
@@ -156,7 +316,87 @@ public class DisasterVictimPage extends JPanel {
                     }
                     // Add the table to the frame
                     frame.add(containedScrollPane);
+                    JButton addButton = new JButton("Add New Personal Belonging");
+                    addButton.addActionListener(f -> {
+                        // Open a new window prompting the user to create a new DisasterVictim object
+                        JFrame addSupplyFrame = new JFrame("Add New Supply item");
+                        addSupplyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        addSupplyFrame.setSize(300, 200);
+                        addSupplyFrame.setLayout(new FlowLayout());
+
+                        // Input fields for the new DisasterVictim object
+                        JTextField firstIDField = new JTextField(20);
+                        JTextField relationField = new JTextField(20);
+                        JTextField secondIDField = new JTextField(20);
+                        JButton saveButton = new JButton("Save");
+                            int selectedRow = victimTable.getSelectedRow();
+                            if (selectedRow != -1) {
+                                // Retrieve the ID of the person from the corresponding row
+                                int personID = (int) tableModel.getValueAt(selectedRow, 6);
+                                firstIDField.setText(String.valueOf(personID));
+                                firstIDField.setEditable(false); // Set non-editable
+                                firstIDField.setBackground(Color.LIGHT_GRAY); // Grey out the field
+                            } else {
+                                JOptionPane.showMessageDialog(frame, "Please select a row to add a new family connection.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                        // Action listener for the save button
+                        saveButton.addActionListener(actionEvent -> {
+                            
+                            // Create a new DisasterVictim object and add it to the table
+                            int id1 = Integer.parseInt(firstIDField.getText());
+                            String relation = relationField.getText();
+                            int id2 = Integer.parseInt(secondIDField.getText());
+
+                            DisasterVictim person1 = null;
+                            DisasterVictim person2 = null;
+
+                            // Find the DisasterVictim objects corresponding to the provided IDs
+                            for (DisasterVictim victim : victims) {
+                                if (victim.getAssignedSocialID() == (id1)) {
+                                    person1 = victim;
+                                }
+                                if (victim.getAssignedSocialID() == (id2)) {
+                                    person2 = victim;
+                                }
+                                // Break the loop if both persons are found
+                                if (person1 != null && person2 != null) {
+                                    break;
+                                }
+                            }
+
+                            // If either person is not found, handle the error appropriately
+                            if (person1 == null || person2 == null) {
+                                JOptionPane.showMessageDialog(addSupplyFrame, "One or both persons not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            // Create a new FamilyRelation object and add it to the list
+                            FamilyRelation newRelation = new FamilyRelation(person1, relation, person2, familyManager);
+                            person1.addFamilyConnection(newRelation, familyManager);
+                            refreshFamilyRelationTable(person1.getFamilyConnections(),containedTableModel);
+                            refreshTable(victims);
+                            addSupplyFrame.dispose(); // Close the window after adding the new family relation
+                        });
+
+                        // Add components to the frame
+                        GridLayout layout = new GridLayout(0, 2);
+                        addSupplyFrame.setLayout(layout);
+                        
+                        addSupplyFrame.add(new JLabel("ID of Person A:"));
+                        addSupplyFrame.add(firstIDField);
+                        addSupplyFrame.add(new JLabel("Relationship Type:"));
+                        addSupplyFrame.add(relationField);
+                        addSupplyFrame.add(new JLabel("ID of Person B:"));
+                        addSupplyFrame.add(secondIDField);
+                        addSupplyFrame.add(saveButton);
+
+                        // Set the frame visible
+                        addSupplyFrame.setVisible(true);
+                    });
+                    frame.add(addButton, BorderLayout.NORTH);
                     frame.setVisible(true);
+                    
                 } else if (columnName.equals("Dietary Restrictions") || col == 10) {
                     // Handle Dietary Restrictions
                 	JFrame frame = new JFrame("Dietary Restrictions");
@@ -180,6 +420,85 @@ public class DisasterVictimPage extends JPanel {
                     }
                     // Add the table to the frame
                     frame.add(containedScrollPane);
+                    JButton addButton = new JButton("Add New Dietary Restriction");
+                    addButton.addActionListener(f -> {
+                        // Open a new window prompting the user to create a new DisasterVictim object
+                        JFrame addDietPreferenceFrame = new JFrame("Add New Dietary Preference");
+                        addDietPreferenceFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        addDietPreferenceFrame.setSize(300, 200);
+                        addDietPreferenceFrame.setLayout(new FlowLayout());
+
+                        // Input fields for the new DisasterVictim object
+                        JTextField firstIDField = new JTextField(20);
+                        JTextField relationField = new JTextField(20);
+                        JTextField secondIDField = new JTextField(20);
+                        JButton saveButton = new JButton("Save");
+                            int selectedRow = victimTable.getSelectedRow();
+                            if (selectedRow != -1) {
+                                // Retrieve the ID of the person from the corresponding row
+                                int personID = (int) tableModel.getValueAt(selectedRow, 6);
+                                firstIDField.setText(String.valueOf(personID));
+                                firstIDField.setEditable(false); // Set non-editable
+                                firstIDField.setBackground(Color.LIGHT_GRAY); // Grey out the field
+                            } else {
+                                JOptionPane.showMessageDialog(frame, "Please select a row to add a new family connection.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                        // Action listener for the save button
+                        saveButton.addActionListener(actionEvent -> {
+                            
+                            // Create a new DisasterVictim object and add it to the table
+                            int id1 = Integer.parseInt(firstIDField.getText());
+                            String relation = relationField.getText();
+                            int id2 = Integer.parseInt(secondIDField.getText());
+
+                            DisasterVictim person1 = null;
+                            DisasterVictim person2 = null;
+
+                            // Find the DisasterVictim objects corresponding to the provided IDs
+                            for (DisasterVictim victim : victims) {
+                                if (victim.getAssignedSocialID() == (id1)) {
+                                    person1 = victim;
+                                }
+                                if (victim.getAssignedSocialID() == (id2)) {
+                                    person2 = victim;
+                                }
+                                // Break the loop if both persons are found
+                                if (person1 != null && person2 != null) {
+                                    break;
+                                }
+                            }
+
+                            // If either person is not found, handle the error appropriately
+                            if (person1 == null || person2 == null) {
+                                JOptionPane.showMessageDialog(addDietPreferenceFrame, "One or both persons not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            // Create a new FamilyRelation object and add it to the list
+                            FamilyRelation newRelation = new FamilyRelation(person1, relation, person2, familyManager);
+                            person1.addFamilyConnection(newRelation, familyManager);
+                            refreshFamilyRelationTable(person1.getFamilyConnections(),containedTableModel);
+                            refreshTable(victims);
+                            addDietPreferenceFrame.dispose(); // Close the window after adding the new family relation
+                        });
+
+                        // Add components to the frame
+                        GridLayout layout = new GridLayout(0, 2);
+                        addDietPreferenceFrame.setLayout(layout);
+                        
+                        addDietPreferenceFrame.add(new JLabel("ID of Person A:"));
+                        addDietPreferenceFrame.add(firstIDField);
+                        addDietPreferenceFrame.add(new JLabel("Relationship Type:"));
+                        addDietPreferenceFrame.add(relationField);
+                        addDietPreferenceFrame.add(new JLabel("ID of Person B:"));
+                        addDietPreferenceFrame.add(secondIDField);
+                        addDietPreferenceFrame.add(saveButton);
+
+                        // Set the frame visible
+                        addDietPreferenceFrame.setVisible(true);
+                    });
+                    frame.add(addButton, BorderLayout.NORTH);
                     frame.setVisible(true);
                 }
             }
@@ -233,7 +552,7 @@ public class DisasterVictimPage extends JPanel {
 
         // Button to create a new DisasterVictim object
         JButton addButton = new JButton("Add New Rescued Person");
-        addButton.addActionListener(e -> {
+        addButton.addActionListener(p -> {
             // Open a new window prompting the user to create a new DisasterVictim object
             JFrame addVictimFrame = new JFrame("Add New Rescued Person");
             addVictimFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -252,11 +571,7 @@ public class DisasterVictimPage extends JPanel {
                 String entryDate = entryDateField.getText();
                 DisasterVictim newVictim = new DisasterVictim(firstName, entryDate);
                 victims.add(newVictim);
-                Object[] rowData = {newVictim.getFirstName(), newVictim.getLastName(), newVictim.getFamilyConnections(),
-                        newVictim.getGender(), newVictim.getDateOfBirth_Age(), newVictim.getDescription(),
-                        newVictim.getAssignedSocialID(), newVictim.getMedicalRecords(), newVictim.getEntryDate(),
-                        newVictim.getPersonalBelongings(), newVictim.getDietaryPreference()};
-                tableModel.addRow(rowData);
+                refreshTable(victims);
                 addVictimFrame.dispose(); // Close the window after adding the victim
             });
 
@@ -275,12 +590,52 @@ public class DisasterVictimPage extends JPanel {
         add(addButton, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
-
-    // Sample method to generate dummy data (replace with actual data retrieval)
-    private ArrayList<DisasterVictim> getDisasterVictims() {
-        // Populate with some dummy data
-        ArrayList<DisasterVictim> victims = new ArrayList<>();
-        // Add your logic to fetch actual data here
-        return victims;
+    
+    private void refreshTable(ArrayList<DisasterVictim> victims) {
+        // Clear the existing rows
+        tableModel.setRowCount(0);
+        // Populate the table model with updated data
+        for (DisasterVictim victim : victims) {
+            Object[] rowData = {victim.getFirstName(), victim.getLastName(), victim.getFamilyConnections(), victim.getGender(),
+                    victim.getDateOfBirth_Age(), victim.getDescription(), victim.getAssignedSocialID(),
+                    victim.getMedicalRecords(), victim.getEntryDate(), victim.getPersonalBelongings(),
+                    victim.getDietaryPreference()};
+            tableModel.addRow(rowData);
+        }
+        // Notify the table of the changes
+        tableModel.fireTableDataChanged();
     }
+    
+    private void refreshFamilyRelationTable(HashSet<FamilyRelation> connections, DefaultTableModel containedTable) {
+        // Clear the existing rows
+    	containedTable.setRowCount(0);
+        
+        // Populate the table model with updated data
+        for (FamilyRelation connection : connections) {
+        	containedTable.addRow(new Object[]{
+                    connection.getPersonOne().getFirstName(),
+                    connection.getRelationshipTo(),
+                    connection.getPersonTwo().getFirstName()
+            });
+        }
+        // Notify the table of the changes
+        containedTable.fireTableDataChanged();
+    }
+    
+    private void refreshMedicalRecordTable(ArrayList<MedicalRecord> records, DefaultTableModel containedTable) {
+        // Clear the existing rows
+    	containedTable.setRowCount(0);
+        
+        // Populate the table model with updated data
+        for (MedicalRecord record : records) {
+        	containedTable.addRow(new Object[]{
+                    record.getLocation().getName(),
+                    record.getDescription(),
+                    record.getDate()
+            });
+        }
+        // Notify the table of the changes
+        containedTable.fireTableDataChanged();
+    }
+
 }

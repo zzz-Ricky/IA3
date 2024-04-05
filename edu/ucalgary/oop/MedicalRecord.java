@@ -11,7 +11,7 @@ public class MedicalRecord implements DateManageMent, InfoManagement {
         validateDate(dateOfTreatment);
         this.dateOfTreatment = dateOfTreatment;
     }
-    
+
     @Override
     public boolean validateDate(String date) {
         // Check if the date has the date in the correct format such as "2024-01-18"
@@ -39,22 +39,22 @@ public class MedicalRecord implements DateManageMent, InfoManagement {
     public void setLocation(Location location) {
         this.location = location;
     }
-    
+
     @Override
     public String getDescription() {
         return treatmentDetails;
     }
-    
+
     @Override
     public void setDescription(String treatmentDetails) {
         this.treatmentDetails = treatmentDetails;
     }
-    
+
     @Override
     public String getDate() {
         return dateOfTreatment;
     }
-    
+
     @Override
     public void setDate(String dateOfTreatment) {
         validateDate(dateOfTreatment);
