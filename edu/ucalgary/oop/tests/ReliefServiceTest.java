@@ -65,14 +65,14 @@ public class ReliefServiceTest {
         Location newLastKnownLocation = new Location("University of Calgary", "2500 University Dr NW");
         Inquiry inquiryToRemove = new Inquiry(newMissingPerson, newValidDate, newExpectedInfoProvided,
                 newLastKnownLocation);
-    
+
         int initialSize = reliefService.getInquiries().size();
-    
+
         reliefService.addInquiry(inquiryToRemove);
         reliefService.removeInquiry(inquiryToRemove);
-    
+
         int finalSize = reliefService.getInquiries().size();
-    
+
         assertEquals("removeInquiry should remove the inquiry from the array list", initialSize - 1, finalSize);
     }
 }

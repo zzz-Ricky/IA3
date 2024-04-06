@@ -14,7 +14,7 @@ public class Inquiry implements DateManageMent, InfoManagement {
         this.description = description;
         this.lastKnownLocation = lastKnownLocation;
     }
-    
+
     @Override
     public boolean validateDate(String date) {
         // Check if the date has the date in the correct format such as "2024-01-18"
@@ -50,23 +50,23 @@ public class Inquiry implements DateManageMent, InfoManagement {
     public void setLastKnownLocation(Location lastKnownLocation) {
         this.lastKnownLocation = lastKnownLocation;
     }
-    
+
     @Override
     public String getDescription() {
         return description;
     }
-    
+
     @Override
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     @Override
     public void setDate(String dateOfInquiry) {
         validateDate(dateOfInquiry);
         this.dateOfInquiry = dateOfInquiry;
     }
-    
+
     @Override
     public String getDate() {
         return dateOfInquiry;

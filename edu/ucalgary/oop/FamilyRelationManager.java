@@ -8,9 +8,9 @@ import edu.ucalgary.oop.DisasterVictim;
 public class FamilyRelationManager {
 
     private static HashSet<FamilyRelation> relationshipRecord;
-    
-    public FamilyRelationManager(){
-    	relationshipRecord = new HashSet<FamilyRelation>();
+
+    public FamilyRelationManager() {
+        relationshipRecord = new HashSet<FamilyRelation>();
     }
 
     public boolean validateRelationship(FamilyRelation relationship) {
@@ -47,18 +47,18 @@ public class FamilyRelationManager {
         relationshipRecord.remove(relationship);
     }
 
-    public HashSet<FamilyRelation> getRelationships(DisasterVictim person){
+    public HashSet<FamilyRelation> getRelationships(DisasterVictim person) {
         HashSet<FamilyRelation> personalRelations = new HashSet<FamilyRelation>();
         for (FamilyRelation relation : relationshipRecord) {
             DisasterVictim personOne = relation.getPersonOne();
             DisasterVictim personTwo = relation.getPersonTwo();
-            if (personOne.equals(person)){
+            if (personOne.equals(person)) {
                 personalRelations.add(relation);
             }
-            if (personTwo.equals(person)){
+            if (personTwo.equals(person)) {
                 personalRelations.add(relation);
             }
         }
-		return personalRelations;
+        return personalRelations;
     }
 }

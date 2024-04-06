@@ -13,7 +13,7 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
     private ArrayList<DietaryRestrictions> dietaryPreference;
     static int counter;
 
- // In DisasterVictim class
+    // In DisasterVictim class
     public DisasterVictim(String firstName, String ENTRY_DATE) {
         super(firstName, null, null); // Pass null for lastName and genderPronoun
         validateDate(ENTRY_DATE);
@@ -24,7 +24,7 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
         this.ASSIGNED_SOCIAL_ID = counter;
         counter++;
     }
-    
+
     @Override
     public boolean validateDate(String date) {
         // Check if the date has the date in the correct format such as "2024-01-18"
@@ -44,7 +44,7 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
 
         return true;
     }
-    
+
     public String getDateOfBirth_Age() {
         return DateOfBirth_Age;
     }
@@ -64,7 +64,7 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
     public HashSet<Supply> getPersonalBelongings() {
         return personalBelongings;
     }
-    
+
     public ArrayList<DietaryRestrictions> getDietaryPreference() {
         return dietaryPreference;
     }
@@ -123,46 +123,45 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
     public void removeDietaryPreference(DietaryRestrictions.DietaryRestriction preference) {
         this.dietaryPreference.removeIf(d -> d.getRestriction() == preference);
     }
-	
+
     @Override
     public String getDescription() {
         return description;
     }
-    
+
     @Override
     public void setDescription(String newDescription) {
         this.description = newDescription;
     }
 
-	@Override
-	public void writeFile() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void writeFile() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void mountFile() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void dismountFile() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void mountFile() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void setDate(String newDate) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public String getDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void dismountFile() {
+        // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void setDate(String newDate) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public String getDate() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

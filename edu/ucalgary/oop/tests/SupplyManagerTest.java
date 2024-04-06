@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 
 public class SupplyManagerTest {
-	private SupplyManager manager;
+    private SupplyManager manager;
     private DisasterVictim missingPerson;
     private Location location;
     private HashSet<Supply> supplies;
@@ -18,12 +18,12 @@ public class SupplyManagerTest {
 
     @Before
     public void setUp() {
-    	SupplyManager manager = new SupplyManager();
-    	DisasterVictim missingPerson = new DisasterVictim("Jane", "2024-01-25");
-    	Supply supplyA = new Supply("Band Aids", 10);
-    	Supply supplyB = new Supply("Water Bottles", 6);
-    	Supply supplyC = new Supply("Hand Sanitizer", 2);
-    	HashSet<Supply> supplies = new HashSet<Supply>();
+        SupplyManager manager = new SupplyManager();
+        DisasterVictim missingPerson = new DisasterVictim("Jane", "2024-01-25");
+        Supply supplyA = new Supply("Band Aids", 10);
+        Supply supplyB = new Supply("Water Bottles", 6);
+        Supply supplyC = new Supply("Hand Sanitizer", 2);
+        HashSet<Supply> supplies = new HashSet<Supply>();
         supplies.add(supplyA);
         supplies.add(supplyB);
         supplies.add(supplyC);

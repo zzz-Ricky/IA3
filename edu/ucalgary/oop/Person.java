@@ -44,13 +44,14 @@ abstract class Person implements ExternalFileIO {
     // Validate and set gender pronoun
     public void setGender(String genderPronoun) {
         if (genderOptions.contains(genderPronoun)) {
-        	//Sets a person's gender to a selected option if it appears on the list.
+            // Sets a person's gender to a selected option if it appears on the list.
             this.genderPronoun = genderPronoun;
-        } else if(genderPronoun == null) {
-        	//Loads a default "Unknown" gender so that the constructor can have an appropriate placeholder
-        	this.genderPronoun = "Unknown";
+        } else if (genderPronoun == null) {
+            // Loads a default "Unknown" gender so that the constructor can have an
+            // appropriate placeholder
+            this.genderPronoun = "Unknown";
         } else {
-        	//Otherwise, if it is invalid, throw an exception.
+            // Otherwise, if it is invalid, throw an exception.
             throw new IllegalArgumentException("Invalid gender pronoun. Please choose from the available options.");
         }
     }
@@ -75,9 +76,9 @@ abstract class Person implements ExternalFileIO {
     public String getGender() {
         return genderPronoun;
     }
-    
-    public ArrayList<String> getGenderOptions(){
-    	return genderOptions;
+
+    public ArrayList<String> getGenderOptions() {
+        return genderOptions;
     }
 
     public HashSet<FamilyRelation> getFamilyConnections() {
@@ -91,14 +92,15 @@ abstract class Person implements ExternalFileIO {
     public void addFamilyConnection(FamilyRelation familyConnection, FamilyRelationManager manager) {
         boolean isValid = manager.checkInRelationship(familyConnection, this);
         if (isValid) {
-        	this.familyConnections.add(familyConnection);
-        	if (this == familyConnection.getPersonOne() && !familyConnection.getPersonTwo().getFamilyConnections().contains(familyConnection)) {
-        		familyConnection.getPersonTwo().addFamilyConnection(familyConnection, manager);
-        	}
-        	else if (this == familyConnection.getPersonTwo() && !familyConnection.getPersonOne().getFamilyConnections().contains(familyConnection)){
-        		familyConnection.getPersonOne().addFamilyConnection(familyConnection, manager);
-        	}
-        	
+            this.familyConnections.add(familyConnection);
+            if (this == familyConnection.getPersonOne()
+                    && !familyConnection.getPersonTwo().getFamilyConnections().contains(familyConnection)) {
+                familyConnection.getPersonTwo().addFamilyConnection(familyConnection, manager);
+            } else if (this == familyConnection.getPersonTwo()
+                    && !familyConnection.getPersonOne().getFamilyConnections().contains(familyConnection)) {
+                familyConnection.getPersonOne().addFamilyConnection(familyConnection, manager);
+            }
+
         } else {
             throw new IllegalArgumentException("Cannot add a personal relationship a person is not in");
         }

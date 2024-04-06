@@ -8,7 +8,7 @@ public class Supply implements InfoManagement {
         this.type = type;
         this.quantity = quantity;
     }
-    
+
     @Override
     public String getDescription() {
         return type;

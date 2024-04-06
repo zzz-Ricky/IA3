@@ -5,7 +5,7 @@ public class Inquirer extends Person implements InfoManagement {
     private String servicesPhone;
 
     public Inquirer(String firstName, String lastName, String servicesPhone) {
-    	super(firstName,lastName, null); // Pass null for lastName and genderPronoun
+        super(firstName, lastName, null); // Pass null for lastName and genderPronoun
         this.servicesPhone = servicesPhone;
     }
 
@@ -22,24 +22,24 @@ public class Inquirer extends Person implements InfoManagement {
     }
 
     public void setServicesPhone(String servicesPhone) {
-    	this.servicesPhone = servicesPhone;
+        this.servicesPhone = servicesPhone;
     }
 
-	@Override
-	public void writeFile() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void writeFile() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void mountFile() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void dismountFile() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void mountFile() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void dismountFile() {
+        // TODO Auto-generated method stub
+
+    }
 }

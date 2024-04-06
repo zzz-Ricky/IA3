@@ -7,8 +7,8 @@ public class AccessDatabaseLogs implements ExternalFileIO {
     // Database credentials
     static final String JDBC_DRIVER = "org.postgresql.Driver";
     static final String DBURL = "jdbc:postgresql://localhost/project";
-    static final String USERNAME = "oop"; 
-    static final String PASSWORD = "ucalgary"; 
+    static final String USERNAME = "oop";
+    static final String PASSWORD = "ucalgary";
     static Connection dbConnect;
 
     public void mountFile() {
@@ -50,7 +50,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 String phoneNumber = rs.getString("phoneNumber");
-                String[] inquiry = {firstName, (lastName != null ? lastName : ""), phoneNumber};
+                String[] inquiry = { firstName, (lastName != null ? lastName : ""), phoneNumber };
                 inquiries.add(inquiry);
             }
 
@@ -87,7 +87,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
                 String lastName = rs.getString("lastName");
                 String callDate = rs.getString("callDate");
                 String details = rs.getString("details");
-                String[] log = {firstName, (lastName != null ? lastName : ""), callDate, details};
+                String[] log = { firstName, (lastName != null ? lastName : ""), callDate, details };
                 logs.add(log);
             }
 
@@ -124,14 +124,14 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (pstmt != null)
+                    pstmt.close();
                 dismountFile(); // Close database connection
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
-
 
     public void addInquiryLog(String firstName, String lastName, String callDate, String details) {
         PreparedStatement pstmt = null;
@@ -185,7 +185,8 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (pstmt != null)
+                    pstmt.close();
                 dismountFile(); // Close database connection
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -193,7 +194,6 @@ public class AccessDatabaseLogs implements ExternalFileIO {
         }
     }
 
-    
     public void removeInquirer(String firstName, String lastName, String phoneNumber) {
         PreparedStatement pstmt = null;
 
@@ -214,7 +214,8 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (pstmt != null)
+                    pstmt.close();
                 dismountFile(); // Close database connection
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -222,7 +223,6 @@ public class AccessDatabaseLogs implements ExternalFileIO {
         }
     }
 
-    
     public void removeInquiryLog(String firstName, String lastName, String details) {
         PreparedStatement pstmt = null;
 
@@ -249,7 +249,8 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (pstmt != null)
+                    pstmt.close();
                 dismountFile(); // Close database connection
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -257,7 +258,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
         }
     }
 
- // Method to find the inquirer ID based on first and last names
+    // Method to find the inquirer ID based on first and last names
     public int findInquirerId(String firstName, String lastName, boolean mountConnection) {
         int inquirerId = -1;
         try {
@@ -289,7 +290,6 @@ public class AccessDatabaseLogs implements ExternalFileIO {
         return inquirerId;
     }
 
-
     public void updateInquirer(int inquirerId, String firstName, String lastName, String phoneNumber) {
         PreparedStatement pstmt = null;
 
@@ -311,14 +311,15 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (pstmt != null)
+                    pstmt.close();
                 dismountFile(); // Close database connection
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
-    
+
     public void updateInquiryLog(int inquirerId, String callDate, String details) {
         PreparedStatement pstmt = null;
 
@@ -339,7 +340,8 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (pstmt != null)
+                    pstmt.close();
                 dismountFile(); // Close database connection
             } catch (SQLException e) {
                 e.printStackTrace();

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-
 public class InquirySQLPage extends JPanel {
     private DefaultTableModel inquiryTableModel;
     private JTable inquiryTable;
@@ -41,7 +40,7 @@ public class InquirySQLPage extends JPanel {
         logTableModel.addColumn("Call Date");
         logTableModel.addColumn("Details");
         logTable = new JTable(logTableModel);
-        
+
         // Initialize row sorter for inquiry table
         TableRowSorter<DefaultTableModel> inquirySorter = new TableRowSorter<>(inquiryTableModel);
         inquiryTable.setRowSorter(inquirySorter);
@@ -69,10 +68,14 @@ public class InquirySQLPage extends JPanel {
         addInquirerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String firstName = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the new Inquirer's first name:");
-                String lastName = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the new Inquirer's last name:");
-                String phoneNumber = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the new Inquirer's phone number:");
-                if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty() && phoneNumber != null && !phoneNumber.isEmpty()) {
+                String firstName = JOptionPane.showInputDialog(InquirySQLPage.this,
+                        "Enter the new Inquirer's first name:");
+                String lastName = JOptionPane.showInputDialog(InquirySQLPage.this,
+                        "Enter the new Inquirer's last name:");
+                String phoneNumber = JOptionPane.showInputDialog(InquirySQLPage.this,
+                        "Enter the new Inquirer's phone number:");
+                if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty()
+                        && phoneNumber != null && !phoneNumber.isEmpty()) {
                     // Add the new inquirer to the database and update the table
                     database.addInquirer(firstName, lastName, phoneNumber);
                     updateInquiryTable();
@@ -90,7 +93,8 @@ public class InquirySQLPage extends JPanel {
                 String firstName = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the Inquirer's first name:");
                 String lastName = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the Inquirer's last name:");
                 String callDate = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter the call date (YYYY-MM-DD):");
-                String details = JOptionPane.showInputDialog(InquirySQLPage.this, "Enter details: (Name of Person to search for)");
+                String details = JOptionPane.showInputDialog(InquirySQLPage.this,
+                        "Enter details: (Name of Person to search for)");
 
                 if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty() &&
                         callDate != null && !callDate.isEmpty() && details != null && !details.isEmpty()) {
@@ -102,7 +106,8 @@ public class InquirySQLPage extends JPanel {
                         database.addInquiryLog(firstName, lastName, callDate, details);
                         updateLogTable();
                     } else {
-                        JOptionPane.showMessageDialog(InquirySQLPage.this, "No inquirer found with the provided first and last names.");
+                        JOptionPane.showMessageDialog(InquirySQLPage.this,
+                                "No inquirer found with the provided first and last names.");
                     }
 
                 } else {
@@ -220,7 +225,8 @@ public class InquirySQLPage extends JPanel {
 
     // Method to search the inquiry table
     private void searchInquiryTable(String searchText) {
-        DefaultRowSorter<TableModel, Integer> sorter = (DefaultRowSorter<TableModel, Integer>) inquiryTable.getRowSorter();
+        DefaultRowSorter<TableModel, Integer> sorter = (DefaultRowSorter<TableModel, Integer>) inquiryTable
+                .getRowSorter();
         if (searchText.isEmpty()) {
             sorter.setRowFilter(null); // Clear the filter
         } else {
@@ -237,7 +243,6 @@ public class InquirySQLPage extends JPanel {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
         }
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

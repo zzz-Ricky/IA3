@@ -161,8 +161,8 @@ public class DisasterVictimTest {
 
     @Test // Testing adding a personal belonging
     public void testAddPersonalBelonging() {
-    	Location testLocation = new Location("Shelter Z", "1234 Shelter Ave");
-    	SupplyManager manager = new SupplyManager();
+        Location testLocation = new Location("Shelter Z", "1234 Shelter Ave");
+        SupplyManager manager = new SupplyManager();
         Supply newSupply = new Supply("Emergency Kit", 1);
         testLocation.addSupply(newSupply);
         victim.addPersonalBelonging(newSupply, testLocation, manager);
@@ -206,8 +206,8 @@ public class DisasterVictimTest {
 
     @Test // Testing removing a personal belonging
     public void testRemovePersonalBelonging() {
-    	Location testLocation = new Location("Shelter Z", "1234 Shelter Ave");
-    	SupplyManager manager = new SupplyManager();
+        Location testLocation = new Location("Shelter Z", "1234 Shelter Ave");
+        SupplyManager manager = new SupplyManager();
         Supply supplyToRemove = new Supply("Emergency Kit", 1);
         testLocation.addSupply(supplyToRemove);
         victim.addPersonalBelonging(supplyToRemove, testLocation, manager);
@@ -226,7 +226,7 @@ public class DisasterVictimTest {
 
     @Test // Testing setting family connections
     public void testSetFamilyConnection() {
-    	FamilyRelationManager familyManager = new FamilyRelationManager();
+        FamilyRelationManager familyManager = new FamilyRelationManager();
         DisasterVictim victim1 = new DisasterVictim("Jane", "2024-01-20");
         DisasterVictim victim2 = new DisasterVictim("John", "2024-01-22");
         FamilyRelation relation = new FamilyRelation(victim1, "sibling", victim2, familyManager);
@@ -314,7 +314,8 @@ public class DisasterVictimTest {
         victim.addDietaryPreference(DietaryRestrictions.DietaryRestriction.AVML);
         // Verify that the dietary preference is correctly added
         assertTrue("addDietaryPreference should add a dietary preference",
-                victim.getDietaryPreference().stream().anyMatch(d -> d.getRestriction() == DietaryRestrictions.DietaryRestriction.AVML));
+                victim.getDietaryPreference().stream()
+                        .anyMatch(d -> d.getRestriction() == DietaryRestrictions.DietaryRestriction.AVML));
     }
 
     @Test // Testing removing a dietary preference
@@ -323,8 +324,8 @@ public class DisasterVictimTest {
         victim.removeDietaryPreference(DietaryRestrictions.DietaryRestriction.AVML);
         // Verify that the dietary preference is correctly removed
         assertFalse("removeDietaryPreference should remove a dietary preference",
-                victim.getDietaryPreference().stream().anyMatch(d -> d.getRestriction() == DietaryRestrictions.DietaryRestriction.AVML));
+                victim.getDietaryPreference().stream()
+                        .anyMatch(d -> d.getRestriction() == DietaryRestrictions.DietaryRestriction.AVML));
     }
-
 
 }

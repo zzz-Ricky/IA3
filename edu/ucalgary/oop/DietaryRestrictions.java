@@ -23,4 +23,3 @@ public class DietaryRestrictions {
         return restriction;
     }
 }
-
