@@ -55,11 +55,25 @@ public class Location {
         this.occupants.remove(occupant);
     }
 
-    public void addSupply(Supply supply) {
-        // does not use SupplyManager class, as this is implicitly used for adding new
-        // supplies
-        this.supplies.add(supply);
+    public void addSupply(Supply newSupply) {
+        if (newSupply.getQuantity() <= 0) {
+            // Error check: Quantity must be positive
+            throw new IllegalArgumentException("Quantity must be positive");
+        }
+        
+        // Check if the supply already exists in the HashSet 
+        for (Supply existingSupply : supplies) {
+            if (existingSupply.getDescription().equalsIgnoreCase(newSupply.getDescription())) {
+                // Supply already exists, increment its quantity
+                existingSupply.setQuantity(existingSupply.getQuantity() + newSupply.getQuantity());
+                return; // Exit the method after incrementing quantity
+            }
+        }
+        // If the supply does not exist, add it to the HashSet
+        this.supplies.add(newSupply);
     }
+
+
 
     public void removeSupply(Supply supply) {
         // used for removing a supply without transferring it to a victim, such as

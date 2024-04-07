@@ -61,7 +61,6 @@ public class MedicalRecordsPopup {
             JFrame addMedicalFrame = new JFrame("Add New Medical Record");
             addMedicalFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             addMedicalFrame.setSize(400, 200);
-            addMedicalFrame.setLayout(new FlowLayout());
 
             // Input fields for the new DisasterVictim object
             JComboBox<String> locationComboBox = new JComboBox<>();
@@ -97,7 +96,7 @@ public class MedicalRecordsPopup {
                         // Refresh the Medical Record table
                         refreshMedicalRecordTable(victim.getMedicalRecords(), containedTableModel);
                         // Refresh the main victims table
-                        parentWindow.refreshTable(victims);
+                        parentWindow.refreshTable(victims, shelters);
                         // Close the window after adding the new medical record
                         addMedicalFrame.dispose();
                     } else {
@@ -108,7 +107,7 @@ public class MedicalRecordsPopup {
                             refreshMedicalRecordTable(lastSelectedPerson.getMedicalRecords(),
                                     containedTableModel);
                             // Refresh the main victims table
-                            parentWindow.refreshTable(victims);
+                            parentWindow.refreshTable(victims, shelters);
                             // Close the window after adding the new medical record
                             addMedicalFrame.dispose();
                         } else {
@@ -137,10 +136,12 @@ public class MedicalRecordsPopup {
             addMedicalFrame.add(saveButton);
 
             // Set the frame visible
+            addMedicalFrame.setLocationRelativeTo(null);
             addMedicalFrame.setVisible(true);
         });
 
         frame.add(addButton, BorderLayout.NORTH);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

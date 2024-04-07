@@ -3,8 +3,11 @@ package edu.ucalgary.oop;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableRowSorter;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,76 +17,65 @@ import java.util.HashSet;
 public class DisasterVictimPage extends JPanel {
     private JTable victimTable;
     private DefaultTableModel tableModel;
-    // Create a disasterVictim attribute to cache the selected row
-    private DisasterVictim lastSelectedRow = null;
+    private ArrayList<Integer> immutableRows; // Cache for immutable rows
 
-    public DisasterVictimPage() {
+    public DisasterVictimPage(ArrayList<Location> locations, ArrayList<DisasterVictim> victims, Location workLocation, FamilyRelationManager familyManager, SupplyManager supplyManager) {
         setLayout(new BorderLayout());
-
-        // Create Sample data to populate the initial page
-        FamilyRelationManager familyManager = new FamilyRelationManager();
-        SupplyManager supplyManager = new SupplyManager();
-
-        Location location1 = new Location("Shelter A", "1234 Shelter Ave");
-        Location location2 = new Location("Shelter B", "678 Park Street");
-
-        Supply waterBottles = new Supply("Water Bottles", 99);
-        Supply bandages = new Supply("Bandages", 99);
-        Supply toiletPaper = new Supply("Toilet Paper", 4);
-        location1.addSupply(waterBottles);
-        location1.addSupply(toiletPaper);
-        location2.addSupply(bandages);
-
-        DisasterVictim samplevictim1 = new DisasterVictim("Freda", "2024-01-18");
-        samplevictim1.setDateOfBirth("1987-05-21");
-        samplevictim1.setLastName("Smith");
-        DisasterVictim samplevictim2 = new DisasterVictim("George", "2024-02-14");
-        samplevictim2.setDateOfBirth("1967-03-05");
-        samplevictim2.setLastName("Waller");
-
-        FamilyRelation relationship1 = new FamilyRelation(samplevictim1, "Father in law", samplevictim2, familyManager);
-        samplevictim1.addFamilyConnection(relationship1, familyManager);
-
-        ArrayList<DisasterVictim> victims = new ArrayList<DisasterVictim>();
-        victims.add(samplevictim1);
-        victims.add(samplevictim2);
-
-        ArrayList<Location> shelters = new ArrayList<Location>();
-        shelters.add(location1);
-        shelters.add(location2);
+        this.immutableRows = new ArrayList<>(); // Initialize immutableRows
 
         // Create table model with column names
-        String[] columnNames = { "First Name", "Last Name", "Family Connections", "Gender Pronoun",
+        String[] columnNames = {"First Name", "Last Name", "Family Connections", "Gender Pronoun",
                 "Date of Birth / Age", "Description",
-                "Social ID", "Medical Records", "Entry Date", "Personal Belongings", "Dietary Preference" };
+                "Social ID", "Medical Records", "Entry Date", "Personal Belongings", "Dietary Preference", "Location"};
         tableModel = new DefaultTableModel(columnNames, 0);
 
         // Populate the table model with data
-        for (DisasterVictim victim : victims) {
-            Object[] rowData = { victim.getFirstName(), victim.getLastName(), victim.getFamilyConnections(),
+        for (int i = 0; i < victims.size(); i++) {
+            DisasterVictim victim = victims.get(i);
+            Location victimLocation = getLocationOfVictim(victim, locations);
+            Object[] rowData = {victim.getFirstName(), victim.getLastName(), victim.getFamilyConnections(),
                     victim.getGender(),
                     victim.getDateOfBirth_Age(), victim.getDescription(), victim.getAssignedSocialID(),
                     victim.getMedicalRecords(), victim.getEntryDate(), victim.getPersonalBelongings(),
-                    victim.getDietaryPreference() };
+                    victim.getDietaryPreference(), victimLocation.getName()};
             tableModel.addRow(rowData);
+            
+            // Cache immutable rows
+            if (workLocation != null && !victimLocation.equals(workLocation)) {
+                immutableRows.add(i);
+            }
         }
-
         // Create the table
         victimTable = new JTable(tableModel) {
             @Override
             public TableCellEditor getCellEditor(int row, int column) {
                 int modelColumn = convertColumnIndexToModel(column);
+                // Make rows immutable for locations different from workLocation
+                if (workLocation != null) {
+                    String victimLocationName = (String) getValueAt(row, 11);
+                    Location victimLocation = findLocationByName(victimLocationName, locations);
+                    if (!victimLocation.equals(workLocation)) {
+                        return null;
+                    }
+                }
                 if (modelColumn == 3) { // Gender Pronoun column
                     JComboBox<String> comboBox = new JComboBox<>(
                             victims.get(row).getGenderOptions().toArray(new String[0]));
                     return new DefaultCellEditor(comboBox);
                 }
-                if (column == 2 || column == 6 || column == 7 || column >= 8) {
+                if (modelColumn == 11) { // Location column
+                    JComboBox<String> comboBox = new JComboBox<>(getLocationNames(locations));
+                    return new DefaultCellEditor(comboBox);
+                }
+                if (column == 2 || column == 6 || column == 7 || (column >= 8 && column < 11)) {
                     return null; // Return null to prevent editing of the cell
                 }
+                
                 return super.getCellEditor(row, column);
             }
         };
+        TableRowSorter<DefaultTableModel> Sorter = new TableRowSorter<>(tableModel);
+        victimTable.setRowSorter(Sorter);
         JScrollPane scrollPane = new JScrollPane(victimTable);
 
         // Add mouse listener to handle cell clicks
@@ -94,27 +86,34 @@ public class DisasterVictimPage extends JPanel {
                 int col = victimTable.columnAtPoint(e.getPoint());
                 Object value = victimTable.getValueAt(row, col);
                 String columnName = victimTable.getColumnName(col);
+                
+                    String victimLocationName = (String) victimTable.getValueAt(row, 11);
+                    Location victimLocation = findLocationByName(victimLocationName, locations);
+                    if (workLocation != null && !victimLocation.equals(workLocation)) {
+                        return; 
+                    }
+                
 
                 if (columnName.equals("Family Connections") || col == 2) {
                     HashSet<FamilyRelation> familyConnections = victims.get(row).getFamilyConnections();
-                    new FamilyConnectionsPopup(familyConnections, victimTable, tableModel, victims, familyManager,
+                    new FamilyConnectionsPopup(familyConnections, victimTable, tableModel, victims, familyManager, locations,
                             DisasterVictimPage.this);
                 } else if (columnName.equals("Medical Record") || col == 7) {
                     ArrayList<MedicalRecord> medicalRecords = victims.get(row).getMedicalRecords();
-                    new MedicalRecordsPopup(medicalRecords, shelters, victimTable, tableModel, victims,
+                    new MedicalRecordsPopup(medicalRecords, locations, victimTable, tableModel, victims,
                             DisasterVictimPage.this);
                 } else if (columnName.equals("Personal Belongings") || col == 9) {
                     HashSet<Supply> personalBelongings = victims.get(row).getPersonalBelongings();
-                    new PersonalBelongingsPopup(personalBelongings, shelters, victimTable, tableModel, victims,
+                    new PersonalBelongingsPopup(personalBelongings, locations, victimTable, tableModel, victims,
                             supplyManager, DisasterVictimPage.this);
                 } else if (columnName.equals("Dietary Restrictions") || col == 10) {
                     ArrayList<DietaryRestrictions> restrictions = victims.get(row).getDietaryPreference();
-                    new DietaryRestrictionsPopup(restrictions, victimTable, tableModel, victims,
+                    new DietaryRestrictionsPopup(restrictions, victimTable, tableModel, victims, locations,
                             DisasterVictimPage.this);
-
                 }
             }
         });
+
         // Add table model listener to detect cell changes
         tableModel.addTableModelListener(new TableModelListener() {
             @Override
@@ -159,11 +158,46 @@ public class DisasterVictimPage extends JPanel {
                                     "Social ID is an immutable value. It cannot be changed. ", "Error",
                                     JOptionPane.ERROR_MESSAGE);
                             break;
+                        case 11: // Location column
+                            // Get the updated location name from the table model
+                            String updatedLocationName = (String) updatedValue;
+                            // Find the corresponding Location object
+                            Location updatedLocation = findLocationByName(updatedLocationName, locations);
+                            // Update the location of the victim
+                            if (updatedLocation != null) {
+                                // Remove the victim from the previous location
+                                getLocationOfVictim(victim, locations).removeOccupant(victim);
+                                // Add the victim to the new location
+                                updatedLocation.addOccupant(victim);
+                            }
+                            break;
 
                     }
                 }
             }
         });
+        
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                // Check if the cell should be rendered as immutable
+                if (immutableRows.contains(row)) {
+                    component.setBackground(Color.LIGHT_GRAY);
+                    component.setForeground(Color.BLACK);
+                } else {
+                    component.setBackground(table.getBackground());
+                    component.setForeground(table.getForeground());
+                }
+
+                return component;
+            }
+        };
+
+        for (int i = 0; i < tableModel.getColumnCount(); i++) {
+            victimTable.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+        }
 
         // Button to create a new DisasterVictim object
         JButton addButton = new JButton("Add New Rescued Person");
@@ -186,7 +220,7 @@ public class DisasterVictimPage extends JPanel {
                 String entryDate = entryDateField.getText();
                 DisasterVictim newVictim = new DisasterVictim(firstName, entryDate);
                 victims.add(newVictim);
-                refreshTable(victims);
+                refreshTable(victims, locations);
                 addVictimFrame.dispose(); // Close the window after adding the victim
             });
 
@@ -198,6 +232,7 @@ public class DisasterVictimPage extends JPanel {
             addVictimFrame.add(saveButton);
 
             // Set the frame visible
+            addVictimFrame.setLocationRelativeTo(null);
             addVictimFrame.setVisible(true);
         });
 
@@ -206,20 +241,52 @@ public class DisasterVictimPage extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void refreshTable(ArrayList<DisasterVictim> victims) {
+    // Method to get the location name of a victim
+    private Location getLocationOfVictim(DisasterVictim victim, ArrayList<Location> locations) {
+        for (Location location : locations) {
+            if (location.getOccupants().contains(victim)) {
+                return location;
+            }
+        }
+        return null;
+    }
+
+ // Method to get the names of all locations
+    private String[] getLocationNames(ArrayList<Location> locations) {
+        String[] locationNames = new String[locations.size()];
+        for (int i = 0; i < locations.size(); i++) {
+            locationNames[i] = locations.get(i).getName();
+        }
+        return locationNames;
+    }
+
+    // Method to find a Location object by its name
+    private Location findLocationByName(String name, ArrayList<Location> locations) {
+        for (Location location : locations) {
+            if (location.getName().equals(name)) {
+                return location;
+            }
+        }
+        return null; // If no location with the given name is found
+    }
+
+
+    public void refreshTable(ArrayList<DisasterVictim> victims, ArrayList<Location> locations) {
         // Clear the existing rows
         tableModel.setRowCount(0);
         // Populate the table model with updated data
         for (DisasterVictim victim : victims) {
-            Object[] rowData = { victim.getFirstName(), victim.getLastName(), victim.getFamilyConnections(),
+            Object[] rowData = {victim.getFirstName(), victim.getLastName(), victim.getFamilyConnections(),
                     victim.getGender(),
                     victim.getDateOfBirth_Age(), victim.getDescription(), victim.getAssignedSocialID(),
                     victim.getMedicalRecords(), victim.getEntryDate(), victim.getPersonalBelongings(),
-                    victim.getDietaryPreference() };
+                    victim.getDietaryPreference(), getLocationOfVictim(victim, locations)};
             tableModel.addRow(rowData);
         }
         // Notify the table of the changes
         tableModel.fireTableDataChanged();
     }
-
+    
 }
+
+

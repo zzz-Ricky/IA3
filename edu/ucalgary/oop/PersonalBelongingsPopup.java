@@ -57,12 +57,18 @@ public class PersonalBelongingsPopup {
             JFrame addSupplyFrame = new JFrame("Add New Personal Belonging");
             addSupplyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             addSupplyFrame.setSize(400, 200);
-            addSupplyFrame.setLayout(new FlowLayout());
 
             // Ensure locationComboBox is defined and initialized properly
             JComboBox<String> locationComboBox = new JComboBox<>();
+            int selectedRow = victimTable.getSelectedRow();
+            DisasterVictim selectedVictim = victims.get(selectedRow);
+            
             for (Location location : shelters) {
-                locationComboBox.addItem(location.getName());
+                // Check if the selected person is among the occupants of this location
+                if (location.getOccupants().contains(selectedVictim)) {
+                    locationComboBox.setSelectedItem(location.getName());
+                    locationComboBox.addItem(location.getName());
+                }  
             }
 
             // Get the selected location's name
@@ -116,18 +122,15 @@ public class PersonalBelongingsPopup {
 
                 // Check if the location is valid
                 if (location != null) {
-                    int selectedRow = victimTable.getSelectedRow();
                     if (selectedRow != -1) {
                         // check if a row is still selected. Done to remedy the row deselecting itself
                         DisasterVictim victim = victims.get(selectedRow);
-                        // cache selected row so repeated supply additions can be performed.
-                        lastSelectedPerson = victims.get(selectedRow);
                         // Add the new supply to the victim's personal belongings
                         victim.addPersonalBelonging(newSupply, location, supplyManager);
                         // Refresh the personal belongings table
                         refreshPersonalBelongingsTable(victim.getPersonalBelongings(), containedTableModel);
                         // Refresh the main victims table
-                        parentWindow.refreshTable(victims);
+                        parentWindow.refreshTable(victims, shelters);
                         // Close the window after adding the new personal belonging
                         addSupplyFrame.dispose();
                     } else {
@@ -137,7 +140,7 @@ public class PersonalBelongingsPopup {
                             refreshPersonalBelongingsTable(lastSelectedPerson.getPersonalBelongings(),
                                     containedTableModel);
                             // Refresh the main victims table
-                            parentWindow.refreshTable(victims);
+                            parentWindow.refreshTable(victims, shelters);
                             // Close the window after adding the new personal belonging
                             addSupplyFrame.dispose();
                         } else {
@@ -166,10 +169,12 @@ public class PersonalBelongingsPopup {
             addSupplyFrame.add(saveButton);
 
             // Set the frame visible
+            addSupplyFrame.setLocationRelativeTo(null);
             addSupplyFrame.setVisible(true);
         });
         // Add the button to the frame
         frame.add(addButton, BorderLayout.NORTH);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

@@ -19,7 +19,7 @@ public class DietaryRestrictionsPopup {
     private DisasterVictim lastSelectedPerson;
 
     DietaryRestrictionsPopup(ArrayList<DietaryRestrictions> restrictions, JTable victimTable,
-            DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, DisasterVictimPage parentWindow) {
+            DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, ArrayList<Location> locations, DisasterVictimPage parentWindow) {
         this.parentWindow = parentWindow;
 
         // Handle Dietary Restrictions
@@ -49,7 +49,6 @@ public class DietaryRestrictionsPopup {
             JFrame addDietPreferenceFrame = new JFrame("Add New Dietary Preference");
             addDietPreferenceFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             addDietPreferenceFrame.setSize(300, 200);
-            addDietPreferenceFrame.setLayout(new FlowLayout());
 
             ArrayList<Object> possibleDietOptions = new ArrayList<Object>();
             for (DietaryRestrictions.DietaryRestriction restriction : DietaryRestrictions.DietaryRestriction
@@ -80,7 +79,7 @@ public class DietaryRestrictionsPopup {
                         // Refresh the dietary restrictions table
                         refreshDietaryRestrictionsTable(victim.getDietaryPreference(), containedTableModel);
                         // Refresh the main victims table
-                        parentWindow.refreshTable(victims);
+                        parentWindow.refreshTable(victims, locations);
                         addDietPreferenceFrame.dispose();
                     } else {
                         if (lastSelectedPerson != null) {
@@ -92,7 +91,7 @@ public class DietaryRestrictionsPopup {
                             refreshDietaryRestrictionsTable(lastSelectedPerson.getDietaryPreference(),
                                     containedTableModel);
                             // Refresh the main victims table
-                            parentWindow.refreshTable(victims);
+                            parentWindow.refreshTable(victims, locations);
                             addDietPreferenceFrame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(frame,
@@ -117,10 +116,12 @@ public class DietaryRestrictionsPopup {
             addDietPreferenceFrame.add(saveButton);
 
             // Set the frame visible
+            addDietPreferenceFrame.setLocationRelativeTo(null);
             addDietPreferenceFrame.setVisible(true);
         });
         // Add the button to the frame
         frame.add(addButton, BorderLayout.NORTH);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

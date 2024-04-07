@@ -21,7 +21,7 @@ public class FamilyConnectionsPopup {
     private DisasterVictim lastSelectedPerson;
 
     public FamilyConnectionsPopup(HashSet<FamilyRelation> connections, JTable victimTable, DefaultTableModel tableModel,
-            ArrayList<DisasterVictim> victims, FamilyRelationManager familyManager, DisasterVictimPage parentWindow) {
+            ArrayList<DisasterVictim> victims, FamilyRelationManager familyManager, ArrayList<Location> locations, DisasterVictimPage parentWindow) {
         this.parentWindow = parentWindow;
 
         // Handle Family Connections
@@ -55,7 +55,6 @@ public class FamilyConnectionsPopup {
             JFrame addConnectionFrame = new JFrame("Add New Family Connection");
             addConnectionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             addConnectionFrame.setSize(300, 200);
-            addConnectionFrame.setLayout(new FlowLayout());
 
             // Input fields for the new DisasterVictim object
             JTextField firstIDField = new JTextField(20);
@@ -120,7 +119,7 @@ public class FamilyConnectionsPopup {
                 FamilyRelation newRelation = new FamilyRelation(person1, relation, person2, familyManager);
                 person1.addFamilyConnection(newRelation, familyManager);
                 refreshFamilyRelationTable(person1.getFamilyConnections(), containedTableModel);
-                parentWindow.refreshTable(victims);
+                parentWindow.refreshTable(victims, locations);
                 addConnectionFrame.dispose(); // Close the window after adding the new family relation
             });
 
@@ -138,10 +137,12 @@ public class FamilyConnectionsPopup {
             addConnectionFrame.add(saveButton);
 
             // Set the frame visible
+            addConnectionFrame.setLocationRelativeTo(null);
             addConnectionFrame.setVisible(true);
         });
         frame.add(addButton, BorderLayout.NORTH);
         frame.add(containedScrollPane);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
