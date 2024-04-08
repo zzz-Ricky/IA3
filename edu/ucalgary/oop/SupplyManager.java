@@ -1,8 +1,32 @@
+/**
+ * The SupplyManager class manages the transfer and allocation of supplies to disaster victims.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The SupplyManager class provides methods to check the availability of supplies,
+ * transfer supplies to disaster victims, and allocate supplies from a location.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 2024-04-07
+ */
+
 package edu.ucalgary.oop;
 
 import java.util.HashSet;
 
 public class SupplyManager {
+	
+    /**
+     * Checks the availability of a supply in a location.
+     *
+     * @param locationSupply The set of supplies available at the location.
+     * @param supply         The supply to be checked for availability.
+     * @return True if the supply is available in sufficient quantity, false otherwise.
+     * @throws IllegalArgumentException If the supply does not exist in the location or is insufficient.
+     */
     private boolean checkSupplyAvailability(HashSet<Supply> locationSupply, Supply supply) {
         String supplyName = supply.getDescription();
         for (Supply item : locationSupply) {
@@ -19,7 +43,14 @@ public class SupplyManager {
         }
         throw new IllegalArgumentException("A supply must exist in the location it is taken from");
     }
-
+    
+    /**
+     * Transfers supplies from a location to a disaster victim.
+     *
+     * @param person    The disaster victim receiving the supplies.
+     * @param supplies  The set of supplies to be transferred.
+     * @param location  The location from which supplies are transferred.
+     */
     public void transferSupplies(DisasterVictim person,
             HashSet<Supply> supplies, Location location) {
 
@@ -39,7 +70,14 @@ public class SupplyManager {
         victimSupplies.addAll(supplies);
         person.setPersonalBelongings(victimSupplies);
     }
-
+    
+    /**
+     * Allocates a supply to a disaster victim from a location.
+     *
+     * @param person   The disaster victim receiving the supply.
+     * @param supply   The supply to be allocated.
+     * @param location The location from which the supply is allocated.
+     */
     public void giveSupply(DisasterVictim person, Supply supply, Location location) {
         HashSet<Supply> localSupplies = location.getSupplies();
         if (checkSupplyAvailability(localSupplies, supply)) {

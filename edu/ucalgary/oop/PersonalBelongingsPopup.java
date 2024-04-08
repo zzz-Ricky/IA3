@@ -1,3 +1,23 @@
+/**
+ * The PersonalBelongingsPopup class represents a popup window for managing the personal belongings of disaster victims.
+ * It allows users to view, add, and remove personal belongings from a selected victim.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The popup window displays a table of existing personal belongings for the selected victim,
+ * provides options to add new personal belongings, and remove existing ones.
+ * </p>
+ * <p>
+ * The personal belongings are managed through interactions with a main window (parent window),
+ * a table of victims, and a table model.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import java.awt.BorderLayout;
@@ -24,6 +44,17 @@ public class PersonalBelongingsPopup {
     private DisasterVictim selectedVictim; // Store the selected victim
     private DisasterVictim lastSelectedPerson;
     
+    /**
+     * Constructs a FamilyConnectionsPopup object with the specified parameters.
+     *
+     * @param supplies      The set of existing supplies.
+     * @param shelters		The set of all existing locations
+     * @param victimTable   The table displaying victim information.
+     * @param tableModel    The table model for victim information.
+     * @param victims       The list of disaster victims.
+     * @param supplyManager The manager for supplies.
+     * @param parentWindow  The parent window.
+     */
     PersonalBelongingsPopup(HashSet<Supply> supplies, ArrayList<Location> shelters, JTable victimTable,
             DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, SupplyManager supplyManager,
             DisasterVictimPage parentWindow) {
@@ -237,7 +268,13 @@ public class PersonalBelongingsPopup {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-
+    
+    /**
+     * Refreshes the supplies record table with updated data.
+     *
+     * @param supplies             The updated set of supplies.
+     * @param containedTableModel The table model for family connections.
+     */
     private void refreshPersonalBelongingsTable(HashSet<Supply> supplies, DefaultTableModel containedTable) {
         // Clear the existing rows
         containedTable.setRowCount(0);

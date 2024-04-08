@@ -1,3 +1,23 @@
+/**
+ * The FamilyConnectionsPopup class represents a popup window for managing the family relations of disaster victims.
+ * It allows users to view, add, and remove family relations for a selected victim.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The popup window displays a table of existing family relations for the selected victim,
+ * provides options to add new family relations, and remove existing ones.
+ * </p>
+ * <p>
+ * The family relations are managed through interactions with a main window (parent window),
+ * a table of victims, and a table model.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import javax.swing.*;
@@ -21,7 +41,18 @@ public class FamilyConnectionsPopup {
     private JTable containedTable;
     private JButton addButton;
     private DisasterVictim lastSelectedPerson;
-
+    
+    /**
+     * Constructs a FamilyConnectionsPopup object with the specified parameters.
+     *
+     * @param connections   The set of existing family connections.
+     * @param victimTable   The table displaying victim information.
+     * @param tableModel    The table model for victim information.
+     * @param victims       The list of disaster victims.
+     * @param familyManager The manager for family relations.
+     * @param locations     The list of locations.
+     * @param parentWindow  The parent window.
+     */
     public FamilyConnectionsPopup(HashSet<FamilyRelation> connections, JTable victimTable, DefaultTableModel tableModel,
             ArrayList<DisasterVictim> victims, FamilyRelationManager familyManager, ArrayList<Location> locations, DisasterVictimPage parentWindow) {
         this.parentWindow = parentWindow;
@@ -203,7 +234,13 @@ public class FamilyConnectionsPopup {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-
+    
+    /**
+     * Refreshes the family relation table with updated data.
+     *
+     * @param connections      The updated set of family connections.
+     * @param containedTableModel The table model for family connections.
+     */
     private void refreshFamilyRelationTable(HashSet<FamilyRelation> connections, DefaultTableModel containedTable) {
         // Clear the existing rows
         containedTable.setRowCount(0);

@@ -1,3 +1,18 @@
+/**
+ * The DisasterVictimPage class represents a UI tab that allows users to add, remove,and update Disaster Victim Data.
+ * It extends the JPanel class.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The class provides methods to refresh tabular data and draw object data from cell information.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import javax.swing.*;
@@ -21,6 +36,16 @@ public class DisasterVictimPage extends JPanel {
     private DefaultTableModel tableModel;
     private ArrayList<Integer> immutableRows; // Cache for immutable rows
 
+    
+    /**
+     * Constructs a new DisasterVictimPage with the specified parameters.
+     * 
+     * @param locations      The list of locations where the disaster victims are located.
+     * @param victims        The list of disaster victims.
+     * @param workLocation   The location where the user works.
+     * @param familyManager  The FamilyRelationManager instance to manage family relations.
+     * @param supplyManager  The SupplyManager instance to manage supplies.
+     */
     public DisasterVictimPage(ArrayList<Location> locations, ArrayList<DisasterVictim> victims, Location workLocation, FamilyRelationManager familyManager, SupplyManager supplyManager) {
         setLayout(new BorderLayout());
         this.immutableRows = new ArrayList<>(); // Initialize immutableRows
@@ -268,7 +293,12 @@ public class DisasterVictimPage extends JPanel {
         add(buttonPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
-
+    
+    /**
+     * A Method to get the location name of a victim
+     * 
+     * @param locations  The list of all accessible locations.
+     */
     // Method to get the location name of a victim
     private Location getLocationOfVictim(DisasterVictim victim, ArrayList<Location> locations) {
         for (Location location : locations) {
@@ -278,8 +308,13 @@ public class DisasterVictimPage extends JPanel {
         }
         return null;
     }
-
- // Method to get the names of all locations
+    
+    /**
+     * A method to return location Names to populate the table
+     * 
+     * @param locations  The list of all accessible locations.
+     */
+    // Method to get the names of all locations
     private String[] getLocationNames(ArrayList<Location> locations) {
         String[] locationNames = new String[locations.size()];
         for (int i = 0; i < locations.size(); i++) {
@@ -287,7 +322,13 @@ public class DisasterVictimPage extends JPanel {
         }
         return locationNames;
     }
-
+    
+    /**
+     * Finds a location object using a provided name String.
+     * 
+     * @param name		 A known location name
+     * @param locations  The list of all accessible locations.
+     */
     // Method to find a Location object by its name
     private Location findLocationByName(String name, ArrayList<Location> locations) {
         for (Location location : locations) {
@@ -298,7 +339,12 @@ public class DisasterVictimPage extends JPanel {
         return null; // If no location with the given name is found
     }
 
-
+    /**
+     * Refreshes the table with updated data.
+     * 
+     * @param victims    The updated list of disaster victims.
+     * @param locations  The list of locations where the disaster victims are located.
+     */
     public void refreshTable(ArrayList<DisasterVictim> victims, ArrayList<Location> locations) {
         // Clear the existing rows
         tableModel.setRowCount(0);

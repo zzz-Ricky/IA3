@@ -1,3 +1,19 @@
+/**
+ * The MenuPages class represents the base GUI window of the application.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The MenuPages class stores central information relating to the management of
+ * DisasterVictim data, and relief center locations. It serves as the central
+ * Class of the file.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import javax.swing.*;
@@ -14,7 +30,10 @@ public class MenuPages extends JFrame {
     private Location workLocation;
     private FamilyRelationManager familyManager;
     private SupplyManager supplyManager;
-
+    
+    /**
+     * Constructs a MenuPages object and initializes necessary components.
+     */
     public MenuPages() {
         this.locations = new ArrayList<Location>();
         this.victims = new ArrayList<DisasterVictim>();
@@ -34,7 +53,10 @@ public class MenuPages extends JFrame {
 
         setVisible(true);
     }
-
+    
+    /**
+     * Adds pages to the tabbed pane based on the current work location.
+     */
     private void addPagesToTabbedPane() {
     	if (workLocation != null) {
     		add(new JLabel(workLocation.getName() + " ,  " + workLocation.getAddress()), BorderLayout.NORTH);
@@ -49,7 +71,10 @@ public class MenuPages extends JFrame {
         }
         
     }
-
+    
+    /**
+     * Prompts the user to select their work location or enter as a central worker.
+     */
     private void promptUserType() {
         JComboBox<Object> locationComboBox = new JComboBox<>();
         locationComboBox.addItem("Enter as Central worker"); // Add "Enter as Central worker" option
@@ -90,6 +115,9 @@ public class MenuPages extends JFrame {
         }
     }
     
+    /**
+     * Initializes the setup by creating manager objects and adding sample data.
+     */
     private void initiateSetup() {
         // Initiate manager objects
         this.familyManager = new FamilyRelationManager();
@@ -172,14 +200,18 @@ public class MenuPages extends JFrame {
         victims.add(samplevictim4);
         victims.add(samplevictim5);
     }
-
+    
+    /**
+     * Generates a random gender for a disaster victim.
+     *
+     * @param victim The disaster victim for which gender is generated.
+     * @return A randomly selected gender from the available options.
+     */
     private String getRandomGender(DisasterVictim victim) {
         ArrayList<String> genderOptions = victim.getGenderOptions();
         Random rand = new Random();
         return genderOptions.get(rand.nextInt(genderOptions.size()));
     }
-
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MenuPages::new);

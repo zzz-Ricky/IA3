@@ -1,10 +1,38 @@
+/**
+ * The DisasterVictim class represents a relationship between two People
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The DisasterVictim class stores information relating to the members of a
+ * given relationship and the nature of the relationship listed.
+ * </p>
+ * <p>
+ * The class provides methods to manage and retrieve information about the
+ * members of the relationship and its description.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 public class FamilyRelation {
     private DisasterVictim personOne;
     private String relationshipTo;
     private DisasterVictim personTwo;
-
+    
+    /**
+     * Constructs a new FamilyRelation object with the specified parameters and adds it to the
+     * FamilyRelationManager.
+     *
+     * @param personOne The first person in the relationship.
+     * @param relationshipTo The type of relationship between the two persons.
+     * @param personTwo The second person in the relationship.
+     * @param manager The FamilyRelationManager responsible for managing family relations.
+     */
     public FamilyRelation(DisasterVictim personOne, String relationshipTo, DisasterVictim personTwo,
             FamilyRelationManager manager) {
         // implicitly, we want to define a FamilyRelationManager class in main before

@@ -1,3 +1,16 @@
+/**
+ * Handles the execution of SQL queries and the management of database data related to inquiries and logs.
+ * This class provides methods to interact with the database, including retrieving all inquiries, retrieving inquiry logs,
+ * adding new inquiries and logs, removing existing inquiries and logs, updating existing inquiries and logs, and reading/writing files.
+ * <p>
+ * This class implements the {@link ExternalFileIO} interface to support file input/output operations.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import java.sql.*;
@@ -10,7 +23,10 @@ public class AccessDatabaseLogs implements ExternalFileIO {
     static final String USERNAME = "oop";
     static final String PASSWORD = "ucalgary";
     static Connection dbConnect;
-
+    
+    /**
+     * Establishes a connection to the database.
+     */
     public void mountFile() {
         try {
             // Register JDBC driver
@@ -22,7 +38,10 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * Closes the connection to the database.
+     */
     public void dismountFile() {
         try {
             if (dbConnect != null) {
@@ -32,7 +51,12 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * Retrieves all inquiries from the database.
+     *
+     * @return An ArrayList containing arrays of inquiry information.
+     */
     public ArrayList<String[]> getAllInquiries() {
         Statement stmt = null;
         ArrayList<String[]> inquiries = new ArrayList<>();
@@ -66,7 +90,12 @@ public class AccessDatabaseLogs implements ExternalFileIO {
 
         return inquiries;
     }
-
+    
+    /**
+     * Retrieves all inquiry logs from the database.
+     *
+     * @return An ArrayList containing arrays of inquiry log information.
+     */
     public ArrayList<String[]> getAllInquiryLogs() {
         Statement stmt = null;
         ArrayList<String[]> logs = new ArrayList<>();
@@ -103,7 +132,11 @@ public class AccessDatabaseLogs implements ExternalFileIO {
 
         return logs;
     }
-
+    
+    /**
+     * Adds a new inquirer instance to the database.
+     *
+     */
     public void addInquirer(String firstName, String lastName, String phoneNumber) {
         PreparedStatement pstmt = null;
 
@@ -132,7 +165,11 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             }
         }
     }
-
+    
+    /**
+     * Adds a new inquiry instance to the database.
+     *
+     */
     public void addInquiryLog(String firstName, String lastName, String callDate, String details) {
         PreparedStatement pstmt = null;
 
@@ -193,7 +230,11 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             }
         }
     }
-
+    
+    /**
+     * Removes an inquirer instance from the database.
+     *
+     */
     public void removeInquirer(String firstName, String lastName, String phoneNumber) {
         PreparedStatement pstmt = null;
 
@@ -222,7 +263,11 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             }
         }
     }
-
+    
+    /**
+     * Removes an inquiry instance from the database.
+     *
+     */
     public void removeInquiryLog(String firstName, String lastName, String details) {
         PreparedStatement pstmt = null;
 
@@ -258,7 +303,11 @@ public class AccessDatabaseLogs implements ExternalFileIO {
         }
     }
 
-    // Method to find the inquirer ID based on first and last names
+    /**
+     * Method to find the inquirer ID based on first and last names
+     *
+     * @return an integer ID which corresponds to the parameters used to identify the inquirer.
+     */
     public int findInquirerId(String firstName, String lastName, boolean mountConnection) {
         int inquirerId = -1;
         try {
@@ -289,7 +338,11 @@ public class AccessDatabaseLogs implements ExternalFileIO {
         }
         return inquirerId;
     }
-
+    
+    /**
+     * Performs an SQL update to the inquirer table corresponding to the provided parameters.
+     *
+     */
     public void updateInquirer(int inquirerId, String firstName, String lastName, String phoneNumber) {
         PreparedStatement pstmt = null;
 
@@ -319,7 +372,11 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             }
         }
     }
-
+    
+    /**
+     * Performs an SQL update to the inquiry table corresponding to the provided parameters.
+     *
+     */
     public void updateInquiryLog(int inquirerId, String callDate, String details) {
         PreparedStatement pstmt = null;
 

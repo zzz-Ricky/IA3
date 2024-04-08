@@ -1,3 +1,17 @@
+/**
+ * The Location class represents relief center that houses DisasterVictims.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The class provides methods to set and get information relating to this class.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import java.util.HashSet;
@@ -54,7 +68,23 @@ public class Location {
     public void removeOccupant(DisasterVictim occupant) {
         this.occupants.remove(occupant);
     }
-
+    
+    /**
+     * Adds a new supply to the collection.
+     * <p>
+     * If the supplied quantity is less than or equal to zero, an IllegalArgumentException is thrown.
+     * </p>
+     * <p>
+     * If a supply with the same description already exists in the collection, its quantity is incremented
+     * by the quantity of the new supply.
+     * </p>
+     * <p>
+     * If the supply does not already exist in the collection, it is added to the collection.
+     * </p>
+     *
+     * @param newSupply The supply to add to the collection.
+     * @throws IllegalArgumentException If the quantity of the new supply is less than or equal to zero.
+     */
     public void addSupply(Supply newSupply) {
         if (newSupply.getQuantity() <= 0) {
             // Error check: Quantity must be positive
@@ -72,8 +102,6 @@ public class Location {
         // If the supply does not exist, add it to the HashSet
         this.supplies.add(newSupply);
     }
-
-
 
     public void removeSupply(Supply supply) {
         // used for removing a supply without transferring it to a victim, such as

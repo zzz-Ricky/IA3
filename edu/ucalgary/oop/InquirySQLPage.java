@@ -1,3 +1,18 @@
+/**
+ * The InquirySQLpage class represents a UI tab that allows users to interact with SQL database data.
+ * It extends the JPanel class.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The class provides methods to draw object data from cell information.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import javax.swing.*;
@@ -20,7 +35,19 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
     private JButton saveEditsButton;
     private JButton discardEditsButton;
     private JButton removeButton;
-
+    
+    /**
+     * Constructs a new InquirySQLPage with default settings.
+     * <p>
+     * This constructor initializes the UI components, sets up the database connection,
+     * creates tables for displaying inquirers and inquiry logs, and configures functionality
+     * such as adding, removing, and searching inquirers and logs.
+     * </p>
+     * <p>
+     * Upon instantiation, the InquirySQLPage tab is added to a JTabbedPane within a JFrame,
+     * allowing users to interact with the SQL database data through a graphical user interface.
+     * </p>
+     */
     public InquirySQLPage() {
         database = new AccessDatabaseLogs();
 
@@ -249,7 +276,10 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
         panel.add(scrollPane, BorderLayout.CENTER);
         return panel;
     }
-
+    
+    /**
+     * Updates the table displaying inquirers with data fetched from the database.
+     */
     // Method to update the inquiry table
     private void updateInquiryTable() {
         inquiryTableModel.setRowCount(0);
@@ -258,7 +288,10 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
             inquiryTableModel.addRow(inquiry);
         }
     }
-
+    
+    /**
+     * Updates the table displaying inquiry logs with data fetched from the database.
+     */
     // Method to update the log table
     private void updateLogTable() {
         logTableModel.setRowCount(0);
@@ -267,7 +300,12 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
             logTableModel.addRow(log);
         }
     }
-
+    
+    /**
+     * Searches the inquirer table based on the provided search text and updates the table accordingly.
+     *
+     * @param searchText The text to search for in the inquirer table.
+     */
     // Method to search the inquiry table
     private void searchInquiryTable(String searchText) {
         DefaultRowSorter<TableModel, Integer> sorter = (DefaultRowSorter<TableModel, Integer>) inquiryTable
@@ -278,7 +316,12 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
         }
     }
-
+    
+    /**
+     * Searches the inquirer table based on the provided search text and updates the table accordingly.
+     *
+     * @param searchText The text to search for in the inquirer table.
+     */
     // Method to search the log table
     private void searchLogTable(String searchText) {
         DefaultRowSorter<TableModel, Integer> sorter = (DefaultRowSorter<TableModel, Integer>) logTable.getRowSorter();
@@ -288,26 +331,14 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Inquiry Logs");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            // Create tab pane
-            JTabbedPane tabbedPane = new JTabbedPane();
-
-            // Add InquirySQLPage to tab pane
-            InquirySQLPage inquiryPage = new InquirySQLPage();
-            tabbedPane.addTab("Inquiry Logs", inquiryPage);
-
-            frame.add(tabbedPane);
-            frame.setSize(800, 400);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-    }
-
+    
+    /**
+     * Validates the format of a phone number.
+     *
+     * @param phoneNumber The phone number to validate.
+     * @return True if the phone number is valid, otherwise false.
+     * @throws IllegalArgumentException If the phone number is invalid.
+     */
     private boolean validatePhone(String phoneNumber){
         JFrame frame = new JFrame("ERROR");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -324,6 +355,13 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
         return true;
     }
     
+    /**
+     * Validates the format of a date string and checks if it represents a valid date.
+     *
+     * @param date The date string to validate.
+     * @return True if the date string is valid, otherwise false.
+     * @throws IllegalArgumentException If the date string is invalid or represents an invalid date.
+     */
 	@Override
     public boolean validateDate(String date) {
 		

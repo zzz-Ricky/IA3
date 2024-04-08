@@ -1,3 +1,30 @@
+/**
+ * The Person class abstractly represents a human being.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The Person class serves as the base class for different types of persons involved in disaster management,
+ * such as DisasterVictim, responders, etc.
+ * It provides common attributes and methods shared by all persons.
+ * </p>
+ * <p>
+ * The class includes methods for managing family connections, setting and retrieving personal information,
+ * and performing file input/output operations.
+ * </p>
+ * <p>
+ * This class also implements the ExternalFileIO interface to read data from external files.
+ * </p>
+ * <p>
+ * Date management methods are implemented to perform date validation operations.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
+
 package edu.ucalgary.oop;
 
 import java.util.HashSet;
@@ -12,7 +39,14 @@ abstract class Person implements ExternalFileIO {
     private HashSet<FamilyRelation> familyConnections;
     private String genderPronoun;
     private static ArrayList<String> genderOptions;
-
+    
+    /**
+     * Constructs a Person object with the specified first name, last name, and gender pronoun.
+     *
+     * @param firstName     The first name of the person.
+     * @param lastName      The last name of the person.
+     * @param genderPronoun The gender pronoun of the person.
+     */
     public Person(String firstName, String lastName, String genderPronoun) {
         this.firstName = firstName;
         this.lastName = lastName != null ? lastName : "";
@@ -22,7 +56,12 @@ abstract class Person implements ExternalFileIO {
         }
         setGender(genderPronoun); // Validate and set gender pronoun
     }
-
+    
+    /**
+     * Reads gender options from an external file and returns them as a list.
+     *
+     * @return An ArrayList containing the available gender options.
+     */
     // Method to read gender options from file
     @Override
     public ArrayList<String> readFile() {
@@ -40,7 +79,13 @@ abstract class Person implements ExternalFileIO {
         }
         return genderOptions;
     }
-
+    
+    /**
+     * Validates and sets the gender pronoun of the person.
+     *
+     * @param genderPronoun The gender pronoun to be set.
+     * @throws IllegalArgumentException If the gender pronoun is invalid or not found in the available options.
+     */
     // Validate and set gender pronoun
     public void setGender(String genderPronoun) {
         if (genderOptions.contains(genderPronoun)) {
@@ -88,7 +133,14 @@ abstract class Person implements ExternalFileIO {
     public void setFamilyConnections(HashSet<FamilyRelation> familyConnections) {
         this.familyConnections = familyConnections;
     }
-
+    
+    /**
+     * Adds a family connection to the person.
+     *
+     * @param familyConnection The family relation to be added.
+     * @param manager          The FamilyRelationManager object for managing family relations.
+     * @throws IllegalArgumentException If the family connection cannot be added.
+     */
     public void addFamilyConnection(FamilyRelation familyConnection, FamilyRelationManager manager) {
         boolean isValid = manager.checkInRelationship(familyConnection, this);
         if (isValid) {
@@ -105,7 +157,12 @@ abstract class Person implements ExternalFileIO {
             throw new IllegalArgumentException("Cannot add a personal relationship a person is not in");
         }
     }
-
+    
+    /**
+     * Removes a family connection from the person.
+     *
+     * @param familyConnection The family relation to be removed.
+     */
     public void removeFamilyConnection(FamilyRelation familyConnection) {
         this.familyConnections.remove(familyConnection);
     }

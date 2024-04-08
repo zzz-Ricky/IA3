@@ -1,3 +1,19 @@
+/**
+ * The LocationManagementPage class represents a UI panel for managing supplies at a specific location.
+ * It extends the JPanel class and provides functionality to view, add, and update supplies.
+ * <p>
+ * This class displays a table of supplies, allowing users to view the current inventory at the specified location.
+ * Users can also add new supplies by entering the supply type and quantity through a popup window.
+ * </p>
+ * <p>
+ * The class is designed to work with a Location object representing the work location where the supplies are managed.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import javax.swing.*;
@@ -83,7 +99,20 @@ public class LocationManagementPage extends JPanel {
         });
         add(addSupplyButton, BorderLayout.SOUTH);
     }
-
+    
+    /**
+     * Updates the table with the supplies from the specified location.
+     * <p>
+     * This method clears the existing data in the inventory table model and populates the table
+     * with the supplies retrieved from the given work location. Each row in the table represents
+     * a supply, with columns for the supply type and quantity.
+     * </p>
+     * <p>
+     * After updating the table, the UI is refreshed to reflect the changes.
+     * </p>
+     *
+     * @param workLocation The location from which to retrieve the supplies to populate the table.
+     */
     // Method to update the table with supplies from a location
     private void updateTable(Location workLocation) {
         inventoryTableModel.setRowCount(0); // Clear previous data

@@ -1,3 +1,22 @@
+/**
+ * The Inquiry class represents an inquiry made by an inquirer
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The Inquiry class stores information relating to the disaster victim which
+ * a given inquirer is looking for. This includes the date of the inquiry, 
+ * a written description statement, and a last known (shelter) location.
+ * </p>
+ * <p>
+ * The class provides methods to set and get information relating to this class.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 public class Inquiry implements DateManageMent, InfoManagement {
@@ -5,7 +24,15 @@ public class Inquiry implements DateManageMent, InfoManagement {
     private String dateOfInquiry;
     private String description;
     private Location lastKnownLocation;
-
+    
+    /**
+     * Constructs a new Inquiry object with the specified parameters.
+     *
+     * @param missingPerson    The missing person associated with the inquiry.
+     * @param dateOfInquiry    The date of the inquiry in the format "YYYY-MM-DD".
+     * @param description      The description of the inquiry.
+     * @param lastKnownLocation The last known location of the missing person.
+     */
     public Inquiry(DisasterVictim missingPerson,
             String dateOfInquiry, String description, Location lastKnownLocation) {
         this.missingPerson = missingPerson;
@@ -14,7 +41,15 @@ public class Inquiry implements DateManageMent, InfoManagement {
         this.description = description;
         this.lastKnownLocation = lastKnownLocation;
     }
+    
 
+    /**
+     * Validates a date string in the format "YYYY-MM-DD".
+     *
+     * @param date The date string to validate.
+     * @return true if the date is valid, otherwise false.
+     * @throws IllegalArgumentException if the date format is invalid or if the date values are not within valid ranges.
+     */
     @Override
     public boolean validateDate(String date) {
         // Check if the date has the date in the correct format such as "2024-01-18"

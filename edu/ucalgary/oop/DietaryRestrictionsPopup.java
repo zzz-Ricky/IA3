@@ -1,3 +1,23 @@
+/**
+ * The DietaryRestrictionsPopup class represents a popup window for managing dietary restrictions of disaster victims.
+ * It allows users to view, add, and remove dietary restrictions for a selected victim.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The popup window displays a table of existing dietary restrictions for the selected victim,
+ * provides options to add new dietary restrictions, and remove existing ones.
+ * </p>
+ * <p>
+ * The dietary restrictions are managed through interactions with a main window (parent window),
+ * a table of victims, and a table model.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import java.awt.BorderLayout;
@@ -21,6 +41,16 @@ public class DietaryRestrictionsPopup {
     private DisasterVictim selectedVictim; // Changed to class-level field
     private DisasterVictim lastSelectedPerson; //Used to cache the selectedVictim, prevents edge case bugs
     
+    /**
+     * Constructs a new DietaryRestrictionsPopup with the specified parameters.
+     *
+     * @param restrictions   The list of existing dietary restrictions.
+     * @param victimTable    The table of disaster victims.
+     * @param tableModel     The table model for the victim table.
+     * @param victims        The list of disaster victims.
+     * @param locations      The list of locations.
+     * @param parentWindow   The parent window (main window).
+     */
     DietaryRestrictionsPopup(ArrayList<DietaryRestrictions> restrictions, JTable victimTable,
             DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, ArrayList<Location> locations, DisasterVictimPage parentWindow) {
         this.parentWindow = parentWindow;
@@ -151,7 +181,13 @@ public class DietaryRestrictionsPopup {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-
+    
+    /**
+     * Refreshes the dietary restrictions table with updated data.
+     *
+     * @param preferences   The list of dietary preferences to display.
+     * @param containedTable    The table model for the dietary restrictions table.
+     */
     private void refreshDietaryRestrictionsTable(ArrayList<DietaryRestrictions> preferences,
             DefaultTableModel containedTable) {
         // Clear the existing rows

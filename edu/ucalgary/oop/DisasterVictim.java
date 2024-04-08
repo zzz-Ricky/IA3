@@ -1,3 +1,30 @@
+/**
+ * The DisasterVictim class represents a victim of a disaster event.
+ * It extends the Person class and implements the DateManageMent and InfoManagement interfaces.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The DisasterVictim class stores information such as date of birth/age, description, assigned social ID,
+ * medical records, entry date, personal belongings, and dietary preferences.
+ * </p>
+ * <p>
+ * The class provides methods to manage and retrieve information about the victim,
+ * including setting date of birth/age, adding/removing medical records, personal belongings, and dietary preferences,
+ * and accessing descriptive information.
+ * </p>
+ * <p>
+ * The class also includes methods for file input/output operations.
+ * These methods are inherited from the abstract Person class.
+ * 
+ * Date Management methods are implemented to perform date validation operations.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import java.util.HashSet;
@@ -13,7 +40,12 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
     private ArrayList<DietaryRestrictions> dietaryPreference;
     static int counter;
 
-    // In DisasterVictim class
+    /**
+     * Constructs a new DisasterVictim with the specified first name and entry date.
+     *
+     * @param firstName   The first name of the victim.
+     * @param ENTRY_DATE  The entry date of the victim.
+     */
     public DisasterVictim(String firstName, String ENTRY_DATE) {
         super(firstName, null, null); // Pass null for lastName and genderPronoun
         validateDate(ENTRY_DATE);
@@ -24,7 +56,13 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
         this.ASSIGNED_SOCIAL_ID = counter;
         counter++;
     }
-
+    
+    /**
+     * Validates the format of the provided date string.
+     *
+     * @param date The date string to be validated.
+     * @return true if the date string is in a valid format, false otherwise.
+     */
     @Override
     public boolean validateDate(String date) {
         // Check if the date has the date in the correct format such as "2024-01-18"

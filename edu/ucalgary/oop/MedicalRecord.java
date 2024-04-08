@@ -1,17 +1,55 @@
+/**
+ * The MedicalRecord class represents a medical record containing information about a treatment.
+ * It implements the InfoManagement and DateManagement interfaces to manage treatment details and dates.
+ * <p>
+ * This class encapsulates details such as the location where the treatment occurred, treatment details,
+ * and the date of the treatment.
+ * </p>
+ * <p>
+ * Medical records are used to store and retrieve information about medical treatments for patients.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 public class MedicalRecord implements DateManageMent, InfoManagement {
     private Location location;
     private String treatmentDetails;
     private String dateOfTreatment;
-
+    
+    /**
+     * Constructs a new MedicalRecord object with the specified location, treatment details, and date of treatment.
+     * <p>
+     * This constructor initializes a medical record with the given location where the treatment occurred,
+     * treatment details describing the procedure or medication administered, and the date of the treatment.
+     * </p>
+     * <p>
+     * The date of treatment must be provided in the format "YYYY-MM-DD" and is validated to ensure it is a valid date.
+     * If an invalid date format or an invalid date is provided, an IllegalArgumentException is thrown.
+     * </p>
+     *
+     * @param location         The location where the treatment occurred.
+     * @param treatmentDetails Details of the treatment procedure or medication administered.
+     * @param dateOfTreatment  The date when the treatment occurred, in the format "YYYY-MM-DD".
+     * @throws IllegalArgumentException If the date of treatment is not in the correct format or represents an invalid date.
+     */
     public MedicalRecord(Location location, String treatmentDetails, String dateOfTreatment) {
         this.location = location;
         this.treatmentDetails = treatmentDetails;
         validateDate(dateOfTreatment);
         this.dateOfTreatment = dateOfTreatment;
     }
-
+    
+    /**
+     * Validates the format of the provided date string.
+     *
+     * @param date The date string to be validated.
+     * @return true if the date string is in a valid format, false otherwise.
+     */
     @Override
     public boolean validateDate(String date) {
         // Check if the date has the date in the correct format such as "2024-01-18"

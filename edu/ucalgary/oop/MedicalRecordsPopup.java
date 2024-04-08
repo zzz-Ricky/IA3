@@ -1,3 +1,23 @@
+/**
+ * The MedicalRecordsPopup class represents a popup window for managing the Medical Records of disaster victims.
+ * It allows users to view, add, and remove medical records from a selected victim.
+ * <p>
+ * This class is part of the edu.ucalgary.oop package.
+ * </p>
+ * <p>
+ * The popup window displays a table of existing Medical Records for the selected victim,
+ * provides options to add new medical records, and remove existing ones.
+ * </p>
+ * <p>
+ * The medical records are managed through interactions with a main window (parent window),
+ * a table of victims, and a table model.
+ * </p>
+ *
+ * @author Ricky Huynh
+ * @version 1.0
+ * @since 07/04/24
+ */
+
 package edu.ucalgary.oop;
 
 import java.awt.BorderLayout;
@@ -29,6 +49,16 @@ public class MedicalRecordsPopup {
     private DisasterVictim selectedVictim; // Changed to class-level field
     private Location location;
     
+    /**
+     * Constructs a FamilyConnectionsPopup object with the specified parameters.
+     *
+     * @param records       The set of existing medical records.
+     * @param shelters		The set of all existing locations
+     * @param victimTable   The table displaying victim information.
+     * @param tableModel    The table model for victim information.
+     * @param victims       The list of disaster victims.
+     * @param parentWindow  The parent window.
+     */
     public MedicalRecordsPopup(ArrayList<MedicalRecord> records, ArrayList<Location> shelters, JTable victimTable,
             DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, DisasterVictimPage parentWindow) {
         this.parentWindow = parentWindow;
@@ -175,7 +205,13 @@ public class MedicalRecordsPopup {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-
+    
+    /**
+     * Refreshes the medical record table with updated data.
+     *
+     * @param records             The updated set of medical records.
+     * @param containedTableModel The table model for family connections.
+     */
     private void refreshMedicalRecordTable(ArrayList<MedicalRecord> records, DefaultTableModel containedTable) {
         // Clear the existing rows
         containedTable.setRowCount(0);
@@ -192,6 +228,20 @@ public class MedicalRecordsPopup {
         containedTable.fireTableDataChanged();
     }
     
+    /**
+     * Finds a MedicalRecord object with the specified name from the given list of medical records.
+     * <p>
+     * This method iterates through the list of medical records and returns the first record whose
+     * description matches the provided name.
+     * </p>
+     * <p>
+     * If no medical record with the given name is found in the list, null is returned.
+     * </p>
+     *
+     * @param name    The name of the medical record to find.
+     * @param records The list of medical records to search.
+     * @return The MedicalRecord object with the specified name, or null if not found.
+     */
     // Method to find a MedicalRecord object by its name
     private MedicalRecord findMedicalRecordByName(String name, ArrayList<MedicalRecord> records) {
         for (MedicalRecord record : records) {
