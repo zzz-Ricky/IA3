@@ -43,8 +43,8 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
     /**
      * Constructs a new DisasterVictim with the specified first name and entry date.
      *
-     * @param firstName   The first name of the victim.
-     * @param ENTRY_DATE  The entry date of the victim.
+     * @param firstName  The first name of the victim.
+     * @param ENTRY_DATE The entry date of the victim.
      */
     public DisasterVictim(String firstName, String ENTRY_DATE) {
         super(firstName, null, null); // Pass null for lastName and genderPronoun
@@ -56,7 +56,7 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
         this.ASSIGNED_SOCIAL_ID = counter;
         counter++;
     }
-    
+
     /**
      * Validates the format of the provided date string.
      *
