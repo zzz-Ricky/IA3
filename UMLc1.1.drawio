@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-03-26T21:29:37.878Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0" etag="8-QTmb6XzYFbmYxaOiL3" version="24.0.6" type="device">
+<mxfile host="app.diagrams.net" modified="2024-04-08T05:43:46.059Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0" etag="xe_sBgpd52KkqKfNPORt" version="24.2.0" type="device">
   <diagram id="zkX_Ij1qU_FOuQ2T3JUF" name="Page-1">
-    <mxGraphModel dx="-2670" dy="5868" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3200" pageHeight="2500" background="#FFFFFF" math="0" shadow="0">
+    <mxGraphModel dx="-2576" dy="6021" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3200" pageHeight="2500" background="#FFFFFF" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -248,7 +248,7 @@
         <mxCell id="77" value="operations" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="73" vertex="1">
           <mxGeometry y="108" width="440" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="78" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- validateRelationship(): boolean&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+ addRelationship(relationship: FamilyRelation): void&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+ removeRelationship(relationship: FamilyRelation): void&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;+ setPersonOne(relationship: FamilyRelation, personOne: DisasterVictim): void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ setPersonTwo(relationship: FamilyRelation, personTwo: DisasterVictim): void&lt;/div&gt;&lt;div&gt;+ setRelationshipTo(relationship: FamilyRelation, relationshipTo: String): void&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+ getRelationships(person: DisasterVictim): HashSet&amp;lt;FamilyRelation&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+ getRelationshipTo(relationship: DisasterVictim): String&lt;/div&gt;&lt;div&gt;+ getPersonTwo(relationship: FamilyRelation): DisasterVictim&lt;/div&gt;&lt;div&gt;+ getPersonOne(relationship: FamilyRelation): DisasterVictim&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="73" vertex="1">
+        <mxCell id="78" value="&lt;div style=&quot;font-size: 10px;&quot;&gt;&lt;span style=&quot;background-color: initial; font-size: 10px;&quot;&gt;- validateRelationship(): boolean&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;&lt;span style=&quot;background-color: initial; font-size: 10px;&quot;&gt;+ addRelationship(relationship: FamilyRelation): void&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;&lt;span style=&quot;background-color: initial; font-size: 10px;&quot;&gt;+ removeRelationship(relationship: FamilyRelation): void&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;+ setPersonOne(relationship: FamilyRelation, personOne: DisasterVictim): void&lt;br style=&quot;font-size: 10px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;+ setPersonTwo(relationship: FamilyRelation, personTwo: DisasterVictim): void&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;+ setRelationshipTo(relationship: FamilyRelation, relationshipTo: String): void&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;&lt;span style=&quot;background-color: initial; font-size: 10px;&quot;&gt;+ getRelationships(person: DisasterVictim): HashSet&amp;lt;FamilyRelation&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;+ getRelationshipTo(relationship: DisasterVictim): String&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;+ getPersonTwo(relationship: FamilyRelation): DisasterVictim&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;+ getPersonOne(relationship: FamilyRelation): DisasterVictim&lt;br style=&quot;font-size: 10px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px;&quot;&gt;&lt;br style=&quot;font-size: 10px;&quot;&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="73" vertex="1">
           <mxGeometry y="128" width="440" height="152" as="geometry" />
         </mxCell>
         <mxCell id="80" value="SupplyManager" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=55;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
@@ -266,29 +266,32 @@
         <mxCell id="85" value="- checkSupplyAvailability(): boolean&lt;br&gt;+ transferSupplies(person: DisasterVictim,&amp;nbsp;&lt;br&gt;supply: HashSet&amp;lt;Supply&amp;gt;, location: Location) void&lt;br&gt;+ giveSupply(person: DisasterVictim, supply: Suppy, &lt;br&gt;location: Location, quantity: int) void" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="80" vertex="1">
           <mxGeometry y="103" width="300" height="97" as="geometry" />
         </mxCell>
-        <mxCell id="188" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;dashed=1;startArrow=none;startFill=0;endArrow=classic;endFill=1;fillColor=#60a917;strokeColor=#000000;entryX=0.401;entryY=0.993;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="116" target="182" edge="1">
+        <mxCell id="188" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;startArrow=none;startFill=0;endArrow=classic;endFill=1;fillColor=#60a917;strokeColor=#000000;entryX=0.401;entryY=0.993;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="182" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="4910" y="-4840" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="4590" y="-4110" />
-              <mxPoint x="4720" y="-4110" />
+              <mxPoint x="4720" y="-4061" />
             </Array>
+            <mxPoint x="4720" y="-4061" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="116" value="AccessDatabaseLogs" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=55;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
-          <mxGeometry x="4450" y="-4060" width="280" height="170" as="geometry" />
+          <mxGeometry x="4280" y="-4060" width="460" height="350" as="geometry" />
         </mxCell>
         <mxCell id="117" value="attributes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="116" vertex="1">
-          <mxGeometry y="55" width="280" height="20" as="geometry" />
+          <mxGeometry y="55" width="460" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5gc0bFKOEUMQOeYYkHy9-284" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;+ &amp;lt;&amp;lt;final&amp;gt;&amp;gt; String JDBC_DRIVER&lt;br&gt;+ &amp;lt;&amp;lt;final&amp;gt;&amp;gt; String DBURL&lt;br&gt;+ &amp;lt;&amp;lt;final&amp;gt;&amp;gt; String USERNAME&lt;br&gt;+ &amp;lt;&amp;lt;final&amp;gt;&amp;gt; String PASSWORD&lt;br&gt;- Connection dbConnect&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="116">
+          <mxGeometry y="75" width="460" height="65" as="geometry" />
         </mxCell>
         <mxCell id="119" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="116" vertex="1">
-          <mxGeometry y="75" width="280" height="8" as="geometry" />
+          <mxGeometry y="140" width="460" height="8" as="geometry" />
         </mxCell>
         <mxCell id="120" value="operations" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="116" vertex="1">
-          <mxGeometry y="83" width="280" height="20" as="geometry" />
+          <mxGeometry y="148" width="460" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="121" value="&lt;div&gt;+ databaseSelect() Inquiry&lt;/div&gt;&lt;div&gt;+ databaseUpdate(inquiry: Inquiry) void&lt;/div&gt;&lt;div&gt;+ databaseDelete(inquiry: Inquiry) void&lt;/div&gt;&lt;div&gt;+ dabase Insert(inquiry: Inquiry) void&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="116" vertex="1">
-          <mxGeometry y="103" width="280" height="67" as="geometry" />
+        <mxCell id="121" value="+ mountFile(): void&lt;br style=&quot;font-size: 10px;&quot;&gt;+ dismountFile(): void&lt;br style=&quot;font-size: 10px;&quot;&gt;+ getAllInquiries(): ArrayList&amp;lt;String[]&amp;gt;&lt;br style=&quot;font-size: 10px;&quot;&gt;+ getAllInquiryLogs(): ArrayList&amp;lt;String[]&amp;gt;&lt;br style=&quot;font-size: 10px;&quot;&gt;+ addInquirer(String firstName, String lastName, String phoneNumber): void&lt;br style=&quot;font-size: 10px;&quot;&gt;+ addInquiryLog(String firstName, String lastName, String callDate, String details): void&lt;br style=&quot;font-size: 10px;&quot;&gt;+ removeInquirer(String firstName, String lastName, String phoneNumber): void&lt;br style=&quot;font-size: 10px;&quot;&gt;+ removeInquiryLog(String firstName, String lastName, String details): void&lt;br style=&quot;font-size: 10px;&quot;&gt;+ findInquirerId(String firstName, String lastName, boolean mountConnection): int&lt;br style=&quot;font-size: 10px;&quot;&gt;+ updateInquirer(int inquirerId, String firstName, String lastName, String phoneNumber): void&lt;br style=&quot;font-size: 10px;&quot;&gt;+ updateInquiryLog(int inquirerId, String callDate, String details): void&lt;br style=&quot;font-size: 10px;&quot;&gt;- readFile(): ArrayList&amp;lt;String&amp;gt;&lt;br style=&quot;font-size: 10px;&quot;&gt;- writeFile(): void&lt;div style=&quot;font-size: 10px;&quot;&gt;&lt;br style=&quot;font-size: 10px;&quot;&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="116" vertex="1">
+          <mxGeometry y="168" width="460" height="182" as="geometry" />
         </mxCell>
         <mxCell id="141" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.077;entryY=1.02;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;fillColor=#60a917;strokeColor=#000000;" parent="1" source="122" target="132" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -356,12 +359,6 @@
         <mxCell id="166" value="+ getDate() String" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;" parent="159" vertex="1">
           <mxGeometry y="125" width="250" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="164" value="&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;&amp;nbsp;DietaryRestrictions&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
-          <mxGeometry x="4090" y="-3390" width="140" height="190" as="geometry" />
-        </mxCell>
-        <mxCell id="165" value="AVML&lt;br&gt;DBML&lt;br&gt;GFML&lt;br&gt;KSML&lt;br&gt;LSML&lt;br&gt;MOML&lt;br&gt;PFML&lt;br&gt;VGML&lt;br&gt;VJML" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="164" vertex="1">
-          <mxGeometry y="40" width="140" height="150" as="geometry" />
-        </mxCell>
         <mxCell id="167" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;endArrow=open;endFill=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fillColor=#60a917;strokeColor=#000000;" parent="1" source="170" target="133" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="5380" y="-3150" as="sourcePoint" />
@@ -424,10 +421,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="196" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;startArrow=none;startFill=0;endArrow=open;endFill=0;fillColor=#60a917;strokeColor=#000000;" parent="1" source="155" target="213" edge="1">
+        <mxCell id="196" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.805;entryY=0.02;entryDx=0;entryDy=0;dashed=1;startArrow=none;startFill=0;endArrow=open;endFill=0;fillColor=#60a917;strokeColor=#000000;entryPerimeter=0;" parent="1" source="155" target="213" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="4770" y="-3996" />
+              <mxPoint x="4921" y="-3996" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -489,7 +486,7 @@
           <mxGeometry y="188" width="310" height="142" as="geometry" />
         </mxCell>
         <mxCell id="213" value="IllegalArgumentException" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=55;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
-          <mxGeometry x="4670" y="-3870" width="200" height="100" as="geometry" />
+          <mxGeometry x="4760" y="-3980" width="200" height="100" as="geometry" />
         </mxCell>
         <mxCell id="214" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="213" vertex="1">
           <mxGeometry y="55" width="200" height="45" as="geometry" />
@@ -565,7 +562,7 @@
             <mxPoint x="-13" y="12" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="243" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.334;entryY=-0.002;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;" parent="1" source="202" target="50" edge="1">
+        <mxCell id="243" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1.007;exitY=0.849;exitDx=0;exitDy=0;entryX=0.334;entryY=-0.002;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;exitPerimeter=0;" parent="1" source="202" target="50" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="244" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;jumpStyle=arc;dashed=1;" parent="1" source="199" target="121" edge="1">
@@ -589,12 +586,12 @@
             <mxPoint x="270" y="-13" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="249" style="edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;html=1;exitX=0.631;exitY=1.007;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;entryX=0.652;entryY=1.002;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="71" target="121" edge="1">
+        <mxCell id="249" style="edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;html=1;exitX=0.631;exitY=1.007;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;" parent="1" source="71" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="4630" y="-3830" as="targetPoint" />
+            <mxPoint x="4638" y="-3710" as="targetPoint" />
             <Array as="points">
               <mxPoint x="5754" y="-3570" />
-              <mxPoint x="4633" y="-3570" />
+              <mxPoint x="4638" y="-3570" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -696,6 +693,18 @@
         </mxCell>
         <mxCell id="biBuhSFXarAVXknmqJCp-289" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="biBuhSFXarAVXknmqJCp-288" vertex="1">
           <mxGeometry y="55" width="200" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="5gc0bFKOEUMQOeYYkHy9-292" value="&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;&amp;nbsp;DietaryRestrictions&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=42;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="4090" y="-3400" width="140" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="165" value="AVML&lt;br&gt;DBML&lt;br&gt;GFML&lt;br&gt;KSML&lt;br&gt;LSML&lt;br&gt;MOML&lt;br&gt;PFML&lt;br&gt;VGML&lt;br&gt;VJML" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="5gc0bFKOEUMQOeYYkHy9-292" vertex="1">
+          <mxGeometry y="42" width="140" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="5gc0bFKOEUMQOeYYkHy9-297" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="5gc0bFKOEUMQOeYYkHy9-292">
+          <mxGeometry y="192" width="140" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="5gc0bFKOEUMQOeYYkHy9-299" value="+ getRestriction()" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="5gc0bFKOEUMQOeYYkHy9-292">
+          <mxGeometry y="200" width="140" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

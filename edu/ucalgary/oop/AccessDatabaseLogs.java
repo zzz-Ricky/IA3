@@ -27,6 +27,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
     /**
      * Establishes a connection to the database.
      */
+    @Override
     public void mountFile() {
         try {
             // Register JDBC driver
@@ -42,6 +43,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
     /**
      * Closes the connection to the database.
      */
+    @Override
     public void dismountFile() {
         try {
             if (dbConnect != null) {

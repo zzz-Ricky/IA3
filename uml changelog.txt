@@ -1,1 +1,10 @@
 removed private class from DateManagement interface
+AccessDatabaseLogs:
+    Originally designed prior to learning about java IO 
+        added the following attributes:
+            static final String JDBC_DRIVER
+            static final String DBURL
+            static final String USERNAME
+            static final String PASSWORD
+            static Connection dbConnect;
+    
