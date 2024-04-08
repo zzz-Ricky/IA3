@@ -3,6 +3,8 @@ package edu.ucalgary.oop;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -140,7 +142,63 @@ public class FamilyConnectionsPopup {
             addConnectionFrame.setLocationRelativeTo(null);
             addConnectionFrame.setVisible(true);
         });
-        frame.add(addButton, BorderLayout.NORTH);
+        
+        JButton removeButton = new JButton("Remove Selected");
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = containedTable.getSelectedRow();
+                
+                if (selectedRow != -1) {
+                    // Get the data of the selected row
+                    String personOneName = (String) containedTable.getValueAt(selectedRow, 0);
+                    String relationshipTo = (String) containedTable.getValueAt(selectedRow, 1);
+                    String personTwoName = (String) containedTable.getValueAt(selectedRow, 2);
+                    
+                    DisasterVictim personOne = null;
+                    DisasterVictim personTwo = null;
+                    
+                    // Find the FamilyRelation object corresponding to the selected row
+                    for (FamilyRelation relation : familyManager.getRelationshipRecord()) {
+                        if (relation.getPersonOne().getFirstName().equals(personOneName) &&
+                            relation.getRelationshipTo().equals(relationshipTo) &&
+                            relation.getPersonTwo().getFirstName().equals(personTwoName)) {
+                            
+                            // Get the DisasterVictim objects from the FamilyRelation
+                            personOne = relation.getPersonOne();
+                            personTwo = relation.getPersonTwo();
+                            
+                            // Remove the family relation from the victims
+                            personOne.removeFamilyConnection(relation);
+                            personTwo.removeFamilyConnection(relation);
+                            
+                            // Remove the family relation from the familyManager registry
+                            familyManager.removeRelationship(relation);
+                            // Refresh the family connection table
+                            refreshFamilyRelationTable(familyManager.getRelationshipRecord(), containedTableModel);
+                            // Refresh the main victims table
+                            parentWindow.refreshTable(victims, locations);
+                            return; // Exit the method after removing the relation
+                        }
+                    }
+                    
+                    // If the relation was not found
+                    JOptionPane.showMessageDialog(frame, "Selected family connection not found.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Please select a family connection to remove.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+
+        
+        // Add the button to the frame
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton, BorderLayout.NORTH);
+        buttonPanel.add(removeButton, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.NORTH);
         frame.add(containedScrollPane);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

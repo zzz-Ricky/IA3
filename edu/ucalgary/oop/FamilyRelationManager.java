@@ -61,4 +61,8 @@ public class FamilyRelationManager {
         }
         return personalRelations;
     }
+    
+    public HashSet<FamilyRelation> getRelationshipRecord(){
+    	return relationshipRecord;
+    }
 }

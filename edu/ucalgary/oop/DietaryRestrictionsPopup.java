@@ -1,8 +1,9 @@
 package edu.ucalgary.oop;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -10,14 +11,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class DietaryRestrictionsPopup {
     private DisasterVictimPage parentWindow;
-    private DisasterVictim lastSelectedPerson;
-
+    private DisasterVictim selectedVictim; // Changed to class-level field
+    private DisasterVictim lastSelectedPerson; //Used to cache the selectedVictim, prevents edge case bugs
+    
     DietaryRestrictionsPopup(ArrayList<DietaryRestrictions> restrictions, JTable victimTable,
             DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, ArrayList<Location> locations, DisasterVictimPage parentWindow) {
         this.parentWindow = parentWindow;
@@ -69,15 +72,14 @@ public class DietaryRestrictionsPopup {
                     int selectedRow = victimTable.getSelectedRow();
                     if (selectedRow != -1) {
                         // Check if a row is still selected. Done to remedy the row deselecting itself
-                        DisasterVictim victim = victims.get(selectedRow);
-                        // Cache selected row so repeated supply additions can be performed.
+                        selectedVictim = victims.get(selectedRow); // Store the selected victim
                         lastSelectedPerson = victims.get(selectedRow);
                         // Add the dietary restriction
                         DietaryRestrictions.DietaryRestriction restriction = DietaryRestrictions.DietaryRestriction
                                 .valueOf(restrictionName);
-                        victim.addDietaryPreference(restriction);
+                        selectedVictim.addDietaryPreference(restriction);
                         // Refresh the dietary restrictions table
-                        refreshDietaryRestrictionsTable(victim.getDietaryPreference(), containedTableModel);
+                        refreshDietaryRestrictionsTable(selectedVictim.getDietaryPreference(), containedTableModel);
                         // Refresh the main victims table
                         parentWindow.refreshTable(victims, locations);
                         addDietPreferenceFrame.dispose();
@@ -86,9 +88,9 @@ public class DietaryRestrictionsPopup {
                             // Add the dietary restriction
                             DietaryRestrictions.DietaryRestriction restriction = DietaryRestrictions.DietaryRestriction
                                     .valueOf(restrictionName);
-                            lastSelectedPerson.addDietaryPreference(restriction);
+                            selectedVictim.addDietaryPreference(restriction);
                             // Refresh the dietary restrictions table
-                            refreshDietaryRestrictionsTable(lastSelectedPerson.getDietaryPreference(),
+                            refreshDietaryRestrictionsTable(selectedVictim.getDietaryPreference(),
                                     containedTableModel);
                             // Refresh the main victims table
                             parentWindow.refreshTable(victims, locations);
@@ -119,8 +121,33 @@ public class DietaryRestrictionsPopup {
             addDietPreferenceFrame.setLocationRelativeTo(null);
             addDietPreferenceFrame.setVisible(true);
         });
+        JButton removeButton = new JButton("Remove Selected");
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedPreferenceRow = containedTable.getSelectedRow();
+                
+                if (selectedVictim != null && selectedPreferenceRow != -1) {
+                    String preferenceName = containedTable.getValueAt(selectedPreferenceRow, 0).toString();
+                    DietaryRestrictions.DietaryRestriction preference = DietaryRestrictions.DietaryRestriction.valueOf(preferenceName);
+                    // Remove the dietary restriction from the victim's preferences
+                    selectedVictim.removeDietaryPreference(preference);
+                    // Refresh the dietary restrictions table
+                    refreshDietaryRestrictionsTable(selectedVictim.getDietaryPreference(), containedTableModel);
+                    // Refresh the main victims table
+                    parentWindow.refreshTable(victims, locations);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Please select a victim and a dietary restriction to remove.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        
         // Add the button to the frame
-        frame.add(addButton, BorderLayout.NORTH);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton, BorderLayout.NORTH);
+        buttonPanel.add(removeButton, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.NORTH);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

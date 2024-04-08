@@ -88,6 +88,11 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
                     String lastName = lastNameField.getText().trim();
                     String phoneNumber = phoneNumberField.getText().trim();
                     
+                    try {
+                    validatePhone(phoneNumber);
+                    } catch (IllegalArgumentException ex) {
+                        return; // Don't proceed if the phoneNumber is invalid
+                    }
                     if (!firstName.isEmpty() && !lastName.isEmpty() && !phoneNumber.isEmpty()) {
                         // Add the new inquirer to the database and update the table
                         database.addInquirer(firstName, lastName, phoneNumber);
@@ -303,7 +308,22 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
         });
     }
 
+    private boolean validatePhone(String phoneNumber){
+        JFrame frame = new JFrame("ERROR");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400, 300);
+		
+        // Check if the date has the date in the correct format such as "2024-01-18"
+        if (!phoneNumber.matches("\\d{3}-\\d{3}-\\d{4}")) {
+        	  JOptionPane.showMessageDialog(frame,
+                      "An Invalid phone number was given. It must be in the following format: 123-456-7890", "Error",
+                      JOptionPane.ERROR_MESSAGE);
+            throw new IllegalArgumentException("Phone must be in the format XXX-XXX-XXXX");
+        }
 
+        return true;
+    }
+    
 	@Override
     public boolean validateDate(String date) {
 		

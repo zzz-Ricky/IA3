@@ -9,6 +9,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableRowSorter;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -87,7 +89,8 @@ public class DisasterVictimPage extends JPanel {
                 Object value = victimTable.getValueAt(row, col);
                 String columnName = victimTable.getColumnName(col);
                 
-                    String victimLocationName = (String) victimTable.getValueAt(row, 11);
+                Object victimLocationNameObject = victimTable.getValueAt(row, 11);
+                String victimLocationName = (victimLocationNameObject != null) ? victimLocationNameObject.toString() : "";
                     Location victimLocation = findLocationByName(victimLocationName, locations);
                     if (workLocation != null && !victimLocation.equals(workLocation)) {
                         return; 
@@ -235,9 +238,34 @@ public class DisasterVictimPage extends JPanel {
             addVictimFrame.setLocationRelativeTo(null);
             addVictimFrame.setVisible(true);
         });
+        JButton removeButton = new JButton("Remove Selected");
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = victimTable.getSelectedRow();
+                
+                if (selectedRow != -1) {
+                    // Retrieve the DisasterVictim object from the selected row
+                    DisasterVictim victimToRemove = victims.get(selectedRow);
+                    
+                    // Remove the DisasterVictim object from the victims ArrayList
+                    victims.remove(victimToRemove);
+                    
+                    // Refresh the table with the updated data
+                    refreshTable(victims, locations);
+                } else {
+                    JOptionPane.showMessageDialog(DisasterVictimPage.this, "Please select a row to remove.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
 
         // Add components to the panel
-        add(addButton, BorderLayout.NORTH);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton, BorderLayout.NORTH);
+        buttonPanel.add(removeButton, BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
 

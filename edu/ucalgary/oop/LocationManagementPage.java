@@ -30,7 +30,6 @@ public class LocationManagementPage extends JPanel {
         // Add the table to the layout
         JScrollPane inventoryScrollPane = new JScrollPane(inventoryTable);
         add(inventoryScrollPane, BorderLayout.CENTER);
-        add(new JLabel(workLocation.getName() + " ,  " + workLocation.getAddress()), BorderLayout.NORTH);
 
         // Create and add "Add Supply" button
         JButton addSupplyButton = new JButton("Add Supply");
@@ -53,12 +52,17 @@ public class LocationManagementPage extends JPanel {
                 addSupplyFrame.add(quantityField);
                 addSupplyFrame.add(saveButton);
 
-                // Action listener for the save button
+             // Action listener for the save button
                 saveButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String type = supplyTypeField.getText();
                         String quantityString = quantityField.getText();
+                        // Check if input is whitespace
+                        if (type.trim().isEmpty() || quantityString.trim().isEmpty()) {
+                            JOptionPane.showMessageDialog(LocationManagementPage.this, "Input cannot be whitespace.");
+                            return; // Exit the method
+                        }
                         try {
                             int quantity = Integer.parseInt(quantityString);
                             // Add the supply to the location
@@ -71,6 +75,7 @@ public class LocationManagementPage extends JPanel {
                         }
                     }
                 });
+
 
                 addSupplyFrame.setLocationRelativeTo(LocationManagementPage.this); // Center the popup relative to the main window
                 addSupplyFrame.setVisible(true);

@@ -36,6 +36,12 @@ public class MenuPages extends JFrame {
     }
 
     private void addPagesToTabbedPane() {
+    	if (workLocation != null) {
+    		add(new JLabel(workLocation.getName() + " ,  " + workLocation.getAddress()), BorderLayout.NORTH);
+    	}
+    	else {
+            add(new JLabel("Central Disaster Management Center"), BorderLayout.NORTH);
+    	}
         tabbedPane.addTab("Disaster Victims", new DisasterVictimPage(locations, victims, workLocation,familyManager,supplyManager));
         tabbedPane.addTab("Inquirers/Inquiries", new InquirySQLPage());
         if (workLocation != null){

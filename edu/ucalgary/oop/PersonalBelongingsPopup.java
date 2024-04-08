@@ -2,8 +2,9 @@ package edu.ucalgary.oop;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -12,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -19,8 +21,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class PersonalBelongingsPopup {
     private DisasterVictimPage parentWindow;
+    private DisasterVictim selectedVictim; // Store the selected victim
     private DisasterVictim lastSelectedPerson;
-
+    
     PersonalBelongingsPopup(HashSet<Supply> supplies, ArrayList<Location> shelters, JTable victimTable,
             DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, SupplyManager supplyManager,
             DisasterVictimPage parentWindow) {
@@ -62,17 +65,24 @@ public class PersonalBelongingsPopup {
             JComboBox<String> locationComboBox = new JComboBox<>();
             int selectedRow = victimTable.getSelectedRow();
             DisasterVictim selectedVictim = victims.get(selectedRow);
+            this.selectedVictim = selectedVictim; // Store the selected victim
             
+            Location selectedLocation = null;
             for (Location location : shelters) {
                 // Check if the selected person is among the occupants of this location
                 if (location.getOccupants().contains(selectedVictim)) {
                     locationComboBox.setSelectedItem(location.getName());
                     locationComboBox.addItem(location.getName());
+                    // Get the selected location object
+                    selectedLocation = location;
                 }  
             }
 
             // Get the selected location's name
-            String selectedLocationName = (String) locationComboBox.getSelectedItem();
+            String selectedLocationName = null;
+            if (selectedLocation != null) {
+                selectedLocationName = selectedLocation.getName();
+            }
 
             // Create a text field to display the selected location's name
             JTextField locationTextField = new JTextField(selectedLocationName);
@@ -81,14 +91,7 @@ public class PersonalBelongingsPopup {
 
             // Ensure suppliesComboBox is defined and initialized properly
             JComboBox<String> suppliesComboBox = new JComboBox<>();
-            // Get the selected location object
-            Location selectedLocation = null;
-            for (Location location : shelters) {
-                if (location.getName().equals(selectedLocationName)) {
-                    selectedLocation = location;
-                    break;
-                }
-            }
+
             // Populate suppliesComboBox with supplies from the selected location
             if (selectedLocation != null) {
                 for (Supply supply : selectedLocation.getSupplies()) {
@@ -106,7 +109,7 @@ public class PersonalBelongingsPopup {
                 String[] parts = supplyDescription.split(":");
                 // Take the first part, which is the supply description
                 String actualDescription = parts[0].trim();
-                int quantity = Integer.parseInt(quantityField.getText());
+                String quantityString = quantityField.getText();
 
                 // Find the selected location
                 Location location = null;
@@ -116,7 +119,27 @@ public class PersonalBelongingsPopup {
                         break;
                     }
                 }
-
+                
+                // Check if quantityString is empty or contains only whitespace
+                if (quantityString.trim().isEmpty()) {
+                	
+                    JOptionPane.showMessageDialog(frame, "Quantity cannot be empty.");
+                    return;
+                }
+                
+                int quantity = Integer.parseInt(quantityField.getText());
+                
+                if (quantity < 1) {
+                	JOptionPane.showMessageDialog(frame, "Quantity cannot be 0 or less");
+                	return;
+                }
+                
+                // Check if location is found
+                if (location == null) {
+                    JOptionPane.showMessageDialog(frame, "Selected location is not valid.");
+                    return; // Exit the method
+                }
+                
                 // Create a new Supply object
                 Supply newSupply = new Supply(actualDescription, quantity);
 
@@ -124,11 +147,12 @@ public class PersonalBelongingsPopup {
                 if (location != null) {
                     if (selectedRow != -1) {
                         // check if a row is still selected. Done to remedy the row deselecting itself
-                        DisasterVictim victim = victims.get(selectedRow);
+                    	this.selectedVictim = victims.get(selectedRow);
+                    	this.lastSelectedPerson = victims.get(selectedRow);
                         // Add the new supply to the victim's personal belongings
-                        victim.addPersonalBelonging(newSupply, location, supplyManager);
+                        this.selectedVictim.addPersonalBelonging(newSupply, location, supplyManager);
                         // Refresh the personal belongings table
-                        refreshPersonalBelongingsTable(victim.getPersonalBelongings(), containedTableModel);
+                        refreshPersonalBelongingsTable(selectedVictim.getPersonalBelongings(), containedTableModel);
                         // Refresh the main victims table
                         parentWindow.refreshTable(victims, shelters);
                         // Close the window after adding the new personal belonging
@@ -172,8 +196,44 @@ public class PersonalBelongingsPopup {
             addSupplyFrame.setLocationRelativeTo(null);
             addSupplyFrame.setVisible(true);
         });
+        JButton removeButton = new JButton("Remove Selected");
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = containedTable.getSelectedRow();
+                
+                if (selectedVictim != null && selectedRow != -1) {
+                    String itemName = containedTable.getValueAt(selectedRow, 0).toString();
+                    Supply supplyToRemove = null;
+                    for (Supply supply : selectedVictim.getPersonalBelongings()) {
+                        if (supply.getDescription().equals(itemName)) {
+                            supplyToRemove = supply;
+                            break;
+                        }
+                    }
+                    if (supplyToRemove != null) {
+                        // Remove the supply from the victim's personal belongings
+                        selectedVictim.removePersonalBelonging(supplyToRemove);
+                        // Refresh the personal belongings table
+                        refreshPersonalBelongingsTable(selectedVictim.getPersonalBelongings(), containedTableModel);
+                        // Refresh the main victims table
+                        parentWindow.refreshTable(victims, shelters);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Selected personal belonging not found.", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Please select a personal belonging to remove.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        
         // Add the button to the frame
-        frame.add(addButton, BorderLayout.NORTH);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton, BorderLayout.NORTH);
+        buttonPanel.add(removeButton, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.NORTH);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
