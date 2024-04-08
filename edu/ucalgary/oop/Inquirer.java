@@ -23,9 +23,10 @@ package edu.ucalgary.oop;
 public class Inquirer extends Person implements InfoManagement {
     private String INFO;
     private String servicesPhone;
-    
+
     /**
-     * Constructs a new Inquirer object with the specified first name, last name, and services phone number.
+     * Constructs a new Inquirer object with the specified first name, last name,
+     * and services phone number.
      *
      * @param firstName     The first name of the inquirer.
      * @param lastName      The last name of the inquirer (set to null).
@@ -37,7 +38,7 @@ public class Inquirer extends Person implements InfoManagement {
     }
 
     public void setDescription(String INFO) {
-        INFO = INFO;
+        this.INFO = INFO;
     }
 
     public String getDescription() {

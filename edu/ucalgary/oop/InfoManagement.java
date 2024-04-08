@@ -13,7 +13,8 @@
 package edu.ucalgary.oop;
 
 /**
- * The InfoManagement interface provides methods for managing information description.
+ * The InfoManagement interface provides methods for managing information
+ * description.
  */
 public interface InfoManagement {
 

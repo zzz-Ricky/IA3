@@ -23,15 +23,17 @@ public class FamilyRelation {
     private DisasterVictim personOne;
     private String relationshipTo;
     private DisasterVictim personTwo;
-    
+
     /**
-     * Constructs a new FamilyRelation object with the specified parameters and adds it to the
+     * Constructs a new FamilyRelation object with the specified parameters and adds
+     * it to the
      * FamilyRelationManager.
      *
-     * @param personOne The first person in the relationship.
+     * @param personOne      The first person in the relationship.
      * @param relationshipTo The type of relationship between the two persons.
-     * @param personTwo The second person in the relationship.
-     * @param manager The FamilyRelationManager responsible for managing family relations.
+     * @param personTwo      The second person in the relationship.
+     * @param manager        The FamilyRelationManager responsible for managing
+     *                       family relations.
      */
     public FamilyRelation(DisasterVictim personOne, String relationshipTo, DisasterVictim personTwo,
             FamilyRelationManager manager) {
@@ -47,7 +49,16 @@ public class FamilyRelation {
         return personOne;
     }
 
+    /**
+     * Sets person one in a relationship to a new value verifies this operation
+     * using the FamilyRelationManager class.
+     *
+     * @param personOne The DisasterVictim that will replace the original
+     * @param manager   The FamilyRelationManager object which contains the
+     *                  registry.
+     */
     public void setPersonOne(DisasterVictim personOne, FamilyRelationManager manager) {
+        // Sets person one in a relationship to a new value
         try {
             this.personOne.removeFamilyConnection(this);
         } catch (Exception e) {
@@ -71,7 +82,16 @@ public class FamilyRelation {
         return personTwo;
     }
 
+    /**
+     * Sets person two in a relationship to a new value verifies this operation
+     * using the FamilyRelationManager class.
+     *
+     * @param personTwo The DisasterVictim that will replace the original
+     * @param manager   The FamilyRelationManager object which contains the
+     *                  registry.
+     */
     public void setPersonTwo(DisasterVictim personTwo, FamilyRelationManager manager) {
+        // Sets person two in a relationship to a new value
         try {
             this.personTwo.removeFamilyConnection(this);
         } catch (Exception e) {

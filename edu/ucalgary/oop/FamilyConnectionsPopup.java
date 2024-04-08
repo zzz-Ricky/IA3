@@ -28,20 +28,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-
 public class FamilyConnectionsPopup {
-    private DisasterVictimPage parentWindow;
-    private JFrame frame;
-    private DefaultTableModel containedTableModel;
-    private JTable containedTable;
-    private JButton addButton;
-    private DisasterVictim lastSelectedPerson;
-    
+    private DisasterVictim lastSelectedPerson; // Used to cache the selectedVictim, prevents edge case bugs
+
     /**
      * Constructs a FamilyConnectionsPopup object with the specified parameters.
      *
@@ -54,8 +43,8 @@ public class FamilyConnectionsPopup {
      * @param parentWindow  The parent window.
      */
     public FamilyConnectionsPopup(HashSet<FamilyRelation> connections, JTable victimTable, DefaultTableModel tableModel,
-            ArrayList<DisasterVictim> victims, FamilyRelationManager familyManager, ArrayList<Location> locations, DisasterVictimPage parentWindow) {
-        this.parentWindow = parentWindow;
+            ArrayList<DisasterVictim> victims, FamilyRelationManager familyManager, ArrayList<Location> locations,
+            DisasterVictimPage parentWindow) {
 
         // Handle Family Connections
         JFrame frame = new JFrame("Family Connections");
@@ -84,16 +73,15 @@ public class FamilyConnectionsPopup {
         // Add the button to the frame
         JButton addButton = new JButton("Add New Family Connection");
         addButton.addActionListener(f -> {
-            // Open a new window prompting the user to create a new DisasterVictim object
+            // Open a new window prompting the user to create a new FamilyRelation object
             JFrame addConnectionFrame = new JFrame("Add New Family Connection");
             addConnectionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             addConnectionFrame.setSize(300, 200);
 
-            // Input fields for the new DisasterVictim object
+            // Input fields for the new FamilyRelation object
             JTextField firstIDField = new JTextField(20);
             JTextField relationField = new JTextField(20);
             JTextField secondIDField = new JTextField(20);
-            JButton saveButton = new JButton("Save");
             int selectedRow = victimTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Retrieve the ID of the person from the corresponding row
@@ -116,10 +104,10 @@ public class FamilyConnectionsPopup {
                 }
             }
 
-            // Action listener for the save button
+            // Create a save button within the new secondary popup window.
+            JButton saveButton = new JButton("Save");
             saveButton.addActionListener(actionEvent -> {
-
-                // Create a new DisasterVictim object and add it to the table
+                // Create a new FamilyRelation object and add it to the table
                 int id1 = Integer.parseInt(firstIDField.getText());
                 String relation = relationField.getText();
                 int id2 = Integer.parseInt(secondIDField.getText());
@@ -157,10 +145,8 @@ public class FamilyConnectionsPopup {
             });
 
             // Add components to the frame
-
             GridLayout layout = new GridLayout(0, 2);
             addConnectionFrame.setLayout(layout);
-
             addConnectionFrame.add(new JLabel("ID of Person A:"));
             addConnectionFrame.add(firstIDField);
             addConnectionFrame.add(new JLabel("Relationship Type:"));
@@ -173,36 +159,37 @@ public class FamilyConnectionsPopup {
             addConnectionFrame.setLocationRelativeTo(null);
             addConnectionFrame.setVisible(true);
         });
-        
+
+        // Create a remove button within the new secondary popup window.
         JButton removeButton = new JButton("Remove Selected");
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = containedTable.getSelectedRow();
-                
+
                 if (selectedRow != -1) {
                     // Get the data of the selected row
                     String personOneName = (String) containedTable.getValueAt(selectedRow, 0);
                     String relationshipTo = (String) containedTable.getValueAt(selectedRow, 1);
                     String personTwoName = (String) containedTable.getValueAt(selectedRow, 2);
-                    
+
                     DisasterVictim personOne = null;
                     DisasterVictim personTwo = null;
-                    
+
                     // Find the FamilyRelation object corresponding to the selected row
                     for (FamilyRelation relation : familyManager.getRelationshipRecord()) {
                         if (relation.getPersonOne().getFirstName().equals(personOneName) &&
-                            relation.getRelationshipTo().equals(relationshipTo) &&
-                            relation.getPersonTwo().getFirstName().equals(personTwoName)) {
-                            
+                                relation.getRelationshipTo().equals(relationshipTo) &&
+                                relation.getPersonTwo().getFirstName().equals(personTwoName)) {
+
                             // Get the DisasterVictim objects from the FamilyRelation
                             personOne = relation.getPersonOne();
                             personTwo = relation.getPersonTwo();
-                            
+
                             // Remove the family relation from the victims
                             personOne.removeFamilyConnection(relation);
                             personTwo.removeFamilyConnection(relation);
-                            
+
                             // Remove the family relation from the familyManager registry
                             familyManager.removeRelationship(relation);
                             // Refresh the family connection table
@@ -212,7 +199,7 @@ public class FamilyConnectionsPopup {
                             return; // Exit the method after removing the relation
                         }
                     }
-                    
+
                     // If the relation was not found
                     JOptionPane.showMessageDialog(frame, "Selected family connection not found.",
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -223,8 +210,6 @@ public class FamilyConnectionsPopup {
             }
         });
 
-
-        
         // Add the button to the frame
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addButton, BorderLayout.NORTH);
@@ -234,11 +219,11 @@ public class FamilyConnectionsPopup {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+
     /**
      * Refreshes the family relation table with updated data.
      *
-     * @param connections      The updated set of family connections.
+     * @param connections         The updated set of family connections.
      * @param containedTableModel The table model for family connections.
      */
     private void refreshFamilyRelationTable(HashSet<FamilyRelation> connections, DefaultTableModel containedTable) {

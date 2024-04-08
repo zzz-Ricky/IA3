@@ -18,8 +18,6 @@ package edu.ucalgary.oop;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,7 +28,7 @@ public class MenuPages extends JFrame {
     private Location workLocation;
     private FamilyRelationManager familyManager;
     private SupplyManager supplyManager;
-    
+
     /**
      * Constructs a MenuPages object and initializes necessary components.
      */
@@ -53,25 +51,25 @@ public class MenuPages extends JFrame {
 
         setVisible(true);
     }
-    
+
     /**
      * Adds pages to the tabbed pane based on the current work location.
      */
     private void addPagesToTabbedPane() {
-    	if (workLocation != null) {
-    		add(new JLabel(workLocation.getName() + " ,  " + workLocation.getAddress()), BorderLayout.NORTH);
-    	}
-    	else {
+        if (workLocation != null) {
+            add(new JLabel(workLocation.getName() + " ,  " + workLocation.getAddress()), BorderLayout.NORTH);
+        } else {
             add(new JLabel("Central Disaster Management Center"), BorderLayout.NORTH);
-    	}
-        tabbedPane.addTab("Disaster Victims", new DisasterVictimPage(locations, victims, workLocation,familyManager,supplyManager));
-        tabbedPane.addTab("Inquirers/Inquiries", new InquirySQLPage());
-        if (workLocation != null){
-        	tabbedPane.addTab("Location", new LocationManagementPage(workLocation));
         }
-        
+        tabbedPane.addTab("Disaster Victims",
+                new DisasterVictimPage(locations, victims, workLocation, familyManager, supplyManager));
+        tabbedPane.addTab("Inquirers/Inquiries", new InquirySQLPage());
+        if (workLocation != null) {
+            tabbedPane.addTab("Location", new LocationManagementPage(workLocation));
+        }
+
     }
-    
+
     /**
      * Prompts the user to select their work location or enter as a central worker.
      */
@@ -82,10 +80,12 @@ public class MenuPages extends JFrame {
             locationComboBox.addItem(location);
         }
 
-        // Custom renderer to display both Location objects and the "Enter as Central worker" option
+        // Custom renderer to display both Location objects and the "Enter as Central
+        // worker" option
         locationComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+                    boolean cellHasFocus) {
                 if (value instanceof Location) {
                     Location location = (Location) value;
                     value = location.getName() + ", " + location.getAddress();
@@ -114,7 +114,7 @@ public class MenuPages extends JFrame {
             System.exit(0);
         }
     }
-    
+
     /**
      * Initializes the setup by creating manager objects and adding sample data.
      */
@@ -200,7 +200,7 @@ public class MenuPages extends JFrame {
         victims.add(samplevictim4);
         victims.add(samplevictim5);
     }
-    
+
     /**
      * Generates a random gender for a disaster victim.
      *

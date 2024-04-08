@@ -22,15 +22,12 @@ package edu.ucalgary.oop;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -42,26 +39,22 @@ import javax.swing.table.DefaultTableModel;
 
 public class MedicalRecordsPopup {
 
-    private DisasterVictimPage parentWindow;
-    private JFrame frame;
-    private DefaultTableModel containedTableModel;
-    private JTable containedTable;
-    private DisasterVictim selectedVictim; // Changed to class-level field
-    private Location location;
-    
+    private String selectedLocationName;
+    private Location selectedLocation;
+    private DisasterVictim selectedVictim;
+
     /**
      * Constructs a FamilyConnectionsPopup object with the specified parameters.
      *
-     * @param records       The set of existing medical records.
-     * @param shelters		The set of all existing locations
-     * @param victimTable   The table displaying victim information.
-     * @param tableModel    The table model for victim information.
-     * @param victims       The list of disaster victims.
-     * @param parentWindow  The parent window.
+     * @param records      The set of existing medical records.
+     * @param shelters     The set of all existing locations
+     * @param victimTable  The table displaying victim information.
+     * @param tableModel   The table model for victim information.
+     * @param victims      The list of disaster victims.
+     * @param parentWindow The parent window.
      */
     public MedicalRecordsPopup(ArrayList<MedicalRecord> records, ArrayList<Location> shelters, JTable victimTable,
             DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, DisasterVictimPage parentWindow) {
-        this.parentWindow = parentWindow;
         // Handle Medical Record
         JFrame frame = new JFrame("Medical Records");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -91,34 +84,29 @@ public class MedicalRecordsPopup {
 
         JButton addButton = new JButton("Add New Medical Record");
         addButton.addActionListener(f -> {
-            // Open a new window prompting the user to create a new DisasterVictim object
+            // Open a new window prompting the user to create a new MedicalRecord object
             JFrame addMedicalFrame = new JFrame("Add New Medical Record");
             addMedicalFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             addMedicalFrame.setSize(400, 200);
-            
-            JComboBox<String> locationComboBox = new JComboBox<>();
             int selectedRow = victimTable.getSelectedRow();
             if (selectedRow != -1) {
-            this.selectedVictim = victims.get(selectedRow); // Store the selected victim
+                this.selectedVictim = victims.get(selectedRow); // Store the selected victim
             }
-            
+
             // Input fields for the new MedicalRecord object
             for (Location location : shelters) {
                 // Check if the selected person is among the occupants of this location
                 if (location.getOccupants().contains(this.selectedVictim)) {
-                    locationComboBox.setSelectedItem(location.getName());
-                    locationComboBox.addItem(location.getName());
-                }  
+                    this.selectedLocationName = location.getName();
+                    this.selectedLocation = location;
+                }
             }
 
-            // Get the selected location's name
-            String selectedLocationName = (String) locationComboBox.getSelectedItem();
-
             // Create a text field to display the selected location's name
-            JTextField locationTextField = new JTextField(selectedLocationName);
+            JTextField locationTextField = new JTextField(this.selectedLocationName);
             locationTextField.setEditable(false); // Set non-editable
             locationTextField.setBackground(Color.LIGHT_GRAY); // Grey out the field
-            
+
             JTextField treatmentField = new JTextField(20);
             JTextField dateField = new JTextField(20);
             JButton saveButton = new JButton("Save");
@@ -126,27 +114,19 @@ public class MedicalRecordsPopup {
             // Action listener for the save button
             saveButton.addActionListener(actionEvent -> {
                 // Create a new MedicalRecord object and add it to the corresponding victim
-                String locationName = (String) locationComboBox.getSelectedItem();
                 String treatment = treatmentField.getText();
                 String date = dateField.getText();
-                
-                for (Location loc : shelters) {
-                    if (loc.getName().equals(locationName)) {
-                        this.location = loc;
-                        break;
-                    }
-                }
 
-                if (this.location != null) {
-                        DisasterVictim victim = this.selectedVictim; // Use the stored selected victim
-                        MedicalRecord newMedicalRecord = new MedicalRecord(location, treatment, date);
-                        victim.addMedicalRecord(newMedicalRecord);
-                        // Refresh the Medical Record table
-                        refreshMedicalRecordTable(victim.getMedicalRecords(), containedTableModel);
-                        // Refresh the main victims table
-                        parentWindow.refreshTable(victims, shelters);
-                        // Close the window after adding the new medical record
-                        addMedicalFrame.dispose();
+                if (this.selectedLocation != null) {
+                    DisasterVictim victim = this.selectedVictim; // Use the stored selected victim
+                    MedicalRecord newMedicalRecord = new MedicalRecord(selectedLocation, treatment, date);
+                    victim.addMedicalRecord(newMedicalRecord);
+                    // Refresh the Medical Record table
+                    refreshMedicalRecordTable(victim.getMedicalRecords(), containedTableModel);
+                    // Refresh the main victims table
+                    parentWindow.refreshTable(victims, shelters);
+                    // Close the window after adding the new medical record
+                    addMedicalFrame.dispose();
                 } else {
                     JOptionPane.showMessageDialog(addMedicalFrame, "Selected location is not valid.",
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -170,13 +150,13 @@ public class MedicalRecordsPopup {
             addMedicalFrame.setLocationRelativeTo(null);
             addMedicalFrame.setVisible(true);
         });
-        
+
         JButton removeButton = new JButton("Remove Selected");
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedMedicalRecordRow = containedTable.getSelectedRow();
-                
+
                 if (selectedVictim != null && selectedMedicalRecordRow != -1) {
                     String itemName = containedTable.getValueAt(selectedMedicalRecordRow, 1).toString();
                     MedicalRecord medicalRecord = findMedicalRecordByName(itemName, selectedVictim.getMedicalRecords());
@@ -197,7 +177,7 @@ public class MedicalRecordsPopup {
                 }
             }
         });
-        
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addButton, BorderLayout.NORTH);
         buttonPanel.add(removeButton, BorderLayout.NORTH);
@@ -205,7 +185,7 @@ public class MedicalRecordsPopup {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+
     /**
      * Refreshes the medical record table with updated data.
      *
@@ -227,20 +207,24 @@ public class MedicalRecordsPopup {
         // Notify the table of the changes
         containedTable.fireTableDataChanged();
     }
-    
+
     /**
-     * Finds a MedicalRecord object with the specified name from the given list of medical records.
+     * Finds a MedicalRecord object with the specified name from the given list of
+     * medical records.
      * <p>
-     * This method iterates through the list of medical records and returns the first record whose
+     * This method iterates through the list of medical records and returns the
+     * first record whose
      * description matches the provided name.
      * </p>
      * <p>
-     * If no medical record with the given name is found in the list, null is returned.
+     * If no medical record with the given name is found in the list, null is
+     * returned.
      * </p>
      *
      * @param name    The name of the medical record to find.
      * @param records The list of medical records to search.
-     * @return The MedicalRecord object with the specified name, or null if not found.
+     * @return The MedicalRecord object with the specified name, or null if not
+     *         found.
      */
     // Method to find a MedicalRecord object by its name
     private MedicalRecord findMedicalRecordByName(String name, ArrayList<MedicalRecord> records) {

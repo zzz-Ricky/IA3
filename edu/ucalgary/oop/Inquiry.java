@@ -24,13 +24,13 @@ public class Inquiry implements DateManageMent, InfoManagement {
     private String dateOfInquiry;
     private String description;
     private Location lastKnownLocation;
-    
+
     /**
      * Constructs a new Inquiry object with the specified parameters.
      *
-     * @param missingPerson    The missing person associated with the inquiry.
-     * @param dateOfInquiry    The date of the inquiry in the format "YYYY-MM-DD".
-     * @param description      The description of the inquiry.
+     * @param missingPerson     The missing person associated with the inquiry.
+     * @param dateOfInquiry     The date of the inquiry in the format "YYYY-MM-DD".
+     * @param description       The description of the inquiry.
      * @param lastKnownLocation The last known location of the missing person.
      */
     public Inquiry(DisasterVictim missingPerson,
@@ -41,14 +41,14 @@ public class Inquiry implements DateManageMent, InfoManagement {
         this.description = description;
         this.lastKnownLocation = lastKnownLocation;
     }
-    
 
     /**
      * Validates a date string in the format "YYYY-MM-DD".
      *
      * @param date The date string to validate.
      * @return true if the date is valid, otherwise false.
-     * @throws IllegalArgumentException if the date format is invalid or if the date values are not within valid ranges.
+     * @throws IllegalArgumentException if the date format is invalid or if the date
+     *                                  values are not within valid ranges.
      */
     @Override
     public boolean validateDate(String date) {
@@ -66,7 +66,6 @@ public class Inquiry implements DateManageMent, InfoManagement {
                 (month == 2 && (day > 29 || (day > 28 && !(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)))))) {
             throw new IllegalArgumentException("An Invalid date was given, must be a valid year, month, and day");
         }
-
         return true;
     }
 

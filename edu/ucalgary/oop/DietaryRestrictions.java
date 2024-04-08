@@ -25,7 +25,7 @@ public class DietaryRestrictions {
         MOML, // Muslim Meal
         PFML, // Peanut-Free Meal
         VGML, // Vegetarian Meal
-        VJML  // Vegan Meal
+        VJML // Vegan Meal
     }
 
     private DietaryRestriction restriction;

@@ -18,15 +18,12 @@
 
 package edu.ucalgary.oop;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-
-import edu.ucalgary.oop.DisasterVictim;
 
 public class FamilyRelationManager {
 
     private static HashSet<FamilyRelation> relationshipRecord;
-    
+
     /**
      * Constructs a new FamilyRelationManager object.
      * Initializes the relationship record as an empty HashSet.
@@ -34,13 +31,15 @@ public class FamilyRelationManager {
     public FamilyRelationManager() {
         relationshipRecord = new HashSet<FamilyRelation>();
     }
-    
+
     /**
      * Validates a new family relationship to prevent duplicates.
      *
      * @param relationship The family relationship to validate.
-     * @return true if the relationship is valid and does not already exist, otherwise false.
-     * @throws IllegalArgumentException if the relationship already exists in the record.
+     * @return true if the relationship is valid and does not already exist,
+     *         otherwise false.
+     * @throws IllegalArgumentException if the relationship already exists in the
+     *                                  record.
      */
     public boolean validateRelationship(FamilyRelation relationship) {
         // Check if the relationship already exists in the record, to prevent duplicates
@@ -57,7 +56,7 @@ public class FamilyRelationManager {
         }
         return true;
     }
-    
+
     /**
      * Checks if a person is involved in a given family relationship.
      *
@@ -73,7 +72,7 @@ public class FamilyRelationManager {
             return false;
         }
     }
-    
+
     /**
      * Adds a new family relationship to the manager.
      *
@@ -83,7 +82,7 @@ public class FamilyRelationManager {
         validateRelationship(relationship);
         relationshipRecord.add(relationship);
     }
-    
+
     /**
      * Removes a family relationship from the manager.
      *
@@ -92,7 +91,7 @@ public class FamilyRelationManager {
     public void removeRelationship(FamilyRelation relationship) {
         relationshipRecord.remove(relationship);
     }
-    
+
     /**
      * Retrieves all family relationships involving a given person.
      *
@@ -113,13 +112,13 @@ public class FamilyRelationManager {
         }
         return personalRelations;
     }
-    
+
     /**
      * Retrieves the entire set of family relationships managed by this manager.
      *
      * @return A HashSet containing all family relationships.
      */
-    public HashSet<FamilyRelation> getRelationshipRecord(){
-    	return relationshipRecord;
+    public HashSet<FamilyRelation> getRelationshipRecord() {
+        return relationshipRecord;
     }
 }

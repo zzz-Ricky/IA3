@@ -50,7 +50,8 @@ public class Supply implements InfoManagement {
         if (quantity >= 0) {
             this.quantity = quantity;
         } else {
-            // Ideally, this error case should never be called due to SupplyManager class, but just in
+            // Ideally, this error case should never be called due to SupplyManager class,
+            // but just in
             // case.
             throw new IllegalArgumentException("Cannot set a supply to a negative quantity.");
         }

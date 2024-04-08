@@ -37,23 +37,22 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class DietaryRestrictionsPopup {
-    private DisasterVictimPage parentWindow;
-    private DisasterVictim selectedVictim; // Changed to class-level field
-    private DisasterVictim lastSelectedPerson; //Used to cache the selectedVictim, prevents edge case bugs
-    
+    private DisasterVictim selectedVictim; // First level cache, not used if we know the row selection changed
+    private DisasterVictim lastSelectedPerson; // Used to cache the selectedVictim, prevents edge case bugs
+
     /**
      * Constructs a new DietaryRestrictionsPopup with the specified parameters.
      *
-     * @param restrictions   The list of existing dietary restrictions.
-     * @param victimTable    The table of disaster victims.
-     * @param tableModel     The table model for the victim table.
-     * @param victims        The list of disaster victims.
-     * @param locations      The list of locations.
-     * @param parentWindow   The parent window (main window).
+     * @param restrictions The list of existing dietary restrictions.
+     * @param victimTable  The table of disaster victims.
+     * @param tableModel   The table model for the victim table.
+     * @param victims      The list of disaster victims.
+     * @param locations    The list of locations.
+     * @param parentWindow The parent window (main window).
      */
     DietaryRestrictionsPopup(ArrayList<DietaryRestrictions> restrictions, JTable victimTable,
-            DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, ArrayList<Location> locations, DisasterVictimPage parentWindow) {
-        this.parentWindow = parentWindow;
+            DefaultTableModel tableModel, ArrayList<DisasterVictim> victims, ArrayList<Location> locations,
+            DisasterVictimPage parentWindow) {
 
         // Handle Dietary Restrictions
         JFrame frame = new JFrame("Dietary Restrictions");
@@ -82,18 +81,19 @@ public class DietaryRestrictionsPopup {
             JFrame addDietPreferenceFrame = new JFrame("Add New Dietary Preference");
             addDietPreferenceFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             addDietPreferenceFrame.setSize(300, 200);
-
+            // creates a local arraylist to load all possible dietary options
             ArrayList<Object> possibleDietOptions = new ArrayList<Object>();
             for (DietaryRestrictions.DietaryRestriction restriction : DietaryRestrictions.DietaryRestriction
                     .values()) {
                 possibleDietOptions.add(restriction);
             }
-
+            // converts the enumeration to a usable string representation. Appends converted
+            // data to the combo box
             JComboBox<Object> restrictionComboBox = new JComboBox<>();
             for (Object restriction : possibleDietOptions) {
                 restrictionComboBox.addItem(restriction.toString());
             }
-
+            // Create a save button within the new secondary popup window.
             JButton saveButton = new JButton("Save");
             saveButton.addActionListener(actionEvent -> {
                 String restrictionName = (String) restrictionComboBox.getSelectedItem();
@@ -112,9 +112,12 @@ public class DietaryRestrictionsPopup {
                         refreshDietaryRestrictionsTable(selectedVictim.getDietaryPreference(), containedTableModel);
                         // Refresh the main victims table
                         parentWindow.refreshTable(victims, locations);
+                        // close the window, now that everything is done
                         addDietPreferenceFrame.dispose();
                     } else {
                         if (lastSelectedPerson != null) {
+                            // If java deselected the column due to some operation, use the cached reference
+                            // to the person to complete the transaction if we have one.
                             // Add the dietary restriction
                             DietaryRestrictions.DietaryRestriction restriction = DietaryRestrictions.DietaryRestriction
                                     .valueOf(restrictionName);
@@ -124,6 +127,7 @@ public class DietaryRestrictionsPopup {
                                     containedTableModel);
                             // Refresh the main victims table
                             parentWindow.refreshTable(victims, locations);
+                            // close the window, now that everything is done
                             addDietPreferenceFrame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(frame,
@@ -156,10 +160,11 @@ public class DietaryRestrictionsPopup {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedPreferenceRow = containedTable.getSelectedRow();
-                
+
                 if (selectedVictim != null && selectedPreferenceRow != -1) {
                     String preferenceName = containedTable.getValueAt(selectedPreferenceRow, 0).toString();
-                    DietaryRestrictions.DietaryRestriction preference = DietaryRestrictions.DietaryRestriction.valueOf(preferenceName);
+                    DietaryRestrictions.DietaryRestriction preference = DietaryRestrictions.DietaryRestriction
+                            .valueOf(preferenceName);
                     // Remove the dietary restriction from the victim's preferences
                     selectedVictim.removeDietaryPreference(preference);
                     // Refresh the dietary restrictions table
@@ -172,7 +177,7 @@ public class DietaryRestrictionsPopup {
                 }
             }
         });
-        
+
         // Add the button to the frame
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addButton, BorderLayout.NORTH);
@@ -181,12 +186,12 @@ public class DietaryRestrictionsPopup {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+
     /**
      * Refreshes the dietary restrictions table with updated data.
      *
-     * @param preferences   The list of dietary preferences to display.
-     * @param containedTable    The table model for the dietary restrictions table.
+     * @param preferences    The list of dietary preferences to display.
+     * @param containedTable The table model for the dietary restrictions table.
      */
     private void refreshDietaryRestrictionsTable(ArrayList<DietaryRestrictions> preferences,
             DefaultTableModel containedTable) {

@@ -23,7 +23,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
     static final String USERNAME = "oop";
     static final String PASSWORD = "ucalgary";
     static Connection dbConnect;
-    
+
     /**
      * Establishes a connection to the database.
      */
@@ -39,7 +39,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Closes the connection to the database.
      */
@@ -53,7 +53,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Retrieves all inquiries from the database.
      *
@@ -92,7 +92,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
 
         return inquiries;
     }
-    
+
     /**
      * Retrieves all inquiry logs from the database.
      *
@@ -134,7 +134,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
 
         return logs;
     }
-    
+
     /**
      * Adds a new inquirer instance to the database.
      *
@@ -167,7 +167,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             }
         }
     }
-    
+
     /**
      * Adds a new inquiry instance to the database.
      *
@@ -232,7 +232,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             }
         }
     }
-    
+
     /**
      * Removes an inquirer instance from the database.
      *
@@ -265,7 +265,7 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             }
         }
     }
-    
+
     /**
      * Removes an inquiry instance from the database.
      *
@@ -308,7 +308,8 @@ public class AccessDatabaseLogs implements ExternalFileIO {
     /**
      * Method to find the inquirer ID based on first and last names
      *
-     * @return an integer ID which corresponds to the parameters used to identify the inquirer.
+     * @return an integer ID which corresponds to the parameters used to identify
+     *         the inquirer.
      */
     public int findInquirerId(String firstName, String lastName, boolean mountConnection) {
         int inquirerId = -1;
@@ -340,9 +341,10 @@ public class AccessDatabaseLogs implements ExternalFileIO {
         }
         return inquirerId;
     }
-    
+
     /**
-     * Performs an SQL update to the inquirer table corresponding to the provided parameters.
+     * Performs an SQL update to the inquirer table corresponding to the provided
+     * parameters.
      *
      */
     public void updateInquirer(int inquirerId, String firstName, String lastName, String phoneNumber) {
@@ -374,9 +376,10 @@ public class AccessDatabaseLogs implements ExternalFileIO {
             }
         }
     }
-    
+
     /**
-     * Performs an SQL update to the inquiry table corresponding to the provided parameters.
+     * Performs an SQL update to the inquiry table corresponding to the provided
+     * parameters.
      *
      */
     public void updateInquiryLog(int inquirerId, String callDate, String details) {

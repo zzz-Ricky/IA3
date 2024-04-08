@@ -31,14 +31,14 @@ import java.util.HashSet;
 import java.util.ArrayList;
 
 public class DisasterVictim extends Person implements DateManageMent, InfoManagement {
-    private String DateOfBirth_Age;
-    private String description;
-    private int ASSIGNED_SOCIAL_ID;
-    private ArrayList<MedicalRecord> medicalRecords;
-    private String ENTRY_DATE;
-    private HashSet<Supply> personalBelongings;
-    private ArrayList<DietaryRestrictions> dietaryPreference;
-    static int counter;
+    private String DateOfBirth_Age; // Stores DOB or approximate age.
+    private String description; // Additional string descriptor.
+    private final int ASSIGNED_SOCIAL_ID; // immutable and fixed social ID
+    private ArrayList<MedicalRecord> medicalRecords; // List of disaster victim medical records
+    private String ENTRY_DATE; // Date of entry to the relief center/system
+    private HashSet<Supply> personalBelongings; // List of personal Belongings transferred from a location
+    private ArrayList<DietaryRestrictions> dietaryPreference; // Special Dietary Preferences
+    static int counter; // Counter that increments to generate new unique social IDs
 
     /**
      * Constructs a new DisasterVictim with the specified first name and entry date.
@@ -107,11 +107,24 @@ public class DisasterVictim extends Person implements DateManageMent, InfoManage
         return dietaryPreference;
     }
 
+    /**
+     * Regular setter method for date of birth. method passes input to
+     * validateDate() beforehand
+     *
+     * @param age The exact DOB that the field will be set to.
+     */
     public void setDateOfBirth(String DateOfBirth) {
         validateDate(DateOfBirth);
         this.DateOfBirth_Age = DateOfBirth;
     }
 
+    /**
+     * Sets the DateOfBirth_Age field to a non date string.
+     * This is handled in case a user inputs information that is not exact enough to
+     * be a date
+     *
+     * @param age The approximate age that the field will be set to.
+     */
     public void setApproxAge(String age) {
         try {
             // assuming that our given age is some number like "18"

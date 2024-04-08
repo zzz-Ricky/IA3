@@ -35,17 +35,21 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
     private JButton saveEditsButton;
     private JButton discardEditsButton;
     private JButton removeButton;
-    
+
     /**
      * Constructs a new InquirySQLPage with default settings.
      * <p>
-     * This constructor initializes the UI components, sets up the database connection,
-     * creates tables for displaying inquirers and inquiry logs, and configures functionality
+     * This constructor initializes the UI components, sets up the database
+     * connection,
+     * creates tables for displaying inquirers and inquiry logs, and configures
+     * functionality
      * such as adding, removing, and searching inquirers and logs.
      * </p>
      * <p>
-     * Upon instantiation, the InquirySQLPage tab is added to a JTabbedPane within a JFrame,
-     * allowing users to interact with the SQL database data through a graphical user interface.
+     * Upon instantiation, the InquirySQLPage tab is added to a JTabbedPane within a
+     * JFrame,
+     * allowing users to interact with the SQL database data through a graphical
+     * user interface.
      * </p>
      */
     public InquirySQLPage() {
@@ -90,7 +94,7 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
         panel.add(createPanelWithHeading("Inquiry Logs", logScrollPane));
         add(panel, BorderLayout.CENTER);
 
-     // Add button to add new inquirer
+        // Add button to add new inquirer
         JButton addInquirerButton = new JButton("Add Inquirer");
         addInquirerButton.addActionListener(new ActionListener() {
             @Override
@@ -100,23 +104,25 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
                 JTextField firstNameField = new JTextField();
                 JTextField lastNameField = new JTextField();
                 JTextField phoneNumberField = new JTextField();
-                
+
+                // Add the custom dialog to the new popup window
                 panel.add(new JLabel("First Name:"));
                 panel.add(firstNameField);
                 panel.add(new JLabel("Last Name:"));
                 panel.add(lastNameField);
                 panel.add(new JLabel("Phone Number:"));
                 panel.add(phoneNumberField);
-                
-                int result = JOptionPane.showConfirmDialog(InquirySQLPage.this, panel, "Add New Inquirer", JOptionPane.OK_CANCEL_OPTION);
-                
+
+                int result = JOptionPane.showConfirmDialog(InquirySQLPage.this, panel, "Add New Inquirer",
+                        JOptionPane.OK_CANCEL_OPTION);
+
                 if (result == JOptionPane.OK_OPTION) {
                     String firstName = firstNameField.getText().trim();
                     String lastName = lastNameField.getText().trim();
                     String phoneNumber = phoneNumberField.getText().trim();
-                    
+
                     try {
-                    validatePhone(phoneNumber);
+                        validatePhone(phoneNumber);
                     } catch (IllegalArgumentException ex) {
                         return; // Don't proceed if the phoneNumber is invalid
                     }
@@ -131,8 +137,7 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
             }
         });
 
-
-     // Add button to add new inquiry log
+        // Add button to add new inquiry log
         JButton addInquiryLogButton = new JButton("Add Inquiry Log");
         addInquiryLogButton.addActionListener(new ActionListener() {
             @Override
@@ -143,7 +148,8 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
                 JTextField lastNameField = new JTextField();
                 JTextField callDateField = new JTextField();
                 JTextField detailsField = new JTextField();
-                
+
+                // Add the custom dialog to the new popup window
                 panel.add(new JLabel("First Name:"));
                 panel.add(firstNameField);
                 panel.add(new JLabel("Last Name:"));
@@ -152,23 +158,25 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
                 panel.add(callDateField);
                 panel.add(new JLabel("Details:"));
                 panel.add(detailsField);
-                
-                int result = JOptionPane.showConfirmDialog(InquirySQLPage.this, panel, "Add New Inquiry Log", JOptionPane.OK_CANCEL_OPTION);
-                
+
+                int result = JOptionPane.showConfirmDialog(InquirySQLPage.this, panel, "Add New Inquiry Log",
+                        JOptionPane.OK_CANCEL_OPTION);
+
                 if (result == JOptionPane.OK_OPTION) {
                     String firstName = firstNameField.getText().trim();
                     String lastName = lastNameField.getText().trim();
                     String callDate = callDateField.getText().trim();
                     String details = detailsField.getText().trim();
-                    
+
                     // Validate call date
                     try {
                         validateDate(callDate);
                     } catch (IllegalArgumentException ex) {
-                        JOptionPane.showMessageDialog(InquirySQLPage.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(InquirySQLPage.this, ex.getMessage(), "Error",
+                                JOptionPane.ERROR_MESSAGE);
                         return; // Don't proceed if the date is invalid
                     }
-                    
+
                     if (!firstName.isEmpty() && !lastName.isEmpty() && !callDate.isEmpty() && !details.isEmpty()) {
                         // Check if the provided first and last names relate to any existing inquirer
                         int inquirerId = database.findInquirerId(firstName, lastName, true);
@@ -186,7 +194,6 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
                 }
             }
         });
-
 
         // Add button to remove selected row
         removeButton = new JButton("Remove Selected");
@@ -276,7 +283,7 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
         panel.add(scrollPane, BorderLayout.CENTER);
         return panel;
     }
-    
+
     /**
      * Updates the table displaying inquirers with data fetched from the database.
      */
@@ -288,9 +295,10 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
             inquiryTableModel.addRow(inquiry);
         }
     }
-    
+
     /**
-     * Updates the table displaying inquiry logs with data fetched from the database.
+     * Updates the table displaying inquiry logs with data fetched from the
+     * database.
      */
     // Method to update the log table
     private void updateLogTable() {
@@ -300,9 +308,10 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
             logTableModel.addRow(log);
         }
     }
-    
+
     /**
-     * Searches the inquirer table based on the provided search text and updates the table accordingly.
+     * Searches the inquirer table based on the provided search text and updates the
+     * table accordingly.
      *
      * @param searchText The text to search for in the inquirer table.
      */
@@ -316,9 +325,10 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
         }
     }
-    
+
     /**
-     * Searches the inquirer table based on the provided search text and updates the table accordingly.
+     * Searches the inquirer table based on the provided search text and updates the
+     * table accordingly.
      *
      * @param searchText The text to search for in the inquirer table.
      */
@@ -331,7 +341,7 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
         }
     }
-    
+
     /**
      * Validates the format of a phone number.
      *
@@ -339,36 +349,38 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
      * @return True if the phone number is valid, otherwise false.
      * @throws IllegalArgumentException If the phone number is invalid.
      */
-    private boolean validatePhone(String phoneNumber){
+    private boolean validatePhone(String phoneNumber) {
         JFrame frame = new JFrame("ERROR");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 300);
-		
+
         // Check if the date has the date in the correct format such as "2024-01-18"
         if (!phoneNumber.matches("\\d{3}-\\d{3}-\\d{4}")) {
-        	  JOptionPane.showMessageDialog(frame,
-                      "An Invalid phone number was given. It must be in the following format: 123-456-7890", "Error",
-                      JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame,
+                    "An Invalid phone number was given. It must be in the following format: 123-456-7890", "Error",
+                    JOptionPane.ERROR_MESSAGE);
             throw new IllegalArgumentException("Phone must be in the format XXX-XXX-XXXX");
         }
 
         return true;
     }
-    
+
     /**
-     * Validates the format of a date string and checks if it represents a valid date.
+     * Validates the format of a date string and checks if it represents a valid
+     * date.
      *
      * @param date The date string to validate.
      * @return True if the date string is valid, otherwise false.
-     * @throws IllegalArgumentException If the date string is invalid or represents an invalid date.
+     * @throws IllegalArgumentException If the date string is invalid or represents
+     *                                  an invalid date.
      */
-	@Override
+    @Override
     public boolean validateDate(String date) {
-		
+
         JFrame frame = new JFrame("ERROR");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 300);
-		
+
         // Check if the date has the date in the correct format such as "2024-01-18"
         if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
             throw new IllegalArgumentException("Date must be in the format YYYY-MM-DD");
@@ -389,17 +401,17 @@ public class InquirySQLPage extends JPanel implements DateManageMent {
 
         return true;
     }
-    
-	@Override
-	public void setDate(String newDate) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public String getDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void setDate(String newDate) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public String getDate() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

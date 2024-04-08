@@ -68,7 +68,7 @@ public class LocationManagementPage extends JPanel {
                 addSupplyFrame.add(quantityField);
                 addSupplyFrame.add(saveButton);
 
-             // Action listener for the save button
+                // Action listener for the save button
                 saveButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -87,37 +87,41 @@ public class LocationManagementPage extends JPanel {
                             updateTable(workLocation);
                             addSupplyFrame.dispose(); // Close the popup window
                         } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(LocationManagementPage.this, "Invalid quantity. Please enter a number.");
+                            JOptionPane.showMessageDialog(LocationManagementPage.this,
+                                    "Invalid quantity. Please enter a number.");
                         }
                     }
                 });
 
-
-                addSupplyFrame.setLocationRelativeTo(LocationManagementPage.this); // Center the popup relative to the main window
+                addSupplyFrame.setLocationRelativeTo(LocationManagementPage.this); // Center the popup relative to the
+                                                                                   // main window
                 addSupplyFrame.setVisible(true);
             }
         });
         add(addSupplyButton, BorderLayout.SOUTH);
     }
-    
+
     /**
      * Updates the table with the supplies from the specified location.
      * <p>
-     * This method clears the existing data in the inventory table model and populates the table
-     * with the supplies retrieved from the given work location. Each row in the table represents
+     * This method clears the existing data in the inventory table model and
+     * populates the table
+     * with the supplies retrieved from the given work location. Each row in the
+     * table represents
      * a supply, with columns for the supply type and quantity.
      * </p>
      * <p>
      * After updating the table, the UI is refreshed to reflect the changes.
      * </p>
      *
-     * @param workLocation The location from which to retrieve the supplies to populate the table.
+     * @param workLocation The location from which to retrieve the supplies to
+     *                     populate the table.
      */
     // Method to update the table with supplies from a location
     private void updateTable(Location workLocation) {
         inventoryTableModel.setRowCount(0); // Clear previous data
         for (Supply supply : workLocation.getSupplies()) {
-            inventoryTableModel.addRow(new Object[]{supply.getDescription(), supply.getQuantity()});
+            inventoryTableModel.addRow(new Object[] { supply.getDescription(), supply.getQuantity() });
         }
     }
 }

@@ -21,9 +21,10 @@ import java.util.ArrayList;
 public class ReliefService {
     private Inquirer inquirer;
     private ArrayList<Inquiry> inquiries;
-    
+
     /**
-     * Constructs a ReliefService object with the specified inquirer and list of inquiries.
+     * Constructs a ReliefService object with the specified inquirer and list of
+     * inquiries.
      *
      * @param inquirer  The inquirer associated with the relief service.
      * @param inquiries The list of inquiries managed by the relief service.

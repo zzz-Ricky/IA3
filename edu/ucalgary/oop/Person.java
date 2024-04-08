@@ -24,7 +24,6 @@
  * @since 07/04/24
  */
 
-
 package edu.ucalgary.oop;
 
 import java.util.HashSet;
@@ -39,9 +38,10 @@ abstract class Person implements ExternalFileIO {
     private HashSet<FamilyRelation> familyConnections;
     private String genderPronoun;
     private static ArrayList<String> genderOptions;
-    
+
     /**
-     * Constructs a Person object with the specified first name, last name, and gender pronoun.
+     * Constructs a Person object with the specified first name, last name, and
+     * gender pronoun.
      *
      * @param firstName     The first name of the person.
      * @param lastName      The last name of the person.
@@ -56,7 +56,7 @@ abstract class Person implements ExternalFileIO {
         }
         setGender(genderPronoun); // Validate and set gender pronoun
     }
-    
+
     /**
      * Reads gender options from an external file and returns them as a list.
      *
@@ -79,12 +79,13 @@ abstract class Person implements ExternalFileIO {
         }
         return genderOptions;
     }
-    
+
     /**
      * Validates and sets the gender pronoun of the person.
      *
      * @param genderPronoun The gender pronoun to be set.
-     * @throws IllegalArgumentException If the gender pronoun is invalid or not found in the available options.
+     * @throws IllegalArgumentException If the gender pronoun is invalid or not
+     *                                  found in the available options.
      */
     // Validate and set gender pronoun
     public void setGender(String genderPronoun) {
@@ -133,12 +134,13 @@ abstract class Person implements ExternalFileIO {
     public void setFamilyConnections(HashSet<FamilyRelation> familyConnections) {
         this.familyConnections = familyConnections;
     }
-    
+
     /**
      * Adds a family connection to the person.
      *
      * @param familyConnection The family relation to be added.
-     * @param manager          The FamilyRelationManager object for managing family relations.
+     * @param manager          The FamilyRelationManager object for managing family
+     *                         relations.
      * @throws IllegalArgumentException If the family connection cannot be added.
      */
     public void addFamilyConnection(FamilyRelation familyConnection, FamilyRelationManager manager) {
@@ -157,7 +159,7 @@ abstract class Person implements ExternalFileIO {
             throw new IllegalArgumentException("Cannot add a personal relationship a person is not in");
         }
     }
-    
+
     /**
      * Removes a family connection from the person.
      *

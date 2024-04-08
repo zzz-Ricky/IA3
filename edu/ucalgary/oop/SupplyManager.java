@@ -18,14 +18,16 @@ package edu.ucalgary.oop;
 import java.util.HashSet;
 
 public class SupplyManager {
-	
+
     /**
      * Checks the availability of a supply in a location.
      *
      * @param locationSupply The set of supplies available at the location.
      * @param supply         The supply to be checked for availability.
-     * @return True if the supply is available in sufficient quantity, false otherwise.
-     * @throws IllegalArgumentException If the supply does not exist in the location or is insufficient.
+     * @return True if the supply is available in sufficient quantity, false
+     *         otherwise.
+     * @throws IllegalArgumentException If the supply does not exist in the location
+     *                                  or is insufficient.
      */
     private boolean checkSupplyAvailability(HashSet<Supply> locationSupply, Supply supply) {
         String supplyName = supply.getDescription();
@@ -43,13 +45,13 @@ public class SupplyManager {
         }
         throw new IllegalArgumentException("A supply must exist in the location it is taken from");
     }
-    
+
     /**
      * Transfers supplies from a location to a disaster victim.
      *
-     * @param person    The disaster victim receiving the supplies.
-     * @param supplies  The set of supplies to be transferred.
-     * @param location  The location from which supplies are transferred.
+     * @param person   The disaster victim receiving the supplies.
+     * @param supplies The set of supplies to be transferred.
+     * @param location The location from which supplies are transferred.
      */
     public void transferSupplies(DisasterVictim person,
             HashSet<Supply> supplies, Location location) {
@@ -70,7 +72,7 @@ public class SupplyManager {
         victimSupplies.addAll(supplies);
         person.setPersonalBelongings(victimSupplies);
     }
-    
+
     /**
      * Allocates a supply to a disaster victim from a location.
      *

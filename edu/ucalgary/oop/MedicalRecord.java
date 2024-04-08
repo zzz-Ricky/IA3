@@ -20,22 +20,31 @@ public class MedicalRecord implements DateManageMent, InfoManagement {
     private Location location;
     private String treatmentDetails;
     private String dateOfTreatment;
-    
+
     /**
-     * Constructs a new MedicalRecord object with the specified location, treatment details, and date of treatment.
+     * Constructs a new MedicalRecord object with the specified location, treatment
+     * details, and date of treatment.
      * <p>
-     * This constructor initializes a medical record with the given location where the treatment occurred,
-     * treatment details describing the procedure or medication administered, and the date of the treatment.
+     * This constructor initializes a medical record with the given location where
+     * the treatment occurred,
+     * treatment details describing the procedure or medication administered, and
+     * the date of the treatment.
      * </p>
      * <p>
-     * The date of treatment must be provided in the format "YYYY-MM-DD" and is validated to ensure it is a valid date.
-     * If an invalid date format or an invalid date is provided, an IllegalArgumentException is thrown.
+     * The date of treatment must be provided in the format "YYYY-MM-DD" and is
+     * validated to ensure it is a valid date.
+     * If an invalid date format or an invalid date is provided, an
+     * IllegalArgumentException is thrown.
      * </p>
      *
      * @param location         The location where the treatment occurred.
-     * @param treatmentDetails Details of the treatment procedure or medication administered.
-     * @param dateOfTreatment  The date when the treatment occurred, in the format "YYYY-MM-DD".
-     * @throws IllegalArgumentException If the date of treatment is not in the correct format or represents an invalid date.
+     * @param treatmentDetails Details of the treatment procedure or medication
+     *                         administered.
+     * @param dateOfTreatment  The date when the treatment occurred, in the format
+     *                         "YYYY-MM-DD".
+     * @throws IllegalArgumentException If the date of treatment is not in the
+     *                                  correct format or represents an invalid
+     *                                  date.
      */
     public MedicalRecord(Location location, String treatmentDetails, String dateOfTreatment) {
         this.location = location;
@@ -43,7 +52,7 @@ public class MedicalRecord implements DateManageMent, InfoManagement {
         validateDate(dateOfTreatment);
         this.dateOfTreatment = dateOfTreatment;
     }
-    
+
     /**
      * Validates the format of the provided date string.
      *
